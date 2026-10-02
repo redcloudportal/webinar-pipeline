@@ -1,13 +1,30 @@
 # Red Cloud webinar pipeline
 
-The automation layer for Red Cloud's webinars: one large automated process, built
-**one piece at a time**. Started 2 October 2026.
+**The whole webinar system**, live at **https://webinars.redcloudfs.com** since
+2 October 2026 (see `CUTOVER.md`): the client intake form, /ops, every connector
+(Box filing, graphics, social copy, Mailchimp invite drafts, the run-up emails
+when keyed), the registration page builder and the clips system — plus the new
+pieces being added one at a time (Riverside first).
 
-**Every piece starts manual.** Nothing here runs on a timer, reacts to a webhook or
-fires on anything until Cliff decides that piece is ready to be wired in. A piece
-being "on" in `/health` means it *can* be called — never that it runs by itself.
+This repo, on this Mac (`~/webinar-pipeline`), is the source of truth. Deploy with
+`ops/deploy.sh`.
 
-This repo, on this Mac (`~/webinar-pipeline`), is the source of truth.
+| Folder | What |
+|---|---|
+| `app/` | the webinar system as built on Netlify, run unchanged here. `app/PROJECT-intake.md` is its full build reference; `app/WEBINAR-PROCESS.md` the team checklist |
+| `src/host.mjs` | stands in for Netlify around `app/`: routes, background jobs, the form, the timer, **PAUSED** |
+| `src/server.mjs` | the web server: sign-in, the Keys page, what is public |
+| `src/keys.mjs` | keys pasted on `/settings/keys` |
+| `src/riverside.mjs` | the Riverside client (new piece, manual) |
+| `ops/` | `deploy.sh`, `migrate-from-netlify.py` |
+| `netlify-forwarder/` | what Netlify runs now: forward everything, keep old email images |
+
+**New pieces still start manual.** Nothing new runs on a timer or reacts to
+anything until Cliff decides it is ready. The system that moved over runs as it
+did on Netlify.
+
+**`PAUSED: "1"`** in `docker-compose.yml` stops everything outward at once — no
+connector, no timer, no change to a webinar, a Box folder or a campaign.
 
 ---
 

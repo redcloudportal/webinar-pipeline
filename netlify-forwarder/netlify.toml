@@ -1,0 +1,26 @@
+# FORWARDING ONLY — the webinar system moved to https://webinars.redcloudfs.com
+# (2 Oct 2026). Do NOT deploy the old intake folder here: it would bring the
+# connectors, the timer and the form handler back, running alongside the new
+# server and duplicating every draft, Box filing and email. See the pipeline
+# repo's CUTOVER.md.
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+# email images already sent point here — keep answering them (the art function)
+[[redirects]]
+  from = "/art/*"
+  to = "/art/:splat"
+  status = 200
+
+# everything else, query string included: the new site
+[[redirects]]
+  from = "/*"
+  to = "https://webinars.redcloudfs.com/:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
