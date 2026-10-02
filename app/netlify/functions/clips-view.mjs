@@ -1,4 +1,4 @@
-import { list, read, write } from "../shared/record.mjs";
+import { list, read, write, webinarDateKey } from "../shared/record.mjs";
 
 /* /api/clips -- the clips workbench, deliberately NOT gated.
 
@@ -29,6 +29,12 @@ function slim(r) {
     tickers: r.facts?.tickers || "",
     title: r.facts?.title || "",
     createdAt: r.createdAt,
+    /* for the Mac Mini worker, to match a Box folder to its webinar: the folder's
+       own id first, then the WEBINAR date (folders are named by it since Oct 2026,
+       not by the submission date in the id), and whether the record is retired */
+    boxFolder: r.folders?.box || null,
+    webinarDate: webinarDateKey(r),
+    retired: Boolean(r.foldersGone?.box),
     clipJob: j && {
       status: j.status || "",
       sourceRef: j.sourceRef || "",

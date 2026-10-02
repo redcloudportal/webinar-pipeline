@@ -177,6 +177,10 @@ const server = http.createServer(async (req, res) => {
 
     if (path.startsWith("/api/") || path.startsWith("/art/") || path.startsWith("/.netlify/")) {
       if (needsSession(path) && !path.startsWith("/.netlify/") && !me) return json(res, 401, { error: "Sign in at /login" });
+      /* the clips list is open to READ (the worker needs it, and it holds no contact
+         details) — but setting timecodes or approving a cut needs a person signed in.
+         On Netlify this was open to anyone with the address. */
+      if (path === "/api/clips" && req.method !== "GET" && !me) return json(res, 401, { error: "Sign in at /login" });
       if (await host.handleFunction(req, res, { signedIn: me })) return;
       return me ? json(res, 404, { error: "not found" }) : redirect(res, "/login");
     }
