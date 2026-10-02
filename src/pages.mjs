@@ -66,10 +66,10 @@ export const setupPage = (token, { error, done } = {}) => layout("Choose a passw
   ${done ? `<p class="ok">Password saved. This link no longer works.</p><p><a href="/login">Sign in &rarr;</a></p>` : `
   <form method="post" action="/setup">
     <input type="hidden" name="t" value="${esc(token)}">
-    <label for="pw">New password <span style="color:#7d7d82;font-weight:400">(at least 12 characters)</span></label>
-    <input id="pw" name="password" type="password" autocomplete="new-password" minlength="12" required autofocus>
+    <label for="pw">New password</label>
+    <input id="pw" name="password" type="password" autocomplete="new-password" required autofocus>
     <label for="pw2">Again</label>
-    <input id="pw2" name="again" type="password" autocomplete="new-password" minlength="12" required>
+    <input id="pw2" name="again" type="password" autocomplete="new-password" required>
     ${error ? `<p class="err">${esc(error)}</p>` : ""}
     <button>SAVE PASSWORD</button>
   </form>

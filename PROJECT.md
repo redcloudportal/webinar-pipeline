@@ -66,7 +66,8 @@ Everything is behind a sign-in except `GET /health`, which answers only
 `{"ok":true}`. An address that doesn't exist redirects to the sign-in page rather
 than saying so.
 
-- **One shared password**, stored only as an scrypt hash in the data volume
+- **One shared password**, no length rule (Cliff's call, 2 Oct 2026 — the lockout
+  below is the protection), stored only as an scrypt hash in the data volume
   (`/data/auth.json`) — not in the repo, not in `.env`, not in chat.
 - **Set and reset with a one-time link**, made on the server:
   `docker compose exec -T pipeline node src/admin.mjs setup-link`. It works once

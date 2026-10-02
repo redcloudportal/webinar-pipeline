@@ -61,7 +61,9 @@ export function setupTokenValid(token) {
 }
 export function setPasswordWithToken(token, pw) {
   if (!setupTokenValid(token)) return { ok: false, error: "This link has expired or has already been used." };
-  if (String(pw).length < 12) return { ok: false, error: "Use at least 12 characters." };
+  /* No length rule — Cliff's call (2 Oct 2026). Anything but empty is accepted;
+     the lockout after repeated wrong tries is the protection that stays. */
+  if (!String(pw).length) return { ok: false, error: "Enter a password." };
   const state = load();
   state.password = hash(pw);
   state.changed = new Date().toISOString();
