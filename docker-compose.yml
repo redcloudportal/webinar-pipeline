@@ -2,11 +2,10 @@
 # (/root/webinar-pipeline), its own repo. A portal deploy cannot touch it.
 #
 # It joins the portal's network ONLY so the shared HTTPS front door (Caddy, which
-# lives in the portal's setup) can route to it. The Caddy labels are deliberately
-# NOT here yet: Caddy builds one config from every container's labels, so a label
-# that fails — including a domain whose DNS does not exist yet — can disturb HTTPS
-# for every site on the box. They go in once webinarform.redcloudfs.com resolves to
-# the server, and Caddy is checked straight after. See PROJECT.md.
+# lives in the portal's setup) can route to it. Caddy builds ONE config from every
+# container's labels, so a label that fails can disturb HTTPS for every site on
+# the box — after changing the labels below, check `docker logs portal-caddy-1`
+# and that the portal, HQ and CRM still load. See PROJECT.md.
 name: webinar-pipeline
 services:
   pipeline:
@@ -17,6 +16,11 @@ services:
     mem_limit: 256m
     networks: [portal_default]
     volumes: ["pipeline-data:/data"]   # the sign-in password hash lives here
+    environment:
+      PUBLIC_URL: https://webinars.redcloudfs.com
+    labels:
+      caddy: webinars.redcloudfs.com
+      caddy.reverse_proxy: "{{upstreams 8300}}"
 volumes:
   pipeline-data:
 networks:

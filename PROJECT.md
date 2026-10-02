@@ -19,7 +19,7 @@ This repo, on this Mac (`~/webinar-pipeline`), is the source of truth.
 | Folder | `/root/webinar-pipeline` — **its own**, not under `/root/portal` |
 | Compose project | `webinar-pipeline` — its own, so a portal deploy cannot rebuild, stop or overwrite it |
 | Container | `pipeline`, port 8300 inside the network, capped at 256 MB |
-| Address | `webinarform.redcloudfs.com` — **internal, behind a password**; not live yet, waiting on the DNS record. (Cliff first wrote `webinarform.redcloud.com`; that domain is not Red Cloud's — it is parked for sale) |
+| Address | **https://webinars.redcloudfs.com** — internal, behind a password. Live 2 Oct 2026 (GoDaddy A record → 138.197.139.66; Let's Encrypt certificate via the shared Caddy, renews itself) |
 | Repo | `redcloudportal/webinar-pipeline` — waiting to be created on GitHub |
 
 Why the same server and not its own: it has plenty of room (load ~0.1, ~1.3 GB
@@ -40,17 +40,17 @@ HTTPS for every site, the portal included.** So:
 
 - the pipeline joins `portal_default` (as an external network) only so Caddy can
   reach it;
-- the Caddy labels are **not** in `docker-compose.yml` yet. They go in once
-  `webinarform.redcloudfs.com` resolves to `138.197.139.66` — a domain with no DNS
-  makes Caddy fail its certificate and retry;
-- straight after adding them, check `docker logs portal-caddy-1` and that the
-  portal, HQ and CRM still load.
+- the Caddy labels went in on 2 Oct 2026, only once `webinars.redcloudfs.com`
+  resolved to `138.197.139.66` — a domain with no DNS makes Caddy fail its
+  certificate and retry. The portal, HQ, PM and CRM were checked before and after;
+- after **any** change to the labels, check `docker logs portal-caddy-1` and that
+  the portal, HQ, PM and CRM still load.
 
-The labels to add then:
+The labels:
 
 ```yaml
     labels:
-      caddy: webinarform.redcloudfs.com
+      caddy: webinars.redcloudfs.com
       caddy.reverse_proxy: "{{upstreams 8300}}"
 ```
 

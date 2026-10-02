@@ -9,7 +9,7 @@ import { issueSetupToken, hasPassword } from "./auth.mjs";
 
 const cmd = process.argv[2];
 if (cmd === "setup-link") {
-  const base = (process.env.PUBLIC_URL || "https://webinarform.redcloudfs.com").replace(/\/+$/, "");
+  const base = (process.env.PUBLIC_URL || "https://webinars.redcloudfs.com").replace(/\/+$/, "");
   const token = issueSetupToken();
   console.log(`${hasPassword() ? "Password RESET" : "Password setup"} link (single use, expires in 24 hours):`);
   console.log(`${base}/setup?t=${token}`);
