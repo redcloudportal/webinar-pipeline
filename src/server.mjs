@@ -1,47 +1,114 @@
 import http from "node:http";
 import { timingSafeEqual } from "node:crypto";
 import * as riverside from "./riverside.mjs";
+import * as auth from "./auth.mjs";
+import * as pages from "./pages.mjs";
 
 /* ── Red Cloud webinar pipeline ────────────────────────────────
    The automation layer for webinars, separate from the portal and from the
-   Netlify intake site. Pieces are added one at a time and every one starts
-   MANUAL: nothing here runs on a timer or reacts to anything until it is
+   Netlify intake site. INTERNAL: everything is behind a sign-in except a bare
+   "is it up" check. Pieces are added one at a time and every one starts
+   MANUAL — nothing runs on a timer or reacts to anything until it is
    deliberately wired in. See PROJECT.md.
 
-   No framework, no dependencies — node:http only, so the container is small and
-   there is nothing to keep patched beyond Node itself.
+   No framework, no dependencies — node:http only.
    ───────────────────────────────────────────────────────────── */
 
 const PORT = Number(process.env.PORT || 8300);
+const COOKIE = "wp_session";
+const SECURE = process.env.COOKIE_INSECURE === "1" ? "" : "; Secure";   // local testing over http only
 
-const json = (res, status, body) => {
-  res.writeHead(status, { "content-type": "application/json", "cache-control": "no-store" });
-  res.end(JSON.stringify(body, null, 2));
+/* Headers on every response: never cached, never framed, never indexed, and
+   no Referer — a one-time setup link carries its token in the URL. */
+const BASE_HEADERS = {
+  "cache-control": "no-store",
+  "x-frame-options": "DENY",
+  "referrer-policy": "no-referrer",
+  "x-robots-tag": "noindex, nofollow",
+  "x-content-type-options": "nosniff",
 };
+const send = (res, status, body, type, extra = {}) => {
+  res.writeHead(status, { ...BASE_HEADERS, "content-type": type, ...extra });
+  res.end(body);
+};
+const json = (res, status, body) => send(res, status, JSON.stringify(body, null, 2), "application/json");
+const html = (res, status, body, extra) => send(res, status, body, "text/html; charset=utf-8", extra);
+const redirect = (res, to, extra = {}) => { res.writeHead(303, { ...BASE_HEADERS, location: to, ...extra }); res.end(); };
 
-/* Everything but /health needs the pipeline's token. If no token is set the
-   pipeline refuses rather than defaulting to open. */
-function authorised(req) {
-  const want = process.env.PIPELINE_TOKEN || "";
-  const got = String(req.headers["x-pipeline-token"] || "");
-  if (!want || got.length !== want.length) return false;
-  return timingSafeEqual(Buffer.from(got), Buffer.from(want));
+const cookies = (req) => Object.fromEntries(String(req.headers.cookie || "").split(/;\s*/).filter(Boolean)
+  .map((c) => { const i = c.indexOf("="); return [c.slice(0, i), decodeURIComponent(c.slice(i + 1))]; }));
+const clientIp = (req) => String(req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+
+async function form(req) {
+  let raw = "";
+  for await (const chunk of req) { raw += chunk; if (raw.length > 8192) throw new Error("form too large"); }
+  return Object.fromEntries(new URLSearchParams(raw));
 }
 
-/* Which pieces are switched on. A piece is "on" only when its key is set — and
-   even then nothing runs by itself: "on" means it CAN be called. */
-const pieces = () => ({
-  riverside: process.env.RIVERSIDE_API_KEY ? "on (manual)" : "off — needs RIVERSIDE_API_KEY",
-});
+/* A person with a session, or a machine with the pipeline token. */
+const signedIn = (req) => auth.sessionValid(cookies(req)[COOKIE]);
+function tokenOk(req) {
+  const want = process.env.PIPELINE_TOKEN || "";
+  const got = String(req.headers["x-pipeline-token"] || "");
+  return Boolean(want) && got.length === want.length && timingSafeEqual(Buffer.from(got), Buffer.from(want));
+}
+
+const pieces = () => [
+  { name: "Riverside — connection", on: Boolean(process.env.RIVERSIDE_API_KEY),
+    status: process.env.RIVERSIDE_API_KEY ? "on · manual" : "waiting on API access",
+    what: "Reads the Riverside workspace and its webinars. Read-only." },
+  { name: "Riverside — recording to clips", on: false, status: "not built", what: "Recording and transcript into the clips job." },
+  { name: "Riverside — attendee lists", on: false, status: "not built", what: "Registrants and attendance into the Box event folder." },
+  { name: "Riverside — registration & schedule", on: false, status: "not built", what: "Sign-ups into Riverside; webinar time into /ops." },
+];
 
 const routes = {
-  /* public, and says nothing secret: is it up, and what is switched on */
-  "GET /health": async (req, res) =>
-    json(res, 200, { ok: true, service: "webinar-pipeline", pieces: pieces(), automatic: "nothing" }),
+  /* the only public route, and it says nothing but "up" */
+  "GET /health": (req, res) => json(res, 200, { ok: true }),
 
-  /* Riverside piece 1 — the connection. Read-only: the workspace, and webinars
-     upcoming and ended in the last 30 days. */
+  "GET /login": (req, res) => {
+    if (!auth.hasPassword()) return html(res, 200, pages.noPasswordPage());
+    if (signedIn(req)) return redirect(res, "/");
+    html(res, 200, pages.loginPage());
+  },
+  "POST /login": async (req, res) => {
+    const ip = clientIp(req);
+    if (auth.lockedOut(ip)) return html(res, 429, pages.loginPage("Too many attempts. Try again in 15 minutes."));
+    const { password = "" } = await form(req);
+    if (!auth.checkPassword(password)) {
+      auth.noteFailure(ip);
+      return html(res, 401, pages.loginPage("That password isn't right."));
+    }
+    auth.clearFailures(ip);
+    redirect(res, "/", { "set-cookie": `${COOKIE}=${auth.newSession()}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${auth.SESSION_DAYS * 86400}${SECURE}` });
+  },
+  "POST /logout": (req, res) =>
+    redirect(res, "/login", { "set-cookie": `${COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${SECURE}` }),
+
+  "GET /setup": (req, res, url) => {
+    const t = url.searchParams.get("t") || "";
+    if (!auth.setupTokenValid(t)) return html(res, 410, pages.linkDeadPage());
+    html(res, 200, pages.setupPage(t));
+  },
+  "POST /setup": async (req, res) => {
+    const ip = clientIp(req);
+    if (auth.lockedOut(ip)) return html(res, 429, pages.linkDeadPage());
+    const { t = "", password = "", again = "" } = await form(req);
+    if (!auth.setupTokenValid(t)) { auth.noteFailure(ip); return html(res, 410, pages.linkDeadPage()); }
+    if (password !== again) return html(res, 400, pages.setupPage(t, { error: "The two passwords don't match." }));
+    const r = auth.setPasswordWithToken(t, password);
+    if (!r.ok) return html(res, 400, pages.setupPage(t, { error: r.error }));
+    html(res, 200, pages.setupPage("", { done: true }));
+  },
+
+  "GET /": (req, res) => {
+    if (!signedIn(req)) return redirect(res, "/login");
+    html(res, 200, pages.homePage(pieces()));
+  },
+
+  /* Riverside piece 1 — read-only. A signed-in person or the pipeline token. */
   "GET /riverside/overview": async (req, res) => {
+    if (!signedIn(req) && !tokenOk(req)) return json(res, 401, { error: "unauthorised" });
     if (!process.env.RIVERSIDE_API_KEY) return json(res, 400, { error: "RIVERSIDE_API_KEY is not set." });
     const ws = await riverside.workspace();
     const upcoming = await riverside.events({ type: "webinar", status: "upcoming", limit: 50 });
@@ -60,17 +127,18 @@ const routes = {
 };
 
 const server = http.createServer(async (req, res) => {
-  const path = new URL(req.url, "http://x").pathname.replace(/\/+$/, "") || "/";
+  const url = new URL(req.url, "http://x");
+  const path = url.pathname.replace(/\/+$/, "") || "/";
   const route = routes[`${req.method} ${path}`];
-  if (!route) return json(res, 404, { error: "not found" });
-  if (path !== "/health" && !authorised(req)) return json(res, 401, { error: "unauthorised" });
+  /* an unknown address gives nothing away to someone who is not signed in */
+  if (!route) return signedIn(req) ? json(res, 404, { error: "not found" }) : redirect(res, "/login");
   try {
-    await route(req, res);
+    await route(req, res, url);
   } catch (err) {
     console.error(`${req.method} ${path} failed:`, err.message);
-    json(res, 502, { error: err.message, status: err.status || null });
+    if (!res.headersSent) json(res, 502, { error: "Something went wrong — see the server log." });
   }
 });
 
-server.listen(PORT, () => console.log(`webinar-pipeline listening on ${PORT}; pieces: ${JSON.stringify(pieces())}`));
+server.listen(PORT, () => console.log(`webinar-pipeline listening on ${PORT}; password set: ${auth.hasPassword()}`));
 for (const sig of ["SIGTERM", "SIGINT"]) process.on(sig, () => server.close(() => process.exit(0)));

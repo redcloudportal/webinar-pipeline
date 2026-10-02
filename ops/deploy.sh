@@ -10,6 +10,8 @@ rsync -az --delete --exclude .git --exclude .env --exclude node_modules --exclud
 ssh "$HOST" "set -e; cd $DIR
   # first deploy only: a token generated ON the server, never printed
   if [ ! -f .env ]; then umask 077; printf 'PIPELINE_TOKEN=%s\nRIVERSIDE_API_KEY=\n' \"\$(openssl rand -hex 24)\" > .env; fi
+  # signs the 30-day sign-in cookies; generated once on the server, never printed
+  grep -q '^SESSION_SECRET=' .env || { umask 077; printf 'SESSION_SECRET=%s\n' \"\$(openssl rand -hex 32)\" >> .env; }
   chmod 600 .env
   docker compose up -d --build
   sleep 3

@@ -5,7 +5,7 @@
 # lives in the portal's setup) can route to it. The Caddy labels are deliberately
 # NOT here yet: Caddy builds one config from every container's labels, so a label
 # that fails — including a domain whose DNS does not exist yet — can disturb HTTPS
-# for every site on the box. They go in once webinars.redcloudfs.com resolves to
+# for every site on the box. They go in once webinarform.redcloudfs.com resolves to
 # the server, and Caddy is checked straight after. See PROJECT.md.
 name: webinar-pipeline
 services:
@@ -16,6 +16,9 @@ services:
     expose: ["8300"]
     mem_limit: 256m
     networks: [portal_default]
+    volumes: ["pipeline-data:/data"]   # the sign-in password hash lives here
+volumes:
+  pipeline-data:
 networks:
   portal_default:
     external: true
