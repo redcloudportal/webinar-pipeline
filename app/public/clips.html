@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCTV Clip Studio | Red Cloud</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#852A29; --red-2:#5C1C1B; --red-3:#C14845; --red-soft:#F3E4E2;
+  --ink:#241E1F; --ink-soft:#6B6163; --ink-faint:#9B9092;
+  --paper:#F7F3F0; --surface:#FFFFFF; --surface-2:#F1EBE6;
+  --line:#E7DED6; --line-2:#D8CCC2;
+  --green:#1F9D63; --green-soft:#E4F4EC; --amber:#B4761C; --amber-soft:#FBF1DF;
+  --bad:#B3322F; --bad-soft:#FBE9E8;
+  --shadow-sm:0 2px 12px rgba(20,24,35,.06);
+  --shadow:0 18px 50px rgba(20,24,35,.12);
+  --radius:18px; --maxw:1150px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:'Montserrat',system-ui,-apple-system,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:
+    radial-gradient(800px 600px at 88% 2%, rgba(133,42,41,.06), transparent 60%) fixed,
+    radial-gradient(700px 700px at -8% 68%, rgba(133,42,41,.05), transparent 60%),
+    linear-gradient(var(--paper), var(--surface-2));
+  min-height:100vh}
+a{color:var(--red)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--red-soft);color:var(--red-2)}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+:focus-visible{outline:2.5px solid var(--red);outline-offset:2px;border-radius:6px}
+
+/* ── header ── */
+.site-head{position:sticky;top:0;z-index:60;background:rgba(247,243,240,.94);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.head-in{max-width:var(--maxw);margin:0 auto;padding:0 26px;height:60px;display:flex;align-items:center;gap:13px}
+.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit}
+.brand img{width:28px;height:auto;display:block}
+.brand-div{width:1px;height:22px;background:var(--line-2)}
+.brand-txt{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);line-height:1.35}
+.head-sp{flex:1}
+.live{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.live .pip{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.live.busy .pip{background:var(--amber);animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.head-link{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+  border:1.5px solid var(--line-2);border-radius:999px;padding:8px 13px;background:var(--surface);
+  text-decoration:none;transition:all .16s var(--ease);white-space:nowrap}
+.head-link:hover{border-color:var(--red);color:var(--red)}
+
+/* ── hero ── */
+.hero{padding:36px 0 88px;position:relative;overflow:hidden;color:#fff;
+  background:
+    radial-gradient(720px 520px at 88% -6%, rgba(193,72,69,.65), transparent 60%),
+    radial-gradient(620px 520px at 6% 110%, rgba(60,20,20,.6), transparent 58%),
+    linear-gradient(145deg,#5C1C1B 0%,#781F1D 38%,#852A29 70%,#6A201E 100%)}
+.hero::before{content:"";position:absolute;inset:0;opacity:.4;
+  background-image:repeating-linear-gradient(118deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 1px,transparent 1px,transparent 60px);
+  mask-image:linear-gradient(#000,transparent 92%)}
+.hero-in{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 26px}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:800;color:#FBE3E1;background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22);padding:8px 16px;border-radius:999px;backdrop-filter:blur(6px)}
+.hero-badge .pip{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.22)}
+.hero h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.01em;margin:16px 0 6px;line-height:1.15}
+.hero p{margin:0;color:rgba(255,255,255,.82);font-size:14px;max-width:60ch}
+
+/* ── layout ── */
+.wrap{max-width:var(--maxw);margin:-52px auto 0;padding:0 26px 90px;position:relative;z-index:5;
+  display:grid;grid-template-columns:280px minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}}
+.wrap>*{min-width:0}
+
+/* ── picker ── */
+.picker{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden}
+.picker h2{margin:0;padding:15px 18px 11px;font-size:10px;font-weight:800;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line)}
+.pick{display:block;width:100%;text-align:left;padding:13px 18px;border-bottom:1px solid var(--line);
+  transition:background .14s var(--ease)}
+.pick:last-child{border-bottom:0}
+.pick:hover{background:var(--surface-2)}
+.pick.on{background:var(--red-soft);box-shadow:inset 3px 0 0 var(--red)}
+.pick b{display:block;font-size:13.5px;font-weight:700;line-height:1.3}
+.pick small{display:block;font-size:11px;color:var(--ink-faint);margin:2px 0 5px;line-height:1.4}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-faint)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint)}
+.chip.review{background:var(--amber-soft);color:var(--amber)}.chip.review .dot{background:var(--amber)}
+.chip.busy{background:var(--amber-soft);color:var(--amber)}.chip.busy .dot{background:var(--amber);animation:pulse 1.2s infinite}
+.chip.preview{background:var(--red-soft);color:var(--red)}.chip.preview .dot{background:var(--red)}
+.chip.done{background:var(--green-soft);color:var(--green)}.chip.done .dot{background:var(--green)}
+.arch-head{display:flex;align-items:center;gap:8px;width:100%;padding:12px 18px;
+  border-top:1px solid var(--line);background:var(--surface-2);text-align:left}
+.arch-head:hover{background:var(--line)}
+.arch-head b{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);flex:1}
+.arch-head .n{font-size:10px;font-weight:800;color:var(--ink-faint);background:var(--surface);
+  border:1px solid var(--line-2);border-radius:999px;padding:2px 8px}
+.arch-head .caret{font-size:10px;color:var(--ink-faint);transition:transform .15s var(--ease)}
+.arch-head.open .caret{transform:rotate(90deg)}
+.pick.arch{opacity:.62}
+.pick.arch:hover{opacity:1}
+.chip.gone{background:var(--surface-2);color:var(--ink-faint)}.chip.gone .dot{background:var(--ink-faint)}
+.chip.failed{background:var(--bad-soft);color:var(--bad)}.chip.failed .dot{background:var(--bad)}
+
+/* ── stepper ── */
+.steps{display:flex;gap:0;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);overflow-x:auto;margin:0 0 16px}
+.step{flex:1;min-width:96px;padding:13px 10px 12px;text-align:center;position:relative}
+.step+.step::before{content:"";position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--line)}
+.step .n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;
+  background:var(--surface-2);color:var(--ink-faint);font-size:11px;font-weight:800;margin-bottom:5px}
+.step span{display:block;font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+.step.done .n{background:var(--green-soft);color:var(--green)}
+.step.now .n{background:var(--red);color:#fff}
+.step.now span{color:var(--red)}
+
+/* ── cards ── */
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);margin:0 0 16px;overflow:hidden}
+.card>h3{margin:0;padding:14px 20px;border-bottom:1px solid var(--line);font-size:10.5px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.card>h3 .r{font-size:11px;font-weight:600;letter-spacing:0;text-transform:none}
+.pad{padding:17px 20px;display:flex;flex-direction:column;gap:13px}
+.lbl{display:block;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 7px}
+input[type=text]{width:100%;background:var(--surface);border:1.5px solid var(--line-2);border-radius:11px;
+  color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 14px;outline:none;
+  transition:border-color .15s var(--ease)}
+input[type=text]:focus{border-color:var(--red)}
+input.tc{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;padding:8px 10px;border-radius:9px}
+input.tc.err{border-color:var(--bad);color:var(--bad)}
+.hint{font-size:12px;color:var(--ink-faint);margin:0;line-height:1.5}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:11px 20px;
+  border-radius:11px;border:1.5px solid var(--line-2);background:var(--surface);transition:all .16s var(--ease)}
+.btn:hover{border-color:var(--red);color:var(--red)}
+.btn.solid{background:linear-gradient(120deg,var(--red-2),var(--red) 60%,var(--red-3));border-color:transparent;
+  color:#fff;box-shadow:0 8px 22px rgba(133,42,41,.32)}
+.btn.solid:hover{filter:brightness(1.08);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn.sm{font-size:11px;padding:8px 13px;border-radius:9px}
+
+/* ── transcript ── */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media(max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+.two>.card{margin:0}
+.tscript{max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:1px;
+  border:1.5px solid var(--line);border-radius:12px;padding:6px;background:var(--surface-2)}
+.seg{display:grid;grid-template-columns:52px 1fr;gap:9px;padding:7px 8px;border-radius:8px;cursor:pointer;
+  font-size:12.5px;line-height:1.45;color:var(--ink-soft);border:1.5px solid transparent;
+  transition:background .12s var(--ease)}
+.seg:hover{background:var(--surface)}
+.seg.sel{background:var(--red-soft);border-color:var(--red);color:var(--ink)}
+.seg.used{border-left:3px solid var(--green)}
+.seg .t{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-faint);padding-top:2px}
+.seg.sel .t{color:var(--red);font-weight:600}
+
+/* ── deliverables ── */
+.dlv{border:1.5px solid var(--line);border-radius:14px;padding:14px;background:var(--surface-2);
+  display:flex;flex-direction:column;gap:10px;transition:all .15s var(--ease)}
+.dlv.active{border-color:var(--red);background:var(--surface);box-shadow:var(--shadow-sm)}
+.dh{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.dh .nm{font-size:13.5px;font-weight:800;flex:1;min-width:80px}
+.dh .fm{font-family:'IBM Plex Mono',monospace;font-size:9.5px;padding:3px 8px;border-radius:6px;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink-faint)}
+.dur{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:999px;
+  background:var(--green-soft);color:var(--green);white-space:nowrap}
+.dur.off{background:var(--amber-soft);color:var(--amber)}
+.dur.bad{background:var(--bad-soft);color:var(--bad)}
+.ff{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:9px}
+.ff .f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ff .f span{font-size:9px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint)}
+.extras{margin-top:4px;padding-top:12px;border-top:1px dashed var(--line-2);
+  display:flex;flex-direction:column;gap:9px}
+.exhead{display:flex;align-items:center;gap:8px}
+.exhead span{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.exhead .n{background:var(--surface-2);border:1px solid var(--line-2);border-radius:999px;
+  padding:1px 8px;letter-spacing:0}
+.dlv.ex{border-style:dashed}
+.dlv.ex.active,.dlv.ex:has(.exname:focus){border-style:solid}
+.exname{flex:1;min-width:90px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:800;
+  color:var(--ink);background:transparent;border:1px solid transparent;border-radius:6px;padding:3px 6px}
+.exname:hover{border-color:var(--line-2)}
+.exname:focus{outline:none;border-color:var(--red);background:var(--surface)}
+.exfmt{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--ink-soft);
+  background:var(--surface);border:1px solid var(--line-2);border-radius:6px;padding:3px 5px}
+.exfmt:focus{outline:none;border-color:var(--red)}
+.exdel{font-size:15px;line-height:1;color:var(--ink-faint);padding:2px 6px;border-radius:6px}
+.exdel:hover{color:var(--bad);background:var(--bad-soft)}
+.btn.addex{align-self:flex-start;font-size:12px;padding:8px 14px;border-style:dashed}
+.derived{font-size:11.5px;color:var(--ink-faint);font-style:italic;margin:0}
+.why{font-size:11.5px;color:var(--ink-soft);margin:0;padding:8px 11px;background:var(--surface);
+  border-radius:9px;border:1px dashed var(--line-2)}
+
+/* ── review players ── */
+/* A 9x16 vertical and a 16x9 horizontal cannot share a grid cell without one of
+   them being wrong. Flex with per-shape widths lets each keep its own aspect. */
+/* A deliberate composition rather than a wrap: the 2-minute intro gets the wide
+   cell, the two ~60s clips sit beneath it, and the vertical keeps its own narrow
+   column at full height beside them. */
+.revgrid{display:grid;gap:16px;align-items:start;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 214px}
+.rev.intro{grid-column:1 / span 2}
+.rev.v{grid-column:3;grid-row:1 / span 2}
+@media(max-width:1000px){
+  .revgrid{grid-template-columns:minmax(0,1fr) 214px}
+  .rev.intro{grid-column:1}
+  .rev.v{grid-column:2;grid-row:1 / span 3}
+}
+@media(max-width:640px){
+  .revgrid{grid-template-columns:minmax(0,1fr)}
+  .rev.intro,.rev.v{grid-column:1;grid-row:auto}
+}
+.rev{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:var(--shadow-sm);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease),border-color .18s var(--ease)}
+.rev:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line-2)}
+
+.rev .well{position:relative;background:#15100F;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--line)}
+.rev.h .well{aspect-ratio:16/9}
+.rev.v .well{aspect-ratio:9/16}
+.rev video{width:100%;height:100%;display:block;object-fit:contain;background:#15100F}
+.rev .badge{position:absolute;top:9px;left:9px;z-index:2;font-family:'IBM Plex Mono',monospace;
+  font-size:9px;font-weight:600;letter-spacing:.04em;padding:4px 8px;border-radius:6px;
+  background:rgba(20,16,15,.72);color:#F3E4E2;backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.14)}
+.rev .cap{padding:12px 14px 13px;display:flex;flex-direction:column;gap:5px}
+.rev .cap b{font-size:13px;font-weight:800;line-height:1.3;letter-spacing:-.01em}
+.rev .meta{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:var(--ink-faint)}
+.rev .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--line-2);flex-shrink:0}
+.rev .meta .ok{color:var(--green);font-weight:600}
+.rev .meta .off{color:var(--amber);font-weight:600}
+
+/* ── status banner ── */
+.status{display:flex;align-items:center;gap:13px;padding:15px 20px;border-radius:14px;
+  border:1.5px solid var(--line);background:var(--surface-2);font-size:13px;font-weight:600;color:var(--ink-soft)}
+.status .sp{flex-shrink:0;width:18px;height:18px;border:2.5px solid var(--red-soft);border-top-color:var(--red);
+  border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.status.ok{background:var(--green-soft);border-color:transparent;color:var(--green)}
+.status.err{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+.empty{padding:44px 20px;text-align:center;color:var(--ink-faint);font-size:13.5px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="site-head"><div class="head-in">
+  <span class="brand"><img id="logo" alt="Red Cloud"><span class="brand-div"></span>
+    <span class="brand-txt">Red Cloud<br>RCTV Clip Studio</span></span>
+  <span class="head-sp"></span>
+  <span class="live" id="liveDot"><span class="pip"></span><span id="liveTxt">Live</span></span>
+  <a class="head-link" href="/ops.html">Operations</a>
+</div></header>
+
+<div class="hero"><div class="hero-in">
+  <span class="hero-badge"><span class="pip"></span>Webinar Series</span>
+  <h1>Clip Studio</h1>
+  <p>Paste the replay link and the Mac mini does the rest &mdash; transcript, suggested cutdowns,
+  and the cuts themselves. Nothing reaches the client's Box folder until you approve it here.</p>
+</div></div>
+
+<div class="wrap">
+  <aside class="picker"><h2>Webinars</h2><div id="picker"><div class="empty">Loading&hellip;</div></div></aside>
+  <main id="main"><div class="empty">Loading&hellip;</div></main>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $ = function(s){ return document.querySelector(s); };
+var WEBINARS = [], DRAFTS = {}, sel = null, line = null, slot = 0, archOpen = false;
+var lastKey = null, booted = false;   /* null, not '' -- an empty list is a real state to render */
+var SLOTS = ['Intro Clip','Clip 1','Clip 2'];
+
+/* Extras are anything social has added on top of the standing set. Derived from
+   the marks rather than tracked separately, so there is one source of truth. */
+function extraNames(d){
+  return Object.keys(d.marks||{}).filter(function(n){
+    return SLOTS.indexOf(n)===-1 && n!=='Vertical Cut'; });
+}
+/* the transcript's Set in/out act on whatever row is focused, standing or extra */
+function activeName(d){
+  var all=SLOTS.concat(extraNames(d));
+  return all[Math.min(slot, all.length-1)] || SLOTS[0];
+}
+/* Centre of each clip's window. durClass flags anything more than 25% off, so a
+   60s centre gives exactly the 45-75s window the social lead asked for
+   (2026-09-14; clips were 30s before). The vertical splices Clip 1 + Clip 2, so
+   its centre moves with them: 120s, window 90-150s. */
+var TARGETS = { 'Intro Clip':120, 'Clip 1':60, 'Clip 2':60 };
+var VERTICAL_TARGET = 120;
+function targetLabel(t){ return Math.round(t*0.75)+'–'+Math.round(t*1.25)+'s'; }
+var BUSY = { 'transcribing':1, 'approved':1, 'cutting':1, 'exporting':1 };
+var startTimer = null;
+
+document.getElementById('logo').src = 'data:image/png;base64,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';
+
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+function apiGet(id){
+  /* all=1 so the archive is visible; the page decides what to surface, not the API */
+  return fetch('/api/clips' + (id ? '?id=' + encodeURIComponent(id) : '?all=1')).then(handle);
+}
+function apiPost(body){
+  return fetch('/api/clips', { method:'POST',
+    headers:{ 'content-type':'application/json' }, body: JSON.stringify(body) }).then(handle);
+}
+function handle(r){
+  return r.json().catch(function(){ return {}; }).then(function(d){
+    if(!r.ok){ var e = new Error(d.message || d.error || ('HTTP '+r.status)); throw e; }
+    return d;
+  });
+}
+
+/* ── timecodes ── */
+function pad(n){ return String(n).padStart(2,'0'); }
+function tc(s){ if(!isFinite(s)||s<0) return '';
+  var h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+  return pad(h)+':'+pad(m)+':'+(x<10?'0':'')+x.toFixed(3); }
+function parseTc(t){ var p=String(t).trim().split(':');
+  if(p.length===3) return (+p[0])*3600+(+p[1])*60+parseFloat(p[2]);
+  if(p.length===2) return (+p[0])*60+parseFloat(p[1]);
+  var n=parseFloat(t); return isNaN(n)?NaN:n; }
+function durClass(d,t){ if(!(d>0)) return 'bad'; return Math.abs(d-t)/t>0.25?'off':''; }
+
+/* ── state ── */
+function recById(id){ for(var i=0;i<WEBINARS.length;i++) if(WEBINARS[i].id===id) return WEBINARS[i]; return null; }
+function draft(id){
+  var rec=recById(id)||{}, job=rec.clipJob||{};
+  if(!DRAFTS[id]){
+    var marks={};
+    SLOTS.forEach(function(n){
+      var m=(job.marks||{})[n];
+      if(!m){ var g=(job.suggestions||[]).filter(function(x){return x.name===n;})[0];
+              if(g) m={in:g.in,out:g.out}; }
+      marks[n]={ in:m&&m.in?parseTc(m.in):NaN, out:m&&m.out?parseTc(m.out):NaN };
+    });
+    DRAFTS[id]={ source:job.sourceRef||'', cropX:job.cropX||'0.50', marks:marks };
+  }
+  var d=DRAFTS[id];
+  SLOTS.forEach(function(n){ if(!d.marks[n]) d.marks[n]={in:NaN,out:NaN}; });
+  d.segs=job.transcript||[]; d.status=job.status||''; d.previews=job.previews||[];
+  d.why={}; (job.suggestions||[]).forEach(function(x){ d.why[x.name]=x.why; });
+  d.detail=job.detail||'';
+  return d;
+}
+function marksOf(d){
+  var out={}; SLOTS.concat(extraNames(d)).forEach(function(n){ var m=d.marks[n];
+    if(m.out>m.in){ out[n]={in:tc(m.in),out:tc(m.out)}; if(m.format) out[n].format=m.format; } }); return out;
+}
+function verticalDur(d){
+  var a=d.marks['Clip 1'],b=d.marks['Clip 2'];
+  return (a.out>a.in&&b.out>b.in)?(a.out-a.in)+(b.out-b.in):0;
+}
+function blockedWhy(d){
+  var miss=SLOTS.filter(function(n){var m=d.marks[n];return !(m.out>m.in);});
+  if(!miss.length) return '';
+  var l=miss.length>1?miss.slice(0,-1).join(', ')+' and '+miss[miss.length-1]:miss[0];
+  return l+(miss.length>1?' still need ':' still needs ')+'an in and an out.';
+}
+function chipFor(job){
+  var s=job&&job.status||'';
+  if(BUSY[s]) return ['busy', s==='transcribing'?'transcribing':(s==='exporting'?'exporting':'cutting')];
+  if(s==='review'||s==='held') return ['review','review'];
+  if(s==='preview') return ['preview','ready to review'];
+  if(s==='done') return ['done','in Box'];
+  if(s==='failed') return ['failed','failed'];
+  return ['','not started'];
+}
+function stepFor(d){
+  var s=d.status;
+  if(s==='done') return 6;
+  if(s==='exporting') return 5;
+  if(s==='preview') return 5;
+  if(s==='approved'||s==='cutting') return 4;
+  if(s==='review'||s==='held'||s==='failed') return 3;
+  if(s==='transcribing') return 2;
+  return d.source?2:1;
+}
+
+/* ── render ── */
+function pickHtml(r, archived){
+  var c = chipFor(r.clipJob);
+  if(archived){
+    var j = r.clipJob || {};
+    c = (j.status === 'done') ? ['done','exported'] : ['gone','no Box folder'];
+  }
+  return '<button class="pick '+(sel===r.id?'on':'')+(archived?' arch':'')+'" data-pick="'+esc(r.id)+'">'+
+    '<b>'+esc(r.company||'Unnamed')+'</b><small>'+esc(r.title||r.id)+'</small>'+
+    '<span class="chip '+c[0]+'"><span class="dot"></span>'+esc(c[1])+'</span></button>';
+}
+
+function renderPicker(){
+  var live = WEBINARS.filter(function(r){ return !(r.clipJob||{}).archived; });
+  var gone = WEBINARS.filter(function(r){ return  (r.clipJob||{}).archived; });
+  var h = live.length
+    ? live.map(function(r){ return pickHtml(r,false); }).join('')
+    : '<div class="empty" style="padding:26px 18px">Nothing in Box yet.<br>'+
+      '<span style="font-size:12px">Drop a replay into a webinar folder and it starts on its own.</span></div>';
+
+  if(gone.length){
+    h += '<button class="arch-head'+(archOpen?' open':'')+'" id="archToggle">'+
+         '<span class="caret">&#9654;</span><b>Archive</b><span class="n">'+gone.length+'</span></button>';
+    if(archOpen){
+      h += gone.map(function(r){ return pickHtml(r,true); }).join('');
+    }
+  }
+  $('#picker').innerHTML = h;
+}
+
+/* Reads the deliverable out of the filename the worker produced, so the card can
+   show the right shape, the target length, and whether the cut hit it. */
+function orderedPreviews(names){
+  var rank = function(n){
+    if(/9x16/.test(n)) return 9;                  /* vertical always last */
+    if(/intro/i.test(n)) return 0;
+    if(/clip[_ ]?1/i.test(n)) return 1;
+    if(/clip[_ ]?2/i.test(n)) return 2;
+    return 5;
+  };
+  return names.slice().sort(function(a,b){ return rank(a)-rank(b); });
+}
+
+function revCard(name, d){
+  var vertical = /9x16/.test(name);
+  var fmt = vertical ? (/split/.test(name) ? '9:16 split' : '9:16') : '16:9';
+  var label = name.replace(/\.mp4$/,'').replace(/_(16x9|9x16split|9x16)$/,'').replace(/_/g,' ');
+  /* strip the client prefix so the card reads "Clip 1", not the whole filename */
+  var slotName = SLOTS.filter(function(sn){
+    return label.toLowerCase().indexOf(sn.toLowerCase()) !== -1; })[0];
+  var isVert = /vertical/i.test(label);
+  var shown = slotName || (isVert ? 'Vertical Cut' : label);
+
+  var secs = 0, target = 0;
+  if(slotName){ var m=d.marks[slotName]; secs=(m.out>m.in)?m.out-m.in:0; target=TARGETS[slotName]; }
+  else if(isVert){ secs=verticalDur(d); target=VERTICAL_TARGET; }
+
+  var meta = '<span>'+esc(fmt)+'</span>';
+  if(secs>0){
+    var cls = durClass(secs,target)==='' ? 'ok' : 'off';
+    meta += '<span class="dot"></span><span class="'+cls+'">'+secs.toFixed(1)+'s</span>'+
+            '<span class="dot"></span><span>target '+target+'s</span>';
+  }
+  var cls = vertical ? 'v' : (/intro/i.test(label) ? 'h intro' : 'h');
+  return '<div class="rev '+cls+'">'+
+    '<div class="well"><span class="badge">'+esc(fmt)+'</span>'+
+    '<video controls preload="metadata" playsinline src="/api/clip-preview?id='+
+      encodeURIComponent(sel)+'&name='+encodeURIComponent(name)+'"></video></div>'+
+    '<div class="cap"><b>'+esc(shown)+'</b><div class="meta">'+meta+'</div></div></div>';
+}
+
+function renderMain(){
+  var main=$('#main');
+  if(!sel){
+    var anyLive = WEBINARS.some(function(x){ return !(x.clipJob||{}).archived; });
+    main.innerHTML = anyLive
+      ? '<div class="empty">Pick a webinar on the left.</div>'
+      : '<div class="empty"><b>Nothing waiting.</b><br><span style="font-size:13px">'+
+        'Drop a replay into a webinar\u2019s Box folder and it appears here on its own.</span></div>';
+    return;
+  }
+  var r=recById(sel); if(!r){ main.innerHTML='<div class="empty">That webinar is gone.</div>'; return; }
+  var d=draft(sel), segs=d.segs, h='';
+  var archived = !!(r.clipJob||{}).archived;
+
+  if(archived){
+    h+='<div class="card"><div class="pad"><div class="status">'+
+       (d.status==='done'
+         ? 'Archived. This webinar was cut and exported &mdash; its Box folder has since been removed.'
+         : 'Archived. There is no Box folder for this webinar, so nothing can be cut.')+
+       ' Put the folder back in Box and it returns to the list automatically.'+
+       '</div></div></div>';
+  }
+
+  /* stepper */
+  var names=['Link','Transcribe','Review','Cut','Export','In Box'], at=stepFor(d);
+  h+='<div class="steps">'+names.map(function(n,i){
+    var cls=(i+1<at)?'done':((i+1===at)?'now':'');
+    return '<div class="step '+cls+'"><span class="n">'+((i+1<at)?'&#10003;':(i+1))+'</span><span>'+n+'</span></div>';
+  }).join('')+'</div>';
+
+  /* source */
+  h+='<div class="card"><h3>Raw replay<span class="r">'+esc(r.company||'')+'</span></h3><div class="pad">'+
+    '<div><span class="lbl">Box link for the long-form recording</span>'+
+    '<input type="text" id="srcIn"'+(archived?' disabled':'')+' placeholder="https://redcloudfinancialservices.box.com/file/&hellip;" value="'+esc(d.source)+'"></div>'+
+    '<p class="hint">Paste it and walk away &mdash; the Mac mini picks it up on its own. The file itself never touches this site.</p>'+
+    '</div></div>';
+
+  /* live status while machine is working */
+  if(d.status==='transcribing'){
+    h+='<div class="card"><div class="pad"><div class="status"><span class="sp"></span>'+
+       'Transcribing on the Mac mini &mdash; a 60&nbsp;minute replay takes about two minutes. This page updates itself.</div></div></div>';
+  }
+  if(d.status==='approved'||d.status==='cutting'){
+    h+='<div class="card"><div class="pad"><div class="status"><span class="sp"></span>'+
+       'Cutting the four deliverables. Previews will appear here.</div></div></div>';
+  }
+  if(d.status==='exporting'){
+    h+='<div class="card"><div class="pad"><div class="status"><span class="sp"></span>'+
+       'Exporting full-quality files into the Box folder.</div></div></div>';
+  }
+  if(d.status==='failed'){
+    h+='<div class="card"><div class="pad"><div class="status err">Something broke: '+esc(d.detail||'see the worker log')+
+       '. Fix the timecodes if needed and approve again.</div></div></div>';
+  }
+
+  /* previews -- rendered after the transcript, see below */
+  var prevHtml = '';
+  if(d.previews.length && (d.status==='preview'||d.status==='exporting'||d.status==='done')){
+    prevHtml+='<div class="card"><h3>Review the cutdowns<span class="r">'+d.previews.length+' clips &middot; '+
+       (d.status==='done'?'exported to Box':'not in Box yet')+'</span></h3><div class="pad">'+
+       '<div class="revgrid">'+orderedPreviews(d.previews).map(function(n){
+         return revCard(n, d);
+       }).join('')+'</div>';
+    /* the worker listens to every edge; any it could not put on a clean sentence break it names here */
+    if(d.status==='preview' && /^Check these edges/.test(d.detail)){
+      prevHtml+='<div class="status" style="margin-bottom:10px">'+esc(d.detail)+'. Watch the start and end of those.</div>';
+    }
+    if(d.status==='preview' && !archived){
+      prevHtml+='<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">'+
+         '<button class="btn solid" id="export">Export these to Box</button></div>'+
+         '<p class="hint">Full quality lands in a <b>clips/</b> folder beside the replay. These previews never leave this page. '+
+         'Not happy? Adjust the timecodes below and approve again.</p>';
+    } else if(d.status==='done'){
+      prevHtml+='<div class="status ok" style="margin-top:4px">Done &mdash; the clips are in Box beside the replay.</div>';
+    }
+    prevHtml+='</div></div>';
+  }
+
+  /* transcript + deliverables */
+  h+='<div class="two">';
+  h+='<div class="card"><h3>Transcript<span class="r">'+(segs.length?segs.length+' sentences':'&mdash;')+'</span></h3><div class="pad">';
+  if(segs.length){
+    h+='<div class="tscript" id="tscript">'+segs.map(function(sg,i){
+      var used=SLOTS.some(function(n){var m=d.marks[n];return m.out>m.in&&sg.start>=m.in-0.01&&sg.start<m.out;});
+      return '<div class="seg'+(line===i?' sel':'')+(used?' used':'')+'" data-line="'+i+'">'+
+        '<span class="t">'+esc(tc(sg.start).slice(0,8))+'</span><span>'+esc(sg.text)+'</span></div>';
+    }).join('')+'</div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+      '<button class="btn sm" id="setIn">Set in-point</button>'+
+      '<button class="btn sm" id="setOut">Set out-point</button></div>'+
+    '<p class="hint" id="selNote">Editing <b>'+esc(activeName(d))+'</b>. Click a sentence, then set it as the in or out point.</p>';
+  } else if(d.status==='transcribing'){
+    h+='<p class="hint">On its way.</p>';
+  } else if(!d.source){
+    h+='<p class="hint">Paste the replay link above to begin.</p>';
+  } else {
+    h+='<p class="hint">Waiting for the Mac mini to pick this up&hellip;</p>';
+  }
+  h+='</div></div>';
+
+  h+='<div class="card"><h3>Deliverables<span class="r">2:00 &middot; 0:45&ndash;1:15 &middot; 0:45&ndash;1:15 &middot; ~2:00</span></h3><div class="pad">';
+  h+=SLOTS.map(function(n,i){
+    var m=d.marks[n], du=(m.out>m.in)?m.out-m.in:0;
+    return '<div class="dlv'+(slot===i?' active':'')+'" data-slot="'+i+'">'+
+      '<div class="dh"><span class="nm">'+esc(n)+'</span><span class="fm">16x9</span>'+
+      '<span class="dur '+durClass(du,TARGETS[n])+'">'+(du>0?du.toFixed(1)+'s':'--')+' / '+targetLabel(TARGETS[n])+'</span></div>'+
+      (d.why[n]?'<p class="why">'+esc(d.why[n])+'</p>':'')+
+      '<div class="ff">'+
+      '<label class="f"><span>in</span><input class="tc" type="text" data-m="'+esc(n)+'" data-k="in" value="'+esc(tc(m.in))+'"></label>'+
+      '<label class="f"><span>out</span><input class="tc" type="text" data-m="'+esc(n)+'" data-k="out" value="'+esc(tc(m.out))+'"></label>'+
+      '</div></div>';
+  }).join('');
+  var vd=verticalDur(d);
+  h+='<div class="dlv"><div class="dh"><span class="nm">Vertical Cut</span><span class="fm">9x16 split</span>'+
+     '<span class="dur '+durClass(vd,VERTICAL_TARGET)+'">'+(vd>0?vd.toFixed(1)+'s':'--')+' / '+targetLabel(VERTICAL_TARGET)+'</span></div>'+
+     '<p class="derived">Speaker above, slide below. Splices Clip 1 + Clip 2 and follows them automatically.</p></div>';
+
+  /* Anything social has asked for beyond the standing four. Kept visually
+     separate so nobody mistakes an extra request for a deliverable that always
+     ships, and so removing one can never touch the four that do. */
+  var extras=extraNames(d);
+  h+='<div class="extras">';
+  if(extras.length){
+    h+='<div class="exhead"><span>Also requested</span><span class="n">'+extras.length+'</span></div>';
+    h+=extras.map(function(n){
+      var m=d.marks[n], du=(m.out>m.in)?m.out-m.in:0;
+      var fmt=m.format||'16x9';
+      return '<div class="dlv ex" data-ex="'+esc(n)+'">'+
+        '<div class="dh">'+
+          '<input class="exname" type="text" data-ren="'+esc(n)+'" value="'+esc(n)+'"'+(archived?' disabled':'')+'>'+
+          '<select class="exfmt" data-fmt="'+esc(n)+'"'+(archived?' disabled':'')+'>'+
+            '<option value="16x9"'+(fmt==='16x9'?' selected':'')+'>16:9</option>'+
+            '<option value="9x16split"'+(fmt==='9x16split'?' selected':'')+'>9:16 split</option>'+
+            '<option value="1x1"'+(fmt==='1x1'?' selected':'')+'>1:1</option>'+
+            '<option value="4x5"'+(fmt==='4x5'?' selected':'')+'>4:5</option>'+
+          '</select>'+
+          '<span class="dur '+(du>0?'':'bad')+'">'+(du>0?du.toFixed(1)+'s':'--')+'</span>'+
+          (archived?'':'<button class="exdel" data-del="'+esc(n)+'" title="Remove">&times;</button>')+
+        '</div>'+
+        '<div class="ff">'+
+        '<label class="f"><span>in</span><input class="tc" type="text" data-m="'+esc(n)+'" data-k="in" value="'+esc(tc(m.in))+'"'+(archived?' disabled':'')+'></label>'+
+        '<label class="f"><span>out</span><input class="tc" type="text" data-m="'+esc(n)+'" data-k="out" value="'+esc(tc(m.out))+'"'+(archived?' disabled':'')+'></label>'+
+        '</div></div>';
+    }).join('');
+  }
+  if(!archived){
+    h+='<button class="btn addex" id="addClip">+ Request another clip</button>'+
+       '<p class="hint" style="margin:6px 0 0">Pick the moment in the transcript, then set in and out on it '+
+       'like any other. Extras cut alongside the four and land in the same Box folder.</p>';
+  }
+  h+='</div>';
+  var why=blockedWhy(d);
+  var busy=BUSY[d.status];
+  if(archived){
+    h+='<p class="hint">Read-only while archived.</p>';
+  } else {
+  h+='<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2px">'+
+     '<button class="btn solid" id="approve"'+((why||busy||!segs.length)?' disabled':'')+'>'+
+     (d.status==='preview'||d.status==='done'?'Approve &amp; re-cut':'Approve &amp; cut')+'</button></div>'+
+     '<p class="hint">'+esc(why||'Cuts on the Mac mini, then shows previews here for sign-off.')+'</p>';
+  }
+  h+='</div></div></div>';
+
+  h += prevHtml;
+
+  main.innerHTML=h;
+}
+
+function stateKey(){
+  if(!sel) return '';
+  var r=recById(sel)||{}, j=r.clipJob||{};
+  return [sel, j.status, (j.transcript||[]).length, (j.previews||[]).length, (j.suggestions||[]).length].join('|');
+}
+function renderIfChanged(){
+  var k=stateKey();
+  var typing=document.activeElement && /INPUT/.test(document.activeElement.tagName);
+  if(!booted){ booted=true; lastKey=k; renderPicker(); renderMain(); return; }
+  if(k!==lastKey && !typing){ lastKey=k; renderPicker(); renderMain(); }
+  else if(k!==lastKey){ renderPicker(); }   /* picker refresh never steals focus */
+}
+
+/* ── automation: the page drives itself ── */
+function load(){
+  return apiGet().then(function(dd){
+    WEBINARS=dd.webinars||[];
+    if(!sel){
+      var first = WEBINARS.filter(function(r){ return !(r.clipJob||{}).archived; })[0];
+      if(first) sel = first.id;
+    }
+    return sel?apiGet(sel).then(function(d){
+      for(var i=0;i<WEBINARS.length;i++) if(WEBINARS[i].id===sel) WEBINARS[i]=d.webinar;
+    }):null;
+  }).then(function(){ renderIfChanged(); tickDot(); })
+  .catch(function(err){ $('#main').innerHTML='<div class="empty">'+esc(err.message||'Could not load.')+'</div>'; });
+}
+function tickDot(){
+  var j=(recById(sel)||{}).clipJob||{};
+  var busy=BUSY[j.status];
+  $('#liveDot').className='live'+(busy?' busy':'');
+  $('#liveTxt').textContent=busy?(j.status==='transcribing'?'Transcribing':'Working'):'Live';
+}
+setInterval(function(){
+  var j=(recById(sel)||{}).clipJob||{};
+  /* fast poll while the machine is busy, slow otherwise */
+  if(BUSY[j.status]||(j.sourceRef&&!j.transcript)) load();
+}, 8000);
+setInterval(load, 30000);
+
+/* auto-start: pasting a link IS the trigger */
+function queueAutoStart(d){
+  if(startTimer) clearTimeout(startTimer);
+  startTimer=setTimeout(function(){
+    var looks=/box\.com\/file\/\d+|^\d{9,}$/.test(d.source);
+    var j=(recById(sel)||{}).clipJob||{};
+    if(!looks||j.transcript||BUSY[j.status]) return;
+    apiPost({ id:sel, clipJob:{ sourceRef:d.source, cropX:d.cropX, marks:marksOf(d) } })
+      .then(function(){ delete DRAFTS[sel]; return load(); }).catch(function(){});
+  }, 1200);
+}
+
+/* ── events ── */
+document.addEventListener('click', function(e){
+  var p=e.target.closest('[data-pick]');
+  if(p){ sel=p.dataset.pick; line=null; slot=0; lastKey=''; delete DRAFTS[sel];
+    renderPicker(); $('#main').innerHTML='<div class="empty">Loading&hellip;</div>';
+    apiGet(sel).then(function(dd){
+      for(var i=0;i<WEBINARS.length;i++) if(WEBINARS[i].id===sel) WEBINARS[i]=dd.webinar;
+      lastKey=stateKey(); renderPicker(); renderMain(); tickDot();
+    }); return; }
+
+  if(e.target.closest('#archToggle')){ archOpen = !archOpen; renderPicker(); return; }
+
+  /* everything below acts on the selected webinar's draft */
+  if(!sel) return;
+  var d=draft(sel);
+
+  var dl=e.target.closest('[data-slot]');
+  if(dl){ slot=+dl.dataset.slot; renderMain(); return; }
+
+  var ex=e.target.closest('.dlv.ex');
+  if(ex && !e.target.closest('button,input,select')){
+    slot=SLOTS.length+extraNames(d).indexOf(ex.dataset.ex); renderMain(); return;
+  }
+
+  var del=e.target.closest('[data-del]');
+  if(del){ delete d.marks[del.dataset.del]; slot=0; renderMain(); return; }
+
+  if(e.target.id==='addClip'){
+    var n=1, name;
+    do { name='Extra clip '+n; n++; } while(d.marks[name]);
+    /* seed from the selected transcript line if there is one, so the row is
+       usable immediately rather than two empty fields */
+    var st=(line!==null && d.segs[line]) ? Math.max(0,d.segs[line].start-0.3) : NaN;
+    var en=(line!==null && d.segs[line]) ? d.segs[line].end : NaN;
+    d.marks[name]={in:st,out:en,format:'16x9'};
+    slot=SLOTS.length+extraNames(d).indexOf(name);
+    renderMain();
+    var f=document.querySelector('[data-ren="'+name.replace(/"/g,'')+'"]');
+    if(f){ f.focus(); f.select(); }
+    return;
+  }
+  var ln=e.target.closest('[data-line]');
+  if(ln){ line=+ln.dataset.line; renderMain(); return; }
+  if(!sel) return;
+  var d=draft(sel), id=e.target.id;
+
+  if(id==='setIn'||id==='setOut'){
+    if(line===null) return;
+    var sg=d.segs[line]; if(!sg) return;
+    var target=activeName(d);
+    if(!d.marks[target]) d.marks[target]={in:NaN,out:NaN};
+    if(id==='setIn') d.marks[target].in=Math.max(0,sg.start-0.3);
+    else d.marks[target].out=sg.end;
+    renderMain(); return;
+  }
+  if(id==='approve'){
+    var b=e.target; b.disabled=true; b.textContent='Sending to the Mac mini…';
+    apiPost({ id:sel, approve:true,
+              clipJob:{ sourceRef:d.source, cropX:d.cropX, marks:marksOf(d) } })
+      .then(function(){ delete DRAFTS[sel]; lastKey=''; return load(); })
+      .catch(function(err){ b.disabled=false; alert(err.message); });
+    return;
+  }
+  if(id==='export'){
+    var eb=e.target; eb.disabled=true; eb.textContent='Exporting…';
+    apiPost({ id:sel, export:true })
+      .then(function(){ delete DRAFTS[sel]; lastKey=''; return load(); })
+      .catch(function(err){ eb.disabled=false; eb.textContent='Export these to Box'; alert(err.message); });
+    return;
+  }
+});
+
+/* A rename changes the key the row is drawn from, so doing it per keystroke
+   would rebuild the row and throw focus away after every character. Commit on
+   blur instead; the pending value is stashed by the input handler below. */
+document.addEventListener('blur', function(e){
+  if(!sel || !e.target || !e.target.dataset || !e.target.dataset.ren) return;
+  var d=draft(sel), from=e.target.dataset.ren;
+  var raw=(e.target.dataset.pending!==undefined ? e.target.dataset.pending : from);
+  var to=String(raw).replace(/[^\w .,'&()-]/g,'').trim().slice(0,60);
+  if(!to || to===from || !d.marks[from]){ renderMain(); return; }
+  if(d.marks[to] || SLOTS.indexOf(to)!==-1 || to==='Vertical Cut'){
+    alert('There is already a clip called \u201c'+to+'\u201d.'); renderMain(); return;
+  }
+  d.marks[to]=d.marks[from];
+  delete d.marks[from];
+  renderMain();
+}, true);
+
+document.addEventListener('change', function(e){
+  if(!sel || !e.target || !e.target.dataset) return;
+  var name=e.target.dataset.fmt;
+  if(!name) return;
+  var d=draft(sel);
+  if(d.marks[name]){ d.marks[name].format=e.target.value; renderMain(); }
+});
+
+document.addEventListener('input', function(e){
+  if(!sel) return;
+  var d=draft(sel);
+  if(e.target.id==='srcIn'){ d.source=e.target.value.trim(); queueAutoStart(d); return; }
+  var ren=e.target.dataset.ren;
+  if(ren){
+    /* rename on blur, not per keystroke -- renaming the key mid-typing would
+       rebuild the row and throw focus away after every character */
+    e.target.dataset.pending=e.target.value;
+    return;
+  }
+
+  var name=e.target.dataset.m;
+  if(name){
+    var v=parseTc(e.target.value);
+    if(e.target.value.trim()===''){ d.marks[name][e.target.dataset.k]=NaN; }
+    else if(isNaN(v)){ e.target.classList.add('err'); return; }
+    else { d.marks[name][e.target.dataset.k]=v; }
+    e.target.classList.remove('err');
+    var m=d.marks[name], du=(m.out>m.in)?m.out-m.in:0;
+    var pill=e.target.closest('.dlv').querySelector('.dur');
+    pill.textContent=(du>0?du.toFixed(1)+'s':'--')+' / '+targetLabel(TARGETS[name]);
+    pill.className='dur '+durClass(du,TARGETS[name]);
+  }
+});
+
+load();
+})();
+</script>
+</body>
+</html>

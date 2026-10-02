@@ -13,11 +13,15 @@ services:
     restart: unless-stopped
     env_file: .env
     expose: ["8300"]
-    mem_limit: 256m
+    mem_limit: 768m        # the graphics run draws 2500x4534 posters
     networks: [portal_default]
     volumes: ["pipeline-data:/data"]   # the sign-in password hash lives here
     environment:
       PUBLIC_URL: https://webinars.redcloudfs.com
+      # SIDE-BY-SIDE TEST until cut-over: no connector runs, the timer is off, and
+      # nothing that changes a webinar, a Box folder or a campaign is allowed.
+      PAUSED: "1"
+      SCHEDULER_ENABLED: "0"
     labels:
       caddy: webinars.redcloudfs.com
       caddy.reverse_proxy: "{{upstreams 8300}}"

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webinar Operations | Red Cloud</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F3F0; --surface:#FFFFFF; --surface-2:#F1EBE6; --sunk:#EAE1DA;
+  --ink:#241E1F; --ink-soft:#655B5D; --ink-faint:#948889;
+  --line:#E4DAD3; --line-2:#D3C6BC;
+  --red:#852A29; --red-2:#5C1C1B; --red-soft:#F5E6E4;
+  --ok:#1F7A52; --ok-soft:#E3F1EA;
+  --warn:#A8701A; --warn-soft:#FAEFDC;
+  --bad:#B3322F; --bad-soft:#FBE9E8;
+  --off:#7C7376; --off-soft:#EDE8E7;
+  --shadow:0 1px 2px rgba(36,30,31,.05),0 8px 26px rgba(36,30,31,.07);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#171315; --surface:#1F1A1C; --surface-2:#272123; --sunk:#141011;
+    --ink:#F3ECEA; --ink-soft:#B3A6A8; --ink-faint:#877B7D;
+    --line:#332B2E; --line-2:#453B3E;
+    --red:#DB817C; --red-2:#EFA9A4; --red-soft:#3B2523;
+    --ok:#63C99A; --ok-soft:#153327;
+    --warn:#DFAA57; --warn-soft:#332711;
+    --bad:#E88B86; --bad-soft:#3A1E1D;
+    --off:#A69A9D; --off-soft:#2B2527;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 26px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:Montserrat,system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:var(--red)}
+:focus-visible{outline:2.5px solid var(--red);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+
+.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.top-in{max-width:1140px;margin:0 auto;padding:16px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top h1{font-size:15px;font-weight:800;letter-spacing:.02em;margin:0}
+.top .sp{flex:1}
+.pill{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 12px;border-radius:999px;border:1.5px solid var(--line-2);color:var(--ink-soft)}
+.btn{font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:9px;border:1.5px solid var(--line-2);
+  background:var(--surface);transition:all .15s var(--ease)}
+.btn:hover{border-color:var(--red);color:var(--red)}
+.btn.solid{background:var(--red);border-color:var(--red);color:#fff}
+.btn.solid:hover{background:var(--red-2);color:#fff}
+
+.gate{max-width:420px;margin:14vh auto;background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;padding:30px;box-shadow:var(--shadow)}
+.gate h2{font-size:19px;font-weight:800;margin:0 0 8px}
+.gate p{color:var(--ink-soft);font-size:14px;margin:0 0 18px}
+input[type=text],input[type=password],input[type=datetime-local]{width:100%;background:var(--surface);
+  border:1.5px solid var(--line-2);border-radius:10px;color:var(--ink);font-family:inherit;font-size:15px;
+  font-weight:600;padding:11px 13px;outline:none}
+input:focus{border-color:var(--red)}
+.err{color:var(--bad);font-size:13px;font-weight:700;margin:12px 0 0;display:none}
+.err.on{display:block}
+
+section{padding:30px 0 0}
+h2.sec{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 14px}
+
+.conns{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.conn{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--off);
+  border-radius:10px;padding:12px 14px}
+.conn.on{border-left-color:var(--ok)}
+.conn b{display:block;font-size:13px;font-weight:700}
+.conn .st{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--off)}
+.conn.on .st{color:var(--ok)}
+.conn small{display:block;font-size:11.5px;color:var(--ink-faint);margin:6px 0 0;line-height:1.45;word-break:break-word}
+
+.send{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.send-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 12px}
+@media (max-width:640px){.send-row{grid-template-columns:1fr}}
+.lb{display:block;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 6px}
+.lb-opt{font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink-faint);margin-left:6px}
+.send select,.send input[type=date]{width:100%;background:var(--surface);color:var(--ink);
+  border:1.5px solid var(--line-2);border-radius:9px;padding:10px 12px;font:inherit;font-size:14px}
+.send select:focus,.send input:focus{border-color:var(--red);outline:none}
+.link-box{background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:11px 13px;
+  font-size:12.5px;word-break:break-all;color:var(--ink-soft);min-height:42px}
+.send-acts{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:13px 0 0}
+.send-said{font-size:12.5px;font-weight:700;color:var(--ok)}
+.send-note{margin:11px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-faint)}
+.rec{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:0 0 12px;
+  box-shadow:var(--shadow);overflow:hidden}
+.rec-h{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;flex-wrap:wrap}
+.rec-h:hover{background:var(--surface-2)}
+.rec-h b{font-size:15px;font-weight:800}
+.rec-h .tick{font-size:12px;color:var(--ink-faint);font-weight:600}
+.rec-h .sp{flex:1}
+.dots{display:flex;gap:3px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:3px;background:var(--off-soft);border:1px solid var(--line-2)}
+.dot.done{background:var(--ok);border-color:var(--ok)}
+.dot.failed{background:var(--bad);border-color:var(--bad)}
+.dot.skipped{background:var(--off);border-color:var(--off);opacity:.5}
+.dot.waiting{background:var(--warn);border-color:var(--warn);opacity:.6}
+.rec-b{display:none;padding:0 18px 18px;border-top:1px solid var(--line)}
+.rec.open .rec-b{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0 0}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.lbl{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 7px;display:block}
+.steps-l{display:flex;flex-direction:column;gap:6px}
+.st-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;padding:8px 10px;border-radius:8px;background:var(--sunk)}
+.st-row .tag{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 7px;border-radius:5px;flex-shrink:0;margin-top:1px}
+.st-row.done .tag{background:var(--ok-soft);color:var(--ok)}
+.st-row.failed .tag{background:var(--bad-soft);color:var(--bad)}
+.st-row.skipped .tag{background:var(--off-soft);color:var(--off)}
+.st-row.waiting .tag{background:var(--warn-soft);color:var(--warn)}
+.st-row .txt{flex:1;min-width:0}
+.st-row .txt b{display:block;font-size:12.5px;font-weight:700}
+.st-row .txt small{display:block;font-size:12px;color:var(--ink-soft);margin:3px 0 0;word-break:break-word}
+.social-out{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+.social-row{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.social-h{display:flex;align-items:center;gap:8px;padding:8px 10px;
+  background:var(--surface);border-bottom:1px solid var(--line);font-size:13px}
+.social-h .btn{margin-left:auto;padding:3px 10px;font-size:12px}
+.social-row pre{margin:0;padding:12px;white-space:pre-wrap;word-break:break-word;
+  font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;background:transparent}
+.sched{display:flex;flex-direction:column;gap:10px}
+.sched label{display:block}
+/* ── brand header ─────────────────────────────────────────── */
+.brand-mark{width:30px;height:auto;display:block}
+.brand-div{width:1px;height:24px;background:var(--line-2)}
+.brand-txt{display:flex;flex-direction:column;line-height:1.25}
+.brand-txt b{font-size:10.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--red)}
+.brand-txt span{font-size:13.5px;font-weight:600;color:var(--ink)}
+
+/* ── summary strip: the answer before the detail ──────────── */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 0}
+@media(max-width:720px){.summary{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:13px;
+  padding:16px 17px 14px;box-shadow:var(--shadow)}
+.card .n{display:block;font-size:29px;font-weight:800;line-height:1;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.card .l{display:block;margin-top:8px;font-size:12px;color:var(--ink-faint);line-height:1.4}
+.card.good .n{color:var(--ok)}
+.card.warn .n{color:var(--warn)}
+.card.bad  .n{color:var(--bad)}
+
+/* ── needs attention: only rendered when something is wrong ── */
+.attn{background:var(--bad-soft);border:1px solid var(--bad);border-radius:13px;
+  padding:16px 18px;margin:16px 0 0}
+.attn h3{margin:0 0 9px;font-size:13px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--bad)}
+.attn ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.attn li{font-size:13.5px;color:var(--ink)}
+.attn li b{font-weight:600}
+.attn a{color:var(--bad);cursor:pointer;text-decoration:underline}
+
+.sec-bar{display:flex;align-items:baseline;gap:14px}
+.sec-sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 14px;max-width:64ch}
+.btn.ghost{border-style:dashed;color:var(--ink-faint)}
+.retired-note{font-size:12.5px;color:var(--ink-faint);margin:14px 0 0}
+
+.sched select{width:100%;background:var(--surface);color:var(--ink);
+  border:1.5px solid var(--line-2);border-radius:9px;padding:10px 12px;font:inherit;font-size:14px}
+.sched select:focus{border-color:var(--red);outline:none}
+.hint{font-size:12px;color:var(--ink-faint);margin:6px 0 0}
+.empty{background:var(--surface);border:1px dashed var(--line-2);border-radius:14px;padding:34px;text-align:center;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate">
+  <h2>Webinar operations</h2>
+  <p>Internal. Enter the access token to continue.</p>
+  <input type="password" id="tok" placeholder="Access token" autocomplete="current-password">
+  <p class="err" id="gateErr"></p>
+  <button class="btn solid" id="go" style="margin-top:14px;width:100%">Open</button>
+</div>
+
+<div id="app" hidden>
+  <div class="top">
+    <div class="top-in">
+      <img class="brand-mark" src="data:image/png;base64,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" alt="Red Cloud">
+      <span class="brand-div"></span>
+      <div class="brand-txt">
+        <b>Red Cloud</b>
+        <span>Webinar operations</span>
+      </div>
+      <span class="sp"></span>
+      <button class="btn" id="refresh">Refresh</button>
+      <button class="btn" id="lock">Lock</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="summary" id="summary"></div>
+    <div id="attention"></div>
+  </div>
+
+  <div class="wrap">
+    <section>
+      <h2 class="sec">Send the form to a client</h2>
+      <div class="send">
+        <div class="send-row">
+          <div>
+            <label class="lb" for="sndDate">Webinar date</label>
+            <input type="date" id="sndDate">
+          </div>
+          <div>
+            <label class="lb" for="sndTime">Time (Eastern)</label>
+            <select id="sndTime"></select>
+          </div>
+        </div>
+        <div class="send-row">
+          <div>
+            <label class="lb" for="sndEmail">Client email</label>
+            <input type="text" id="sndEmail" placeholder="name@company.com" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label class="lb" for="sndName">Their first name<span class="lb-opt">optional</span></label>
+            <input type="text" id="sndName" placeholder="Used to open the email" autocomplete="off">
+          </div>
+        </div>
+
+        <label class="lb" style="margin-top:14px">The link they receive</label>
+        <div class="link-box mono" id="sndLink">Pick a date and time above.</div>
+
+        <div class="send-acts">
+          <button class="btn solid" id="sndMail">Open email draft</button>
+          <button class="btn" id="sndCopyLink">Copy link</button>
+          <button class="btn" id="sndCopyMsg">Copy message</button>
+          <span class="send-said" id="sndSaid"></span>
+        </div>
+        <p class="send-note">
+          The draft opens in your own mail app, from your own address, so the client can just reply to you.
+          Nothing is sent from here &mdash; you press send.
+        </p>
+      </div>
+    </section>
+
+
+    <section>
+      <div class="sec-bar">
+        <h2 class="sec">Webinars</h2>
+        <button class="btn ghost" id="toggleRetired" hidden></button>
+      </div>
+      <div id="recs"></div>
+    </section>
+
+    <section style="padding-bottom:70px">
+      <h2 class="sec">Integrations</h2>
+      <p class="sec-sub">What each submission triggers. Anything switched off is simply not configured &mdash; it never blocks the rest.</p>
+      <div class="conns" id="conns"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $ = function(s){ return document.querySelector(s); };
+var KEY = 'rc-ops-token';
+var token = sessionStorage.getItem(KEY) || '';
+
+/* output goes into double-quoted attributes as well as text, so quotes matter */
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+/* a connector ref becomes an href — only ever let http(s) through */
+function safeHref(u){
+  try{ var p = new URL(String(u), location.origin).protocol;
+       return (p==='http:'||p==='https:') ? String(u) : ''; }
+  catch(e){ return ''; }
+}
+
+function apiCall(method, body){
+  return fetch('/api/webinars', {
+    method: method,
+    headers: Object.assign({ 'x-ops-token': token }, body ? { 'content-type':'application/json' } : {}),
+    body: body ? JSON.stringify(body) : undefined
+  }).then(function(r){
+    return r.json().catch(function(){ return {}; }).then(function(d){
+      if(!r.ok){ var e = new Error(d.message || d.error || ('HTTP ' + r.status)); e.status = r.status; throw e; }
+      return d;
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   SEND THE FORM TO A CLIENT
+
+   The slot is agreed before the form goes out, so it travels in the link as
+   ?date=&time= and the client sees it confirmed at the top of the page rather
+   than being asked to choose.
+
+   Nothing is emailed from the server: there is no mail provider configured
+   (RESEND_API_KEY / MAIL_FROM are unset), and an invitation from a real
+   person's address that the client can simply reply to is better anyway. This
+   builds the link and hands it to the operator's own mail app.
+   ══════════════════════════════════════════════════ */
+function timeLabel(mins){
+  var h24 = Math.floor(mins/60), m = mins%60;
+  var ampm = h24 >= 12 ? 'PM' : 'AM';
+  var h12 = h24 % 12; if(h12 === 0) h12 = 12;
+  return h12 + ':' + (m<10?'0':'') + m + ' ' + ampm;
+}
+
+(function initSend(){
+  var sel = $('#sndTime');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">Not set yet</option>';
+  /* same 8am–6pm Eastern window the client-facing form offers */
+  for(var t = 8*60; t <= 18*60; t += 30){
+    var o = document.createElement('option');
+    o.value = String(t);
+    o.textContent = timeLabel(t) + ' ET  ·  ' + timeLabel(t-180) + ' PT';
+    sel.appendChild(o);
+  }
+
+  function hhmm(mins){
+    var h = Math.floor(mins/60), m = mins%60;
+    return (h<10?'0':'') + h + ':' + (m<10?'0':'') + m;
+  }
+
+  function build(){
+    var date = $('#sndDate').value;
+    var mins = parseInt(sel.value, 10);
+    var qs = [];
+    if(date) qs.push('date=' + encodeURIComponent(date));
+    /* a colon is legal in a query value, and %3A in a link a client reads
+       looks like a mistake */
+    if(!isNaN(mins)) qs.push('time=' + hhmm(mins));
+    return location.origin + '/' + (qs.length ? '?' + qs.join('&') : '');
+  }
+
+  function whenText(){
+    var date = $('#sndDate').value;
+    var mins = parseInt(sel.value, 10);
+    var bits = [];
+    if(date){
+      bits.push(new Date(date + 'T12:00:00Z').toLocaleDateString('en-CA',
+        { weekday:'long', month:'long', day:'numeric', year:'numeric', timeZone:'UTC' }));
+    }
+    if(!isNaN(mins)) bits.push(timeLabel(mins) + ' ET / ' + timeLabel(mins-180) + ' PT');
+    return bits.join(', ');
+  }
+
+  function message(){
+    var name = $('#sndName').value.trim();
+    var when = whenText();
+    return (name ? 'Hi ' + name + ',' : 'Hi,') + '\n\n' +
+      (when
+        ? 'Your webinar is booked for ' + when + '.\n\n'
+        : 'Your webinar is booked.\n\n') +
+      'Before we can build the registration page, the graphics and the promotion, ' +
+      'we need a few things from you — a title, a company bio, your speakers and your logo. ' +
+      'This form collects all of it and takes about ten minutes:\n\n' +
+      build() + '\n\n' +
+      'Paste your website in at the top and it will draft most of it for you — you just correct ' +
+      'whatever it gets wrong.\n\n' +
+      'The sooner we have it, the more runway we have to fill the room.\n\n' +
+      'Thanks,\nRed Cloud';
+  }
+
+  function refreshLink(){
+    var date = $('#sndDate').value, mins = sel.value;
+    $('#sndLink').textContent = (!date && !mins)
+      ? 'Pick a date and time above.'
+      : build();
+    if(date && !mins) $('#sndLink').textContent += '   (no time set — the client will be asked for one)';
+  }
+
+  function said(msg){
+    var el = $('#sndSaid');
+    el.textContent = msg;
+    setTimeout(function(){ if(el.textContent === msg) el.textContent = ''; }, 2600);
+  }
+
+  function copy(text, label){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ said(label + ' copied'); },
+        function(){ said('Could not copy — select it by hand'); });
+    } else { said('Could not copy — select it by hand'); }
+  }
+
+  $('#sndDate').addEventListener('change', refreshLink);
+  sel.addEventListener('change', refreshLink);
+  refreshLink();
+
+  $('#sndCopyLink').addEventListener('click', function(){ copy(build(), 'Link'); });
+  $('#sndCopyMsg').addEventListener('click', function(){ copy(message(), 'Message'); });
+
+  $('#sndMail').addEventListener('click', function(){
+    var to = $('#sndEmail').value.trim();
+    var when = whenText();
+    var subject = 'Your Red Cloud webinar' + (when ? ' — ' + when : '') + ': what we need from you';
+    /* mailto only opens a draft; the operator still presses send */
+    var href = 'mailto:' + encodeURIComponent(to) +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(message());
+    if(href.length > 1900){
+      copy(message(), 'Message');
+      said('Message copied — too long for a mail link, paste it in');
+      return;
+    }
+    window.location.href = href;
+    said(to ? 'Draft opened' : 'Draft opened — add the address');
+  });
+})();
+
+function openApp(){ $('#gate').style.display='none'; $('#app').hidden=false; load(); }
+
+$('#go').addEventListener('click', function(){
+  token = $('#tok').value.trim();
+  if(!token) return;
+  apiCall('GET').then(function(){
+    sessionStorage.setItem(KEY, token);
+    openApp();
+  }).catch(function(err){
+    $('#gateErr').textContent = err.status === 401
+      ? 'That token was not accepted.'
+      : (err.message || 'Could not reach the operations API.');
+    $('#gateErr').classList.add('on');
+  });
+});
+$('#tok').addEventListener('keydown', function(e){ if(e.key==='Enter') $('#go').click(); });
+$('#lock').addEventListener('click', function(){ sessionStorage.removeItem(KEY); location.reload(); });
+$('#refresh').addEventListener('click', load);
+
+function renderConnectors(list){
+  $('#conns').innerHTML = list.map(function(c){
+    return '<div class="conn '+(c.state==='on'?'on':'')+'">' +
+      '<span class="st">'+(c.state==='on'?'On':'Off')+'</span>' +
+      '<b>'+esc(c.label)+'</b>' +
+      '<small>Steps '+c.steps.join(', ')+' · '+esc(c.when)+
+        (c.missing && c.missing.length ? '<br>Needs '+esc(c.missing.join(', ')) : '')+'</small>' +
+    '</div>';
+  }).join('');
+}
+
+function renderRecords(list, conns){
+  if(!list.length){
+    $('#recs').innerHTML = '<div class="empty">No submissions yet. The first one to arrive will appear here.</div>';
+    return;
+  }
+  $('#recs').innerHTML = list.map(function(r){
+    var dots = conns.map(function(c){
+      var s = (r.steps && r.steps[c.key]) ? r.steps[c.key].status : '';
+      return '<span class="dot '+esc(s)+'" title="'+esc(c.label)+(s?': '+esc(s):': not run')+'"></span>';
+    }).join('');
+
+    var rows = conns.map(function(c){
+      var s = r.steps && r.steps[c.key];
+      if(!s) return '';
+      return '<div class="st-row '+esc(s.status)+'">' +
+        '<span class="tag">'+esc(s.status)+'</span>' +
+        '<span class="txt"><b>'+esc(c.label)+'</b><small>'+esc(s.detail||'')+
+        (safeHref(s.ref) ? ' — <a href="'+esc(safeHref(s.ref))+'" target="_blank" rel="noopener noreferrer">open</a>' : '')+'</small></span>' +
+        (s.status==='failed' || s.status==='skipped' || s.status==='waiting'
+          ? '<button class="btn" data-retry="'+esc(c.key)+'" data-id="'+esc(r.id)+'">Retry</button>' : '') +
+      '</div>';
+    }).join('') || '<p class="hint">Nothing has run for this webinar yet.</p>';
+
+    var sched = r.schedule || {};
+    return '<div class="rec" data-id="'+esc(r.id)+'">' +
+      '<div class="rec-h">' +
+        '<b>'+esc(r.company||'Unnamed')+'</b>' +
+        '<span class="tick mono">'+esc(r.tickers||'')+'</span>' +
+        '<span class="sp"></span>' +
+        '<span class="dots">'+dots+'</span>' +
+        '<span class="tick mono">'+esc(r.id)+'</span>' +
+      '</div>' +
+      '<div class="rec-b">' +
+        '<div class="grid2">' +
+          '<div><span class="lbl">What has run</span><div class="steps-l">'+rows+'</div></div>' +
+          '<div><span class="lbl">Red Cloud side</span><div class="sched">' +
+            '<label><span class="hint" style="margin:0 0 5px">Broadcast start (your local time)</span>' +
+            '<input type="datetime-local" data-f="startTimeISO" value="'+esc(toLocal(sched.startTimeISO))+'"></label>' +
+            '<label><span class="hint" style="margin:0 0 5px">Start time as written on graphics</span>' +
+            '<input type="text" data-f="startTime" placeholder="2:00pm ET / 11:00am PT" value="'+esc(sched.startTime||'')+'"></label>' +
+            '<label><span class="hint" style="margin:0 0 5px">Red Cloud analyst &mdash; second presenter on the registration page</span>' +
+            analystOptions(sched.moderator) + '</label>' +
+            '<label><span class="hint" style="margin:0 0 5px">StreamYard registration link</span>' +
+            '<input type="text" data-f="streamyardUrl" placeholder="https://streamyard.com/…" value="'+esc(sched.streamyardUrl||'')+'"></label>' +
+            '<label><span class="hint" style="margin:0 0 5px">Registration page &mdash; the link in every social post</span>' +
+            '<input type="text" data-f="registrationUrl" placeholder="https://redcloudfs.com/events/…" value="'+esc(sched.registrationUrl||'')+'"></label>' +
+            '<label><span class="hint" style="margin:0 0 5px">Replay link &mdash; add it after the webinar airs</span>' +
+            '<input type="text" data-f="replayUrl" placeholder="https://…" value="'+esc(sched.replayUrl||'')+'"></label>' +
+            '<button class="btn solid" data-save="'+esc(r.id)+'">Save schedule</button>' +
+            '<button class="btn" data-page="'+esc(r.id)+'">Copy registration page HTML</button>' +
+            '<button class="btn" data-social="'+esc(r.id)+'">Social copy</button>' +
+            '<button class="btn" data-eblast="'+esc(r.id)+'">Copy invite email</button>' +
+            '<p class="hint">Paste it into a new WordPress page as a single <b>Custom HTML</b> block, slug <span class="mono">rcwebinar-'+esc(String(r.tickers||'').split(/[|,;]/)[0].split(':').pop().trim().toLowerCase().replace(/[^a-z0-9]/g,'')||'tbc')+'</span>.</p>' +
+            '<p class="hint">'+(sched.startTimeISO
+              ? 'Clients will be told <b>'+esc(fullDate(sched.startTimeISO))+'</b>.'
+              : 'Timed emails only fire once a broadcast start is set here. Calendar invites go out the moment you save one.')+'</p>' +
+          '</div></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+/* Eastern, to match how the server writes dates into client emails — an operator
+   sitting in Vancouver must not be shown a different day to the one that is sent */
+/* The research team changes per webinar, and their titles are easy to get
+   subtly wrong when retyped. Chosen from the roster the API sends, alongside
+   the broadcast time, so the registration page is right before it is built. */
+function analystOptions(current){
+  var list = (LAST && LAST.analysts) || [];
+  var opts = ['<option value="">Not chosen yet</option>'];
+  var matched = false;
+  list.forEach(function(a){
+    var sel = (current === a.id || current === a.name);
+    if(sel) matched = true;
+    opts.push('<option value="'+esc(a.id)+'"'+(sel?' selected':'')+'>'+
+              esc(a.name)+' — '+esc(a.title)+'</option>');
+  });
+  /* someone typed in by hand before the dropdown existed — keep them visible
+     rather than silently resetting the field to blank */
+  if(current && !matched){
+    opts.push('<option value="'+esc(current)+'" selected>'+esc(current)+' (not on the roster)</option>');
+  }
+  return '<select data-f="moderator">'+opts.join('')+'</select>';
+}
+
+function fullDate(iso){
+  if(!iso) return '';
+  var d = new Date(iso);
+  if(isNaN(d)) return '';
+  try{
+    return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto',weekday:'long',
+      day:'numeric',month:'long',year:'numeric'}).format(d) + ' ET';
+  }catch(e){ return d.toDateString(); }
+}
+
+function toLocal(iso){
+  if(!iso) return '';
+  var d = new Date(iso);
+  if(isNaN(d)) return '';
+  var off = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - off).toISOString().slice(0,16);
+}
+
+/* Build-week test submissions had their Box folders deleted, and the API marks
+   those `retired`. They are hidden rather than removed — the count stays
+   visible so nothing looks like it has silently vanished. */
+var showRetired = false;
+var LAST = null;
+
+function paint(){
+  if(!LAST) return;
+  var conns = LAST.connectors || [];
+  var all = LAST.webinars || [];
+  var live = all.filter(function(r){ return !r.retired; });
+  var retired = all.length - live.length;
+  var shown = showRetired ? all : live;
+
+  renderSummary(live, conns);
+  renderAttention(live, conns);
+  renderRecords(shown, conns);
+  renderConnectors(conns);
+
+  var t = $('#toggleRetired');
+  t.hidden = retired === 0;
+  t.textContent = showRetired
+    ? 'Hide ' + retired + ' retired'
+    : 'Show ' + retired + ' retired';
+}
+
+function renderSummary(live, conns){
+  var on = conns.filter(function(c){ return c.state==='on'; });
+  var booked = live.filter(function(r){ return r.schedule && r.schedule.startTimeISO; }).length;
+  var trouble = live.filter(function(r){ return worries(r, conns).length; }).length;
+  $('#summary').innerHTML =
+    card('', live.length, 'active webinars') +
+    card(booked === live.length ? 'good' : 'warn', booked + '/' + live.length, 'with a confirmed broadcast time') +
+    card(trouble ? 'bad' : 'good', trouble, trouble === 1 ? 'needing attention' : 'needing attention') +
+    card('', on.length + '/' + conns.length, 'integrations switched on');
+}
+function card(kind, n, label){
+  return '<div class="card '+kind+'"><span class="n">'+esc(n)+'</span><span class="l">'+esc(label)+'</span></div>';
+}
+
+/* a step that failed, or one parked waiting on a broadcast time */
+function worries(r, conns){
+  return conns.filter(function(c){
+    var st = r.steps && r.steps[c.key];
+    return st && (st.status === 'failed' || st.status === 'waiting');
+  }).map(function(c){ return { key:c.key, label:c.label, status:r.steps[c.key].status }; });
+}
+
+function renderAttention(live, conns){
+  var rows = [];
+  live.forEach(function(r){
+    worries(r, conns).forEach(function(w){
+      rows.push('<li><b>'+esc(r.company||r.id)+'</b> — '+esc(w.label)+
+        ' <span class="tag '+esc(w.status)+'">'+esc(w.status)+'</span></li>');
+    });
+  });
+  $('#attention').innerHTML = rows.length
+    ? '<div class="attn"><h3>Needs attention</h3><ul>'+rows.join('')+'</ul></div>'
+    : '';
+}
+
+function load(){
+  apiCall('GET').then(function(d){ LAST = d; paint(); })
+  .catch(function(err){
+    $('#recs').innerHTML = '<div class="empty">'+esc(err.message||'Could not load.')+'</div>';
+  });
+}
+
+document.addEventListener('click', function(e){
+  if(e.target.id === 'toggleRetired'){ showRetired = !showRetired; paint(); return; }
+
+  var head = e.target.closest('.rec-h');
+  if(head && !e.target.closest('button')){ head.parentElement.classList.toggle('open'); return; }
+
+  var retry = e.target.closest('[data-retry]');
+  if(retry){
+    retry.disabled = true; retry.textContent = 'Retrying…';
+    apiCall('POST', { id: retry.dataset.id, action: 'retry', key: retry.dataset.retry })
+      .then(load)
+      .catch(function(err){ retry.disabled=false; retry.textContent='Retry'; alert(err.message); });
+    return;
+  }
+
+  /* The registration page, ready to paste. WordPress cannot be written to from
+     here — the host strips the auth header — so the page is handed over as
+     HTML instead of being created for them. */
+  var page = e.target.closest('[data-page]');
+  if(page){
+    var label = page.textContent;
+    page.disabled = true; page.textContent = 'Building…';
+    apiCall('POST', { id: page.dataset.page, action: 'regpage' })
+      .then(function(d){
+        var html = d.result.html;
+        function done(msg){
+          page.disabled = false; page.textContent = label;
+          alert(msg + (d.result.todo.length ? '\n\nStill to do:\n• ' + d.result.todo.join('\n• ') : ''));
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(html).then(
+            function(){ done('Page HTML copied to your clipboard.'); },
+            function(){ done('Could not copy automatically — press the button again with the page in focus.'); });
+        } else { done('This browser will not copy for us — open the page in Chrome or Edge.'); }
+      })
+      .catch(function(err){ page.disabled=false; page.textContent=label; alert(err.message); });
+    return;
+  }
+
+  /* The posts that go with the webinar. Shown rather than copied straight to
+     the clipboard: these get read and tweaked before anything is scheduled. */
+  var soc = e.target.closest('[data-social]');
+  if(soc){
+    var slabel = soc.textContent;
+    soc.disabled = true; soc.textContent = 'Writing…';
+    apiCall('POST', { id: soc.dataset.social, action: 'social' })
+      .then(function(d){
+        soc.disabled = false; soc.textContent = slabel;
+        var card = soc.closest('.rec');
+        var box = card.querySelector('.social-out');
+        if(!box){
+          box = document.createElement('div');
+          box.className = 'social-out';
+          soc.parentElement.appendChild(box);
+        }
+        box.innerHTML =
+          (d.result.needs.length
+            ? '<p class="hint">Still to fill in above: '+esc(d.result.needs.join(', '))+'</p>' : '') +
+          d.result.rows.map(function(r){
+            return '<div class="social-row">' +
+              '<div class="social-h"><b>'+esc(r.when)+'</b> <span class="tick">'+esc(r.type)+'</span>' +
+              (r.quoted ? ' <span class="tick" title="Quoted from the automatic transcript — check it before posting">transcript quote — check it</span>' : '') +
+              (r.asset ? ' <a href="'+esc(r.asset)+'" target="_blank" rel="noopener noreferrer">asset</a>' : '') +
+              '<button class="btn" data-copytext="1">Copy</button></div>' +
+              '<pre>'+esc(r.copy)+'</pre></div>';
+          }).join('');
+      })
+      .catch(function(err){ soc.disabled=false; soc.textContent=slabel; alert(err.message); });
+    return;
+  }
+
+  var ct = e.target.closest('[data-copytext]');
+  if(ct){
+    var pre = ct.closest('.social-row').querySelector('pre');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(pre.textContent).then(function(){
+        var was = ct.textContent; ct.textContent = 'Copied';
+        setTimeout(function(){ ct.textContent = was; }, 1200);
+      });
+    }
+    return;
+  }
+
+  /* The Mailchimp invite. Mailchimp itself is off, so this hands over the HTML
+     and the subject line to paste into a campaign. */
+  var eb = e.target.closest('[data-eblast]');
+  if(eb){
+    var eblabel = eb.textContent;
+    eb.disabled = true; eb.textContent = 'Building…';
+    apiCall('POST', { id: eb.dataset.eblast, action: 'eblast' })
+      .then(function(d){
+        function done(msg){
+          eb.disabled = false; eb.textContent = eblabel;
+          alert(msg + '\n\nSubject:\n' + d.result.subject +
+                (d.result.todo.length ? '\n\nBefore it goes out:\n• ' + d.result.todo.join('\n• ') : ''));
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(d.result.html).then(
+            function(){ done('Email HTML copied. In Mailchimp: new campaign, Code your own, Paste in code.'); },
+            function(){ done('Could not copy automatically — press the button again with the page in focus.'); });
+        } else { done('This browser will not copy for us — open the page in Chrome or Edge.'); }
+      })
+      .catch(function(err){ eb.disabled=false; eb.textContent=eblabel; alert(err.message); });
+    return;
+  }
+
+  var save = e.target.closest('[data-save]');
+  if(save){
+    var card = save.closest('.rec');
+    var sched = {};
+    card.querySelectorAll('[data-f]').forEach(function(i){
+      var v = i.value.trim();
+      if(!v) return;
+      sched[i.dataset.f] = (i.dataset.f === 'startTimeISO') ? new Date(v).toISOString() : v;
+    });
+    save.disabled = true; save.textContent = 'Saving…';
+    apiCall('POST', { id: card.dataset.id, action: 'schedule', schedule: sched })
+      .then(function(){ save.textContent = 'Saved'; setTimeout(function(){ save.disabled=false; save.textContent='Save schedule'; }, 1400); load(); })
+      .catch(function(err){ save.disabled=false; save.textContent='Save schedule'; alert(err.message); });
+  }
+});
+
+/* ── the bookmarkable link ─────────────────────────────────────
+   Red Cloud wanted /ops without hunting for a password. A token in the URL
+   FRAGMENT is the compromise: fragments are never sent to the server and never
+   land in access logs, so the saved bookmark is the key and client contact
+   details stay off the open web.
+
+       https://redcloud-webinar-form.netlify.app/ops.html#t=<token>
+
+   The fragment is wiped from the address bar once it has been read, so the
+   token is not sitting on screen during a screen-share. The bookmark itself
+   still carries it, which is the whole point.
+   ─────────────────────────────────────────────────────────── */
+var fromUrl = /(?:^|[#&])t=([^&]+)/.exec(location.hash || '');
+if(fromUrl){
+  token = decodeURIComponent(fromUrl[1]);
+  history.replaceState(null, '', location.pathname + location.search);
+}
+
+if(token) apiCall('GET').then(function(){
+  sessionStorage.setItem(KEY, token);
+  openApp();
+}).catch(function(){ sessionStorage.removeItem(KEY); token = ''; });
+/* On webinars.redcloudfs.com you are already signed in, and the server vouches
+   for the session — so try once with no token and skip the gate if that works.
+   On a site without a sign-in this simply fails and the gate stays. */
+else apiCall('GET').then(openApp).catch(function(){});
+})();
+</script>
+</body>
+</html>

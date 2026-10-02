@@ -3,6 +3,15 @@
   "private": true,
   "type": "module",
   "description": "Red Cloud's webinar automation pipeline. Separate from the portal; every piece starts manual.",
-  "engines": { "node": ">=22" },
-  "scripts": { "start": "node src/server.mjs" }
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "zod": "^4.4.3"
+  }
 }

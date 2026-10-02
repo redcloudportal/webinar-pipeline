@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webinar Content Form | Red Cloud</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Send Red Cloud everything we need to build your webinar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#852A29; --red-2:#5C1C1B; --red-3:#C14845; --red-soft:#F3E4E2;
+  --ink:#241E1F; --ink-soft:#6B6163; --ink-faint:#9B9092;
+  --paper:#F7F3F0; --surface:#FFFFFF; --surface-2:#F1EBE6;
+  --line:#E7DED6; --line-2:#D8CCC2;
+  --green:#1F9D63; --green-soft:#E4F4EC; --amber:#B4761C; --amber-soft:#FBF1DF; --blue:#2E6C9E;
+  --shadow-sm:0 2px 12px rgba(20,24,35,.06);
+  --shadow:0 18px 50px rgba(20,24,35,.12);
+  --radius:18px; --maxw:920px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:96px}
+body{
+  margin:0;color:var(--ink);font-family:'Montserrat',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:
+    radial-gradient(800px 600px at 88% 2%, rgba(133,42,41,.06), transparent 60%) fixed,
+    radial-gradient(700px 700px at -8% 68%, rgba(133,42,41,.05), transparent 60%),
+    linear-gradient(var(--paper), var(--surface-2));
+  min-height:100vh;
+}
+a{color:var(--red)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--red-soft);color:var(--red-2)}
+
+/* ══ HEADER ══ */
+.site-head{position:sticky;top:0;z-index:60;background:rgba(247,243,240,.94);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.head-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit}
+.brand img{width:30px;height:auto;display:block}
+.brand-div{width:1px;height:22px;background:var(--line-2)}
+.brand-txt{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);line-height:1.35}
+.head-sp{flex:1}
+.saved{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;align-items:center;gap:7px;opacity:0;transition:opacity .3s var(--ease)}
+.saved.on{opacity:1}
+.clear-btn{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);border:1.5px solid var(--line-2);border-radius:999px;
+  padding:8px 13px;background:var(--surface);transition:all .16s var(--ease);white-space:nowrap;margin-left:12px}
+.clear-btn:hover{border-color:var(--red);color:var(--red)}
+.saved .pip{display:block;width:7px;height:7px;border-radius:50%;background:var(--green)}
+
+/* ══ HERO ══ */
+.hero{padding:64px 0 58px;position:relative;overflow:hidden;color:#fff;
+  background:
+    radial-gradient(720px 520px at 88% -6%, rgba(193,72,69,.65), transparent 60%),
+    radial-gradient(620px 520px at 6% 110%, rgba(60,20,20,.6), transparent 58%),
+    linear-gradient(145deg,#5C1C1B 0%,#781F1D 38%,#852A29 70%,#6A201E 100%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;opacity:.4;
+  background-image:repeating-linear-gradient(118deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 1px,transparent 1px,transparent 60px);
+  mask-image:linear-gradient(#000,transparent 92%)}
+.hero-mark{position:absolute;z-index:0;right:-40px;top:50%;transform:translateY(-50%);
+  width:min(40vw,360px);opacity:.07;filter:brightness(0) invert(1);pointer-events:none}
+.hero-in{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:800;color:#FBE3E1;background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22);padding:8px 16px;border-radius:999px;backdrop-filter:blur(6px)}
+.hero-badge .pip{display:block;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.22)}
+.hero h1{color:#fff;font-size:clamp(30px,4.6vw,50px);font-weight:800;line-height:1.05;
+  letter-spacing:-.024em;margin:22px 0 0;max-width:16ch;text-shadow:0 2px 30px rgba(0,0,0,.18)}
+.hero h1 .soft{color:#FFD9D7}
+.hero .rule{width:60px;height:3px;background:#fff;border-radius:2px;margin:22px 0 0;opacity:.9}
+.hero .lead{font-size:17px;line-height:1.62;margin:20px 0 0;max-width:60ch;color:rgba(255,255,255,.88);font-weight:500}
+.hero-steps{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
+.hero-step{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.2);border-radius:11px;padding:9px 15px;backdrop-filter:blur(6px);
+  font-size:13.5px;font-weight:700;color:#fff}
+.hero-step b{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);letter-spacing:.1em}
+
+/* ══ SHELL ══ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.notice{margin:-26px auto 0;position:relative;z-index:5;max-width:var(--maxw);padding:0 28px}
+.notice-in{background:var(--surface);border:1.5px solid var(--line);border-left:4px solid var(--amber);
+  border-radius:14px;box-shadow:var(--shadow);padding:16px 22px;display:flex;align-items:center;gap:14px}
+.notice-in svg{flex-shrink:0;color:var(--amber)}
+.notice-in p{margin:0;font-size:14.5px;font-weight:600;color:var(--ink-soft);line-height:1.55}
+.notice-in strong{color:var(--ink);font-weight:800}
+
+/* ══ PROGRESS ══ */
+.prog{position:sticky;top:64px;z-index:55;background:rgba(247,243,240,.95);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);margin-top:38px}
+.prog-in{max-width:var(--maxw);margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:16px}
+.prog-lbl{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);flex-shrink:0}
+.prog-bar{display:block;flex:1;height:7px;border-radius:99px;background:var(--line);overflow:hidden;min-width:60px}
+.prog-fill{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--red-3));
+  transition:width .35s var(--ease)}
+.prog-fill.full{background:linear-gradient(90deg,#178A55,var(--green))}
+.prog-n{font-size:13px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;flex-shrink:0}
+
+/* ══ SECTIONS ══ */
+.sec{margin:44px 0 0}
+.sec-h{display:flex;align-items:flex-start;gap:14px;margin:0 0 6px}
+.sec-n{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:var(--red);color:#fff;
+  display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:2px}
+.sec-t{font-size:clamp(21px,2.8vw,27px);font-weight:800;letter-spacing:-.022em;margin:0;line-height:1.2}
+.sec-sub{margin:6px 0 0 44px;font-size:15px;color:var(--ink-soft);font-weight:500;line-height:1.6;max-width:63ch}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);padding:26px 28px;margin:22px 0 0}
+
+/* ══ FIELDS ══ */
+.field{margin:22px 0 0}
+.field:first-child{margin-top:0}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.f-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+label.lbl{display:block;font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink);margin:0 0 8px}
+label.lbl .req{color:var(--red-3);margin-left:3px}
+label.lbl .opt{color:var(--ink-faint);font-weight:700;letter-spacing:.06em;margin-left:6px;text-transform:none;font-size:11px}
+.hint{font-size:13.5px;color:var(--ink-soft);font-weight:500;line-height:1.55;margin:0 0 10px}
+input[type=text],input[type=email],input[type=date],input[type=time],textarea,select{
+  width:100%;background:var(--surface);border:1.5px solid var(--line-2);border-radius:11px;
+  color:var(--ink);font-family:inherit;font-size:15.5px;font-weight:600;padding:12px 14px;
+  outline:none;transition:border-color .16s var(--ease),box-shadow .16s var(--ease)}
+input:focus,textarea:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+input::placeholder,textarea::placeholder{color:var(--ink-faint);font-weight:500}
+textarea{resize:vertical;min-height:150px;line-height:1.65;font-weight:500}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B6163' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;padding-right:38px}
+/* The look-up reads a whole website and can take 20 seconds. A button that
+   only changes its words looks stuck, so the magnifier becomes a moving ring
+   and the note underneath says which stage it is on. */
+.lk-spin{display:none;animation:lkspin .8s linear infinite}
+@keyframes lkspin{to{transform:rotate(360deg)}}
+.site-go.busy .lk-glass{display:none}
+.site-go.busy .lk-spin{display:inline-block}
+.site-go.busy{cursor:progress}
+#lookupNote.working{color:var(--ink-2)}
+#lookupNote.working::after{content:'';display:inline-block;width:1.1em;text-align:left;animation:lkdots 1.2s steps(4,end) infinite}
+@keyframes lkdots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+@media (prefers-reduced-motion: reduce){
+  .lk-spin{animation-duration:2.4s}
+  #lookupNote.working::after{animation:none;content:'\2026'}
+}
+.err{display:none;margin:8px 0 0;font-size:13px;font-weight:700;color:var(--red-3)}
+.bad input,.bad textarea,.bad select{border-color:var(--red-3)}
+.bad .drop{border-color:var(--red-3);background:#FDF2F2}
+.bad .err{display:block}
+.count{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 0;
+  font-size:12.5px;font-weight:700;color:var(--ink-faint)}
+.count .ok{color:var(--green)}
+.count .warn{color:var(--amber)}
+
+/* ══ SPEAKERS ══ */
+.spk{border:1.5px solid var(--line);border-radius:14px;padding:20px;margin:16px 0 0;background:var(--surface-2)}
+.spk:first-child{margin-top:0}
+.spk.hide{display:none}
+.spk-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px}
+.spk-h b{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.spk-rm{font-size:12px;font-weight:800;color:var(--ink-faint);padding:4px 10px;border-radius:8px;
+  border:1.5px solid var(--line-2);background:var(--surface);transition:all .16s var(--ease)}
+.spk-rm:hover{border-color:var(--red-3);color:var(--red-3)}
+.addspk{margin:16px 0 0;display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:800;
+  letter-spacing:.04em;color:var(--red);border:1.5px dashed var(--line-2);border-radius:11px;padding:11px 18px;
+  transition:all .16s var(--ease)}
+.addspk:hover{border-color:var(--red);background:var(--red-soft)}
+.addspk[disabled]{opacity:.4;cursor:not-allowed}
+
+/* ══ UPLOADS ══ */
+.drop{position:relative;border:2px dashed var(--line-2);border-radius:14px;background:var(--surface-2);
+  padding:28px 22px;text-align:center;transition:all .18s var(--ease);cursor:pointer;display:block}
+.drop:hover{border-color:var(--red);background:var(--red-soft)}
+.drop.over{border-color:var(--red);background:var(--red-soft);transform:scale(1.006)}
+.drop input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.drop-ic{color:var(--ink-faint);margin:0 0 10px;display:block}
+.drop:hover .drop-ic,.drop.over .drop-ic{color:var(--red)}
+.drop b{display:block;font-size:15px;font-weight:800;color:var(--ink);margin:0 0 5px}
+.drop span{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.5}
+.files{margin:14px 0 0;display:flex;flex-direction:column;gap:9px}
+.files:empty{display:none}
+.file{display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--line);
+  border-radius:11px;padding:11px 14px}
+.file-ic{flex-shrink:0;width:34px;height:34px;border-radius:8px;background:var(--red-soft);color:var(--red);
+  display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:.04em;overflow:hidden}
+.file-ic img{width:100%;height:100%;object-fit:contain;background:#fff}
+.file-n{flex:1;min-width:0}
+.file-n b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.file-n span{display:block;font-size:11.5px;font-weight:700;color:var(--ink-faint)}
+.file.over-limit{border-color:var(--red-3)}
+.file.over-limit .file-n span{color:var(--red-3)}
+.file-rm{flex-shrink:0;width:28px;height:28px;border-radius:8px;color:var(--ink-faint);
+  display:grid;place-items:center;transition:all .16s var(--ease)}
+.file-rm:hover{background:var(--red-soft);color:var(--red-3)}
+
+/* ══ SUBMIT ══ */
+.submit-wrap{margin:38px 0 0;padding:28px;background:var(--surface);border:1.5px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:var(--red);color:#fff;
+  border-radius:12px;padding:16px 34px;font-size:15px;font-weight:800;letter-spacing:.02em;
+  transition:all .18s var(--ease);box-shadow:0 6px 20px rgba(133,42,41,.28)}
+.btn:hover{background:var(--red-2);transform:translateY(-1px);box-shadow:0 10px 26px rgba(133,42,41,.34)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line-2);box-shadow:none}
+.btn.ghost:hover{background:var(--surface-2);border-color:var(--ink-faint);transform:none;box-shadow:none}
+.submit-note{margin:16px 0 0;font-size:13.5px;color:var(--ink-soft);font-weight:500;line-height:1.6}
+.formerr{display:none;margin:0 0 18px;padding:14px 18px;background:#FBEAEA;border:1.5px solid #EFC9C8;
+  border-radius:12px;font-size:14px;font-weight:700;color:var(--red-2);line-height:1.55}
+.formerr.on{display:block}
+.bar{display:none;margin:16px 0 0;height:7px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar.on{display:block}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--red-3));
+  transition:width .2s linear}
+
+/* ══ SUCCESS ══ */
+.sent{display:none}
+.sent.on{display:block}
+.sent-card{margin:38px 0 0;background:var(--surface);border:1.5px solid var(--line);border-top:5px solid var(--green);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:36px 32px;text-align:center}
+.sent-tick{width:64px;height:64px;border-radius:50%;background:var(--green-soft);color:var(--green);
+  display:grid;place-items:center;margin:0 auto 20px}
+.sent-card h2{font-size:clamp(24px,3.2vw,32px);font-weight:800;letter-spacing:-.024em;margin:0 0 10px}
+.sent-card p{margin:0 auto;font-size:16px;color:var(--ink-soft);font-weight:500;line-height:1.65;max-width:54ch}
+.sent-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:26px 0 0}
+.summary{margin:26px 0 0;text-align:left}
+.summary-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+.summary-h b{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.summary pre{margin:0;background:var(--surface-2);border:1.5px solid var(--line);border-radius:14px;
+  padding:22px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12.5px;line-height:1.75;
+  color:var(--ink);white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto}
+
+/* ══ FOOT ══ */
+.foot{margin:64px 0 0;border-top:1px solid var(--line);background:rgba(255,255,255,.5)}
+.foot-in{max-width:var(--maxw);margin:0 auto;padding:28px;display:flex;flex-wrap:wrap;gap:16px;
+  align-items:center;justify-content:space-between}
+.foot p{margin:0;font-size:12.5px;color:var(--ink-faint);font-weight:600}
+.foot a{font-weight:700}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
+/* ══ WEBSITE PANEL ══ */
+.setup{background:#241E1F;color:#fff;border-bottom:3px solid var(--red);position:sticky;top:0;z-index:60}
+.setup-in{max-width:900px;margin:0 auto;padding:14px 22px 16px}
+.setup-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 11px}
+.setup-hd b{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#F0A9A4}
+.setup-hd span{font-size:12.5px;color:rgba(255,255,255,.62)}
+.setup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+@media (max-width:820px){.setup-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.setup-grid{grid-template-columns:1fr}}
+.setup-lb{display:block;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);margin:0 0 5px}
+.setup input,.setup select{width:100%;background:#332B2D;color:#fff;border:1.5px solid #4A3F42;
+  border-radius:8px;padding:9px 11px;font:inherit;font-size:13.5px}
+.setup input:focus,.setup select:focus{border-color:#F0A9A4;outline:none}
+.setup-link{margin:11px 0 0;background:#1A1517;border:1px solid #3A3234;border-radius:8px;
+  padding:9px 11px;font-size:12px;color:rgba(255,255,255,.72);word-break:break-all}
+.setup-acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:11px 0 0}
+.setup-btn{font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:8px;cursor:pointer;
+  background:transparent;border:1.5px solid #5A4E51;color:#fff;font-family:inherit}
+.setup-btn:hover{border-color:#F0A9A4;color:#F0A9A4}
+.setup-btn.solid{background:var(--red);border-color:var(--red)}
+.setup-btn.solid:hover{background:#A03533;color:#fff}
+.setup-said{font-size:12.5px;font-weight:700;color:#8FD9B4}
+.slot{display:flex;align-items:flex-start;gap:13px;margin:0 0 14px;padding:15px 18px;
+  border:2px solid var(--red);border-radius:16px;background:linear-gradient(180deg,#fff7f6,#fffdfd)}
+.slot-ic{flex:0 0 auto;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;
+  background:var(--red);color:#fff}
+.slot-body{min-width:0}
+.slot-body b{display:block;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--red-2)}
+.slot-when{margin:5px 0 0;font-size:19px;font-weight:800;line-height:1.25;color:var(--ink)}
+.slot-sub{margin:3px 0 0;font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.45}
+@media (max-width:560px){.slot-when{font-size:17px}}
+.site-panel{border:2px solid var(--red);border-radius:16px;overflow:hidden;background:var(--surface);
+  box-shadow:0 6px 22px rgba(133,42,41,.10);transition:border-color .18s var(--ease),box-shadow .18s var(--ease)}
+.site-panel.filled{border-color:var(--green);box-shadow:0 6px 22px rgba(31,157,99,.10)}
+.site-done{display:none;align-items:center;gap:9px;padding:11px 18px;background:var(--green-soft);
+  border-top:1px solid #CFE9DB;font-size:12.5px;font-weight:700;color:#137249}
+.site-panel.filled .site-done{display:flex}
+.site-panel.filled .site-perks{display:none}
+.site-panel:focus-within{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.site-top{display:flex;align-items:flex-start;gap:13px;padding:16px 18px 14px;
+  background:linear-gradient(135deg,#F7E7E5,#FBF4F3);border-bottom:1px solid var(--line)}
+.site-ic{flex-shrink:0;width:38px;height:38px;border-radius:11px;background:var(--red);
+  color:#fff;display:grid;place-items:center;margin-top:1px}
+.site-hd b{display:block;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--red-2)}
+.site-hd span{display:block;font-size:13.5px;font-weight:600;color:var(--ink-soft);margin:3px 0 0;line-height:1.45}
+.site-input{display:flex;align-items:stretch;background:var(--surface);cursor:text}
+.site-prefix{display:flex;align-items:center;padding:0 2px 0 18px;font-family:ui-monospace,'SF Mono',Menlo,monospace;
+  font-size:14px;font-weight:600;color:var(--ink-faint);user-select:none;flex-shrink:0}
+.site-input input{border:0;border-radius:0;background:transparent;padding:15px 18px 15px 4px;
+  font-size:16px;font-weight:700;flex:1;min-width:0}
+.site-input input:focus{box-shadow:none;border:0}
+.site-perks{display:flex;flex-wrap:wrap;gap:8px 18px;padding:0 18px 15px;background:var(--surface)}
+.site-perk{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ink-faint)}
+.site-perk svg{color:var(--green);flex-shrink:0}
+
+/* ══ BIO DRAFTS ══ */
+.bio-list{display:flex;flex-direction:column;gap:12px}
+.bio-opt{border:1.5px solid var(--line);border-radius:14px;background:var(--surface-2);padding:16px 18px;
+  transition:all .16s var(--ease)}
+.bio-opt:hover{border-color:var(--line-2)}
+.bio-opt.picked{border-color:var(--green);background:var(--green-soft)}
+.bio-opt-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 9px}
+.bio-opt-h b{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.bio-opt-h em{font-style:normal;font-size:11.5px;font-weight:700;color:var(--ink-faint)}
+.bio-opt p{margin:0;font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:500}
+.bio-use{margin:13px 0 0;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;
+  color:#fff;background:var(--red);border-radius:9px;padding:9px 16px;transition:all .16s var(--ease)}
+.bio-use:hover{background:var(--red-2)}
+.bio-opt.picked .bio-use{background:var(--green)}
+
+/* ══ TITLE SUGGESTIONS ══ */
+.sugg-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:14px 0 0}
+.sugg-btn{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:800;letter-spacing:.02em;
+  color:var(--red);border:1.5px solid var(--line-2);border-radius:11px;padding:11px 18px;background:var(--surface);
+  transition:all .16s var(--ease)}
+.sugg-btn:hover:not([disabled]){border-color:var(--red);background:var(--red-soft)}
+.sugg-btn[disabled]{opacity:.5;cursor:not-allowed}
+.sugg-btn .spin{display:none;width:14px;height:14px;border:2px solid var(--line-2);border-top-color:var(--red);
+  border-radius:50%;animation:spin .7s linear infinite}
+.sugg-btn.busy .spin{display:block}
+.sugg-btn.busy svg{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sugg-hint{font-size:12.5px;font-weight:600;color:var(--ink-faint);line-height:1.5}
+.sugg-wrap{display:none;margin:18px 0 0}
+.sugg-wrap.on{display:block}
+.sugg-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 11px}
+.sugg-h b{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.sugg-list{display:flex;flex-direction:column;gap:9px}
+.sugg{display:block;width:100%;text-align:left;background:var(--surface-2);border:1.5px solid var(--line);
+  border-radius:12px;padding:14px 16px;transition:all .16s var(--ease)}
+.sugg:hover{border-color:var(--red);background:var(--red-soft);transform:translateX(2px)}
+.sugg b{display:block;font-size:15px;font-weight:700;color:var(--ink);line-height:1.4}
+.sugg span{display:block;font-size:12px;font-weight:700;color:var(--ink-faint);margin:5px 0 0;
+  letter-spacing:.04em;text-transform:uppercase}
+.sugg.picked{border-color:var(--green);background:var(--green-soft)}
+.sugg-note{margin:11px 0 0;font-size:12.5px;font-weight:600;color:var(--ink-faint);line-height:1.5}
+.sugg-note.warn{color:var(--amber)}
+.sugg-err{display:none;margin:14px 0 0;padding:12px 16px;background:#FBEAEA;border:1.5px solid #EFC9C8;
+  border-radius:11px;font-size:13px;font-weight:700;color:var(--red-2);line-height:1.5}
+.sugg-err.on{display:block}
+.local{display:none;margin:22px 0 0;padding:15px 18px;background:#EBF2F8;border:1.5px solid #C9DCEB;
+  border-left:4px solid var(--blue);border-radius:12px;font-size:13.5px;font-weight:600;
+  color:#1F4C70;line-height:1.55}
+.local.on{display:block}
+.local b{font-weight:800}
+
+@media (max-width:760px){
+  .f-row,.f-row3{grid-template-columns:1fr}
+  .hero{padding:48px 0 46px}
+  .card{padding:22px 20px}
+  .sec-sub{margin-left:0}
+  .prog-lbl{display:none}
+}
+
+/* ══ website-first flow ══
+   Everything past the website field stays out of the way until we have either
+   looked the company up or been told to stop trying. Fewer fields on screen at
+   the start, and most of them filled in by the time they appear. */
+.gated{display:none}
+body.unlocked .gated{display:block}
+/* The wrapper that hides the rest of section 1 sits between two fields, and a
+   plain div carries none of the rhythm they get from each other — the website
+   panel ended up flush against the company name box. */
+body.unlocked .card > .gated{margin-top:22px}
+body.unlocked section.sec.gated{display:block}
+/* both are block-level in their own right; the blanket rule above already
+   restores them correctly, and forcing flex here would break their layout */
+
+/* Its own band, matching the panel's other rows — 18px sides, a hairline above
+   to separate it from the perks, and real breathing room between the controls.
+   Without this the button and links sit flush against the card edge. */
+.site-act{display:flex;flex-direction:column;align-items:flex-start;gap:11px;
+  padding:16px 18px 17px;border-top:1px solid var(--line);background:var(--surface-2)}
+
+.site-go{display:inline-flex;align-items:center;gap:9px;margin:0;font:inherit;font-size:14.5px;
+  font-weight:700;color:#fff;background:var(--red);border:0;border-radius:11px;padding:12px 20px;
+  cursor:pointer;transition:background .15s ease}
+.site-go:hover{background:var(--red-2)}
+.site-go:disabled{opacity:.6;cursor:default}
+.site-go svg{flex-shrink:0}
+.site-note{font-size:12.5px;color:var(--ink-faint);margin:0;max-width:56ch;line-height:1.5}
+.site-err{margin:0}
+.site-err.on{display:block}
+.site-skip{display:block;margin:0;font:inherit;font-size:12.5px;color:var(--ink-soft);
+  background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.site-skip:hover{color:var(--red)}
+
+/* what we found, before the fields appear */
+.found{background:var(--ok-soft);border:1px solid var(--ok);border-radius:10px;padding:13px 15px;margin:2px 0 0;width:100%;box-sizing:border-box}
+.found b{display:block;font-size:13.5px;color:var(--ok);margin:0 0 6px}
+.found ul{margin:0;padding:0 0 0 18px;font-size:13px;color:var(--ink);line-height:1.7}
+
+/* management picked off their own site */
+.mgmt{background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 18px}
+.mgmt-h b{display:block;font-size:13.5px;font-weight:700}
+.mgmt-h span{display:block;font-size:12.5px;color:var(--ink-soft);margin:3px 0 10px}
+.mgmt-list{display:flex;flex-wrap:wrap;gap:8px}
+.mgmt-p{display:flex;flex-direction:column;align-items:flex-start;gap:1px;font:inherit;text-align:left;
+  background:var(--surface);border:1.5px solid var(--line-2);border-radius:10px;padding:9px 13px;cursor:pointer;
+  transition:all .15s ease}
+.mgmt-p:hover{border-color:var(--red)}
+.mgmt-p b{font-size:13px;font-weight:700}
+.mgmt-p span{font-size:11.5px;color:var(--ink-soft)}
+.mgmt-p.used{opacity:.5;cursor:default}
+.mgmt-p.used:hover{border-color:var(--line-2)}
+
+.hint-sm{font-size:12px;color:var(--ink-faint);margin:0 0 7px}
+.use-logo{display:inline-flex;align-items:center;gap:8px;margin:9px 0 0;font-size:12.5px;
+  font-weight:700;color:var(--ink);cursor:pointer}
+.use-logo input{width:15px;height:15px;accent-color:var(--red);cursor:pointer}
+
+.found-logo{display:flex;align-items:center;gap:14px;background:var(--sunk);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;margin:0 0 12px}
+.found-logo img{width:118px;height:52px;object-fit:contain;background:var(--surface);
+  border:1px solid var(--line);border-radius:7px;padding:5px;flex-shrink:0}
+.found-logo b{display:block;font-size:13px;font-weight:700}
+.found-logo span{display:block;font-size:12.5px;color:var(--ink-soft);margin:2px 0 0;line-height:1.45}
+/* The headshot was a bare file input under an "optional" tag and was being
+   skipped, so speaker 1's replay tile fell back to the logo. It is now a
+   framed, clearly labelled target that says what the photo is used for. */
+.hs{border:2px dashed var(--line);border-radius:12px;padding:14px;background:#fcfcfd;transition:border-color .15s,background .15s}
+.hs:hover{border-color:var(--red-3);background:#fff}
+.hs.has{border-style:solid;border-color:#16a34a;background:#f6fdf8}
+.hs-top{display:flex;align-items:center;gap:9px;margin:0 0 6px}
+.hs-top svg{flex:0 0 auto;color:var(--red-3)}
+.hs.has .hs-top svg{color:#16a34a}
+.hs-top b{font-size:14px}
+.hs-why{margin:0 0 10px;font-size:12.5px;line-height:1.5;color:var(--ink-2)}
+.hs-ok{display:none;margin:8px 0 0;font-size:12.5px;font-weight:700;color:#15803d}
+.hs.has .hs-ok{display:block}
+input[type=file].headshot{font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- ═══ Red Cloud only. Hidden unless the URL carries ?setup ═══
+     Set the slot here, watch the banner below update to exactly what the
+     client will see, then send. The client link never carries ?setup. -->
+<div class="setup" id="setupBar" hidden>
+  <div class="setup-in">
+    <div class="setup-hd">
+      <b>Red Cloud setup</b>
+      <span>Only you can see this. Set the slot, then send the link.</span>
+    </div>
+    <div class="setup-grid">
+      <div>
+        <label class="setup-lb" for="suDate">Webinar date</label>
+        <input type="date" id="suDate">
+      </div>
+      <div>
+        <label class="setup-lb" for="suTime">Time (Eastern)</label>
+        <select id="suTime"></select>
+      </div>
+      <div>
+        <label class="setup-lb" for="suEmail">Client email</label>
+        <input type="text" id="suEmail" placeholder="name@company.com" spellcheck="false" autocomplete="off">
+      </div>
+      <div>
+        <label class="setup-lb" for="suName">Their first name</label>
+        <input type="text" id="suName" placeholder="Optional" autocomplete="off">
+      </div>
+    </div>
+    <div class="setup-link mono" id="suLink">Pick a date and time.</div>
+    <div class="setup-acts">
+      <button type="button" class="setup-btn solid" id="suMail">Open email draft</button>
+      <button type="button" class="setup-btn" id="suCopyLink">Copy link</button>
+      <button type="button" class="setup-btn" id="suCopyMsg">Copy message</button>
+      <button type="button" class="setup-btn" id="suPreview">Preview as client</button>
+      <span class="setup-said" id="suSaid"></span>
+    </div>
+  </div>
+</div>
+
+
+<header class="site-head">
+  <div class="head-in">
+    <a class="brand" href="#top">
+      <img src="data:image/png;base64,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" alt="Red Cloud">
+      <span class="brand-div"></span>
+      <span class="brand-txt">Webinar<br>Content Form</span>
+    </a>
+    <span class="head-sp"></span>
+    <span class="saved" id="savedPip"><span class="pip"></span>Draft saved</span>
+    <button type="button" class="clear-btn" id="clearBtn" title="Clear this form and start again">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>
+      Start again
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <img class="hero-mark" src="data:image/png;base64,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" alt="">
+  <div class="hero-in">
+    <span class="hero-badge"><span class="pip"></span>Webinar Series</span>
+    <h1>Everything we need <span class="soft">for your webinar.</span></h1>
+    <div class="rule"></div>
+    <p class="lead">Your webinar is booked. Before we can build the registration page, the graphics and the promotion, we need a few things from you &mdash; a title, a company bio, your speakers and your logo. It takes about ten minutes, and it saves as you go.</p>
+    <div class="hero-steps">
+      <span class="hero-step"><b>01</b>Title &amp; bio</span>
+      <span class="hero-step"><b>02</b>Speakers</span>
+      <span class="hero-step"><b>03</b>Logo &amp; brand assets</span>
+    </div>
+  </div>
+</section>
+
+<div class="notice">
+  <div class="notice-in">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    <p>Please send this back <strong>as early as you can</strong>. The whole promotion schedule works backwards from your webinar date, so the sooner we have the title, the more runway we have to fill the room.</p>
+  </div>
+</div>
+
+<div class="prog gated">
+  <div class="prog-in">
+    <span class="prog-lbl">Progress</span>
+    <span class="prog-bar"><span class="prog-fill" id="progFill"></span></span>
+    <span class="prog-n" id="progN">0 of 6</span>
+  </div>
+</div>
+
+<main class="wrap" id="formArea">
+
+<form name="webinar-content" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" id="mainForm">
+  <input type="hidden" name="form-name" value="webinar-content">
+  <p class="hp"><label>Leave this empty: <input name="bot-field"></label></p>
+  <input type="hidden" name="summary" id="summaryField">
+  <input type="hidden" name="submitted_at" id="submittedAt">
+
+  <!-- ═══ 1. WHO ═══ -->
+  <section class="sec">
+    <div class="sec-h">
+      <span class="sec-n">1</span>
+      <h2 class="sec-t">Who this is for</h2>
+    </div>
+    <p class="sec-sub">So we can match this to the right booking and come back to you if anything needs a second look.</p>
+
+    <div class="card">
+      <!-- ═══ first thing in the form, because it does the client's work for them ═══ -->
+      <div class="field">
+        <!-- Shown only when the link carries a booked slot (?date=&time=).
+             It sits ABOVE the website box because this is the first thing a
+             client wants confirmed, before doing any work. -->
+        <div class="slot" id="slotBanner" hidden>
+          <span class="slot-ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+          </span>
+          <div class="slot-body">
+            <b>Your webinar is booked</b>
+            <p class="slot-when" id="slotWhen"></p>
+            <p class="slot-sub" id="slotSub"></p>
+          </div>
+        </div>
+        <div class="site-panel">
+          <div class="site-top">
+            <span class="site-ic">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg>
+            </span>
+            <div class="site-hd">
+              <b>Start here &mdash; your company website</b>
+              <span>Paste it in and we will write your webinar title and your company bio for you. It turns a twenty&ndash;minute job into about five.</span>
+            </div>
+          </div>
+          <label class="site-input" for="website">
+            <span class="site-prefix">https://</span>
+            <input type="text" id="website" name="website" placeholder="yourcompany.com" autocomplete="url" inputmode="url" spellcheck="false">
+          </label>
+          <div class="site-perks">
+            <span class="site-perk"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Drafts your webinar title</span>
+            <span class="site-perk"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Drafts your company bio</span>
+            <span class="site-perk"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>You edit whatever it gets wrong</span>
+          </div>
+          <div class="site-done" id="siteDone">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <span id="siteDoneMsg">Got it &mdash; look for the drafting buttons in sections 2 and 3.</span>
+          </div>
+          <div class="site-act">
+            <button type="button" class="site-go" id="lookupBtn">
+              <svg class="lk-glass" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <svg class="lk-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" opacity=".28"/><path d="M12 3a9 9 0 0 1 9 9"/></svg>
+              <span id="lookupLbl">Look up my company</span>
+            </button>
+            <p class="site-note" id="lookupNote">We read your site and fill in as much of this form as we can. Everything stays editable.</p>
+            <p class="err site-err" id="lookupErr"></p>
+            <button type="button" class="site-skip" id="skipBtn">or fill the form in myself</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="gated">
+      <div class="field f-row">
+        <div>
+          <label class="lbl" for="company">Company name<span class="req">*</span></label>
+          <input type="text" id="company" name="company" placeholder="As it should appear publicly" autocomplete="organization">
+          <p class="err">We need the company name.</p>
+        </div>
+        <div>
+          <label class="lbl" for="tickers">Ticker(s)<span class="req">*</span></label>
+          <input type="text" id="tickers" name="tickers" placeholder="Exchange and symbol, all listings" autocomplete="off">
+          <p class="err">Please give us at least one ticker.</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="metals">Metal(s) or commodity<span class="req">*</span></label>
+        <input type="text" id="metals" name="metals" placeholder="What you are exploring for or producing" autocomplete="off" list="metalList">
+        <datalist id="metalList">
+          <option value="Gold"></option><option value="Silver"></option><option value="Copper"></option>
+          <option value="Zinc"></option><option value="Nickel"></option><option value="Cobalt"></option>
+          <option value="Lithium"></option><option value="Uranium"></option><option value="PGM"></option>
+          <option value="Critical Minerals"></option>
+        </datalist>
+        <p class="err">Please tell us the commodity &mdash; it sets the colour coding on every graphic.</p>
+      </div>
+
+      <div class="field f-row" id="slotBlock">
+        <div>
+          <label class="lbl" for="webinar_date">Webinar date</label>
+          <input type="date" id="webinar_date" name="webinar_date">
+          <p class="hint-sm" style="margin:6px 0 0" id="dateHint">Red Cloud confirms the final date &mdash; this puts a real date on your graphics straight away.</p>
+        </div>
+        <div>
+          <label class="lbl" for="webinar_time_et">Webinar time</label>
+          <select id="webinar_time_et"><option value="">To be confirmed</option></select>
+          <input type="hidden" name="webinar_time_pref" id="webinar_time_pref">
+          <p class="hint-sm" style="margin:6px 0 0" id="timePreview">Eastern time &mdash; the Pacific time is worked out for you.</p>
+        </div>
+      </div>
+
+      <input type="hidden" name="logo_url" id="logoUrl">
+
+      <div class="field f-row">
+        <div>
+          <label class="lbl" for="your_name">Your name<span class="req">*</span></label>
+          <input type="text" id="your_name" name="your_name" placeholder="Who is filling this in" autocomplete="name">
+          <p class="err">Please tell us who you are.</p>
+        </div>
+        <div>
+          <label class="lbl" for="your_email">Your email<span class="req">*</span></label>
+          <input type="email" id="your_email" name="your_email" placeholder="Where we should reply" autocomplete="email">
+          <p class="err">We need an email address we can reply to.</p>
+        </div>
+      </div>
+      </div><!-- /gated -->
+    </div>
+  </section>
+
+  <!-- ═══ 2. TITLE ═══ -->
+  <section class="sec gated">
+    <div class="sec-h">
+      <span class="sec-n">2</span>
+      <h2 class="sec-t">Your webinar title</h2>
+    </div>
+    <p class="sec-sub">This goes on the registration page, the invite graphics, the email blast and the replay. Aim for something an investor would click &mdash; the story, not just the company name.</p>
+
+    <div class="card">
+      <div class="field">
+        <label class="lbl" for="webinar_title">Title for the webinar<span class="req">*</span></label>
+        <p class="hint">Around six to twelve words works best. Lead with what is happening, not with who you are.</p>
+        <input type="text" id="webinar_title" name="webinar_title" maxlength="120" placeholder="Your webinar title" autocomplete="off">
+        <div class="count"><span id="titleCount">0 characters</span><span id="titleTip"></span></div>
+        <p class="err">Please give us a title for the webinar.</p>
+
+        <div class="sugg-bar">
+          <button type="button" class="sugg-btn" id="suggBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5 13.9 11.4 12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M18 15l.8 2L21 17.8l-2.2.8L18 21l-.8-2.4-2.2-.8 2.2-.8z"/></svg>
+            <span class="spin"></span>
+            <span id="suggLbl">Suggest some titles</span>
+          </button>
+          <span class="sugg-hint" id="suggHint">Drafted from your website, or from your bio if you have written it.</span>
+        </div>
+
+        <div class="sugg-err" id="suggErr"></div>
+
+        <div class="sugg-wrap" id="suggWrap">
+          <div class="sugg-h">
+            <b>Click one to use it</b>
+            <button type="button" class="linkbtn" id="suggAgain" style="font-size:12px;font-weight:800;color:var(--red);text-decoration:underline;text-underline-offset:3px">Try a different set</button>
+          </div>
+          <div class="sugg-list" id="suggList"></div>
+          <p class="sugg-note" id="suggNote"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. BIO ═══ -->
+  <section class="sec gated">
+    <div class="sec-h">
+      <span class="sec-n">3</span>
+      <h2 class="sec-t">Company bio</h2>
+    </div>
+    <p class="sec-sub">One paragraph. It appears on the registration page and in the promotional emails, so write it for an investor who has never heard of you.</p>
+
+    <div class="card">
+      <div class="field">
+        <label class="lbl" for="company_bio">Company bio<span class="req">*</span></label>
+        <p class="hint">One paragraph, roughly 80 to 150 words. Who you are, where your projects are, the commodity, and what is happening next.</p>
+        <textarea id="company_bio" name="company_bio" placeholder="One paragraph about the company&hellip;"></textarea>
+        <div class="count"><span id="bioCount">0 words</span><span id="bioTip"></span></div>
+        <p class="err">Please give us a one&ndash;paragraph company bio.</p>
+
+        <div class="sugg-bar">
+          <button type="button" class="sugg-btn" id="bioBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5 13.9 11.4 12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M18 15l.8 2L21 17.8l-2.2.8L18 21l-.8-2.4-2.2-.8 2.2-.8z"/></svg>
+            <span class="spin"></span>
+            <span id="bioLbl">Draft one from my website</span>
+          </button>
+          <span class="sugg-hint" id="bioHint">Add your website in section 1 and we will write a first draft.</span>
+        </div>
+
+        <div class="sugg-err" id="bioErr"></div>
+
+        <div class="sugg-wrap" id="bioWrap">
+          <div class="sugg-h">
+            <b>Pick one, then edit it above</b>
+            <button type="button" class="linkbtn" id="bioAgain" style="font-size:12px;font-weight:800;color:var(--red);text-decoration:underline;text-underline-offset:3px">Try a different set</button>
+          </div>
+          <div class="bio-list" id="bioList"></div>
+          <p class="sugg-note" id="bioNote"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. SPEAKERS ═══ -->
+  <section class="sec gated">
+    <div class="sec-h">
+      <span class="sec-n">4</span>
+      <h2 class="sec-t">Speakers</h2>
+    </div>
+    <p class="sec-sub">Whoever is presenting on the day. We send the presenter login straight to them, so the email address needs to be the one they will actually be at.</p>
+
+    <div class="card">
+      <div class="mgmt" id="mgmtPick" hidden>
+        <div class="mgmt-h">
+          <b>From your website</b>
+          <span>Pick whoever is presenting and we will fill their details in.</span>
+        </div>
+        <div class="mgmt-list" id="mgmtList"></div>
+      </div>
+
+      <!-- How many presenters. Drives which speaker blocks show; the graphics lay
+           two or three out side by side, so three is the ceiling. -->
+      <div class="field" style="margin:0 0 16px">
+        <label class="lbl" for="spkCount">How many presenters?</label>
+        <select id="spkCount" name="presenter_count">
+          <option value="1">1 presenter</option>
+          <option value="2">2 presenters</option>
+          <option value="3">3 presenters</option>
+        </select>
+        <p class="hint-sm" style="margin:6px 0 0">Up to three. More than one appear side by side on the graphics, each with their own name and role.</p>
+      </div>
+      <div id="spkList">
+        <div class="spk" data-spk="1">
+          <div class="spk-h"><b>Speaker 1</b></div>
+          <div class="field f-row" style="margin:0">
+            <div>
+              <label class="lbl" for="speaker1_name">Full name<span class="req">*</span></label>
+              <input type="text" id="speaker1_name" name="speaker1_name" placeholder="As it should appear on the graphics" autocomplete="off">
+            </div>
+            <div>
+              <label class="lbl" for="speaker1_title">Title</label>
+              <input type="text" id="speaker1_title" name="speaker1_title" placeholder="Their title" autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="speaker1_email">Email address<span class="req">*</span></label>
+            <input type="email" id="speaker1_email" name="speaker1_email" placeholder="Where the presenter link should go" autocomplete="off">
+          </div>
+          <div class="field">
+            <label class="lbl" for="speaker1_headshot">Headshot<span class="opt">recommended</span></label>
+            <div class="hs" id="hsBox1">
+              <p class="hs-top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>Add a headshot</b></p>
+              <p class="hs-why">Goes on the YouTube replay thumbnail for this speaker. We cut the background out automatically, so any normal photo works &mdash; head and shoulders, face clearly visible. PNG or JPG, up to 8&nbsp;MB.</p>
+              <input type="file" id="speaker1_headshot" name="speaker1_headshot" accept="image/png,image/jpeg" class="headshot">
+              <p class="hs-ok">Photo added &mdash; we will cut the background out for you.</p>
+            </div>
+          </div>
+        </div>
+        <div class="spk hide" data-spk="2">
+          <div class="spk-h"><b>Speaker 2</b></div>
+          <div class="field f-row" style="margin:0">
+            <div>
+              <label class="lbl" for="speaker2_name">Full name<span class="opt">optional</span></label>
+              <input type="text" id="speaker2_name" name="speaker2_name" placeholder="As it should appear on the graphics" autocomplete="off">
+            </div>
+            <div>
+              <label class="lbl" for="speaker2_title">Title</label>
+              <input type="text" id="speaker2_title" name="speaker2_title" placeholder="Their title" autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="speaker2_email">Email address</label>
+            <input type="email" id="speaker2_email" name="speaker2_email" placeholder="Where the presenter link should go" autocomplete="off">
+          </div>
+          <div class="field">
+            <label class="lbl" for="speaker2_headshot">Headshot<span class="opt">recommended</span></label>
+            <div class="hs" id="hsBox2">
+              <p class="hs-top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>Add a headshot</b></p>
+              <p class="hs-why">Same as above &mdash; head and shoulders, face clearly visible. PNG or JPG, up to 8&nbsp;MB.</p>
+              <input type="file" id="speaker2_headshot" name="speaker2_headshot" accept="image/png,image/jpeg" class="headshot">
+              <p class="hs-ok">Photo added &mdash; we will cut the background out for you.</p>
+            </div>
+          </div>
+        </div>
+        <div class="spk hide" data-spk="3">
+          <div class="spk-h"><b>Speaker 3</b></div>
+          <div class="field f-row" style="margin:0">
+            <div>
+              <label class="lbl" for="speaker3_name">Full name<span class="opt">optional</span></label>
+              <input type="text" id="speaker3_name" name="speaker3_name" placeholder="As it should appear on the graphics" autocomplete="off">
+            </div>
+            <div>
+              <label class="lbl" for="speaker3_title">Title</label>
+              <input type="text" id="speaker3_title" name="speaker3_title" placeholder="Their title" autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="speaker3_email">Email address</label>
+            <input type="email" id="speaker3_email" name="speaker3_email" placeholder="Where the presenter link should go" autocomplete="off">
+          </div>
+          <div class="field">
+            <label class="lbl" for="speaker3_headshot">Headshot<span class="opt">recommended</span></label>
+            <div class="hs" id="hsBox3">
+              <p class="hs-top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>Add a headshot</b></p>
+              <p class="hs-why">Same as above &mdash; head and shoulders, face clearly visible. PNG or JPG, up to 8&nbsp;MB.</p>
+              <input type="file" id="speaker3_headshot" name="speaker3_headshot" accept="image/png,image/jpeg" class="headshot">
+              <p class="hs-ok">Photo added &mdash; we will cut the background out for you.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="err" id="spkErr">Please give us at least one speaker with a name and an email address.</p>
+    </div>
+  </section>
+  <!-- ═══ 5. BRAND ASSETS ═══ -->
+  <section class="sec gated">
+    <div class="sec-h">
+      <span class="sec-n">5</span>
+      <h2 class="sec-t">Logo and brand assets</h2>
+    </div>
+    <p class="sec-sub">We build the registration page, five graphic templates and the email artwork from these. The better the source files, the better everything looks &mdash; a logo pulled off a website never scales cleanly.</p>
+
+    <div class="card">
+      <div class="field">
+        <label class="lbl" for="logo">Company logo<span class="req">*</span></label>
+        <p class="hint">Vector if you have it (SVG, EPS, AI or PDF). Otherwise the largest PNG you can find, ideally on a transparent background. If you have a light version for dark backgrounds, add that too.</p>
+        <label class="drop" id="dropLogo">
+          <div class="found-logo" id="foundLogo" hidden>
+            <img alt="The logo we found on your website">
+            <div>
+              <b>We found this on your website</b>
+              <span>Use it as is, or upload a better file below. A vector or a transparent PNG stays sharpest on the big formats.</span>
+              <label class="use-logo"><input type="checkbox" id="useFoundLogo" checked> Use this logo &mdash; nothing to upload</label>
+            </div>
+          </div>
+          <input type="file" id="logo" name="logo" multiple accept=".svg,.eps,.ai,.pdf,.png,.jpg,.jpeg,.zip,image/*">
+          <svg class="drop-ic" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+          <b>Drop your logo here, or click to choose</b>
+          <span>SVG, EPS, AI, PDF, PNG or JPG &middot; up to 8 MB each</span>
+        </label>
+        <div class="files" id="filesLogo"></div>
+        <p class="err">Please add a logo &mdash; we cannot build the graphics without one.</p>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="assets">Anything else that helps<span class="opt">optional</span></label>
+        <p class="hint">Speaker headshots, project or core photography, a brand guide, your colour codes, a corporate deck. Anything you would rather we used than found ourselves.</p>
+        <label class="drop" id="dropAssets">
+          <input type="file" id="assets" name="assets" multiple accept="*/*">
+          <svg class="drop-ic" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-5 5-2-2-6 6"/></svg>
+          <b>Drop images and documents here</b>
+          <span>Any format &middot; up to 8 MB each</span>
+        </label>
+        <div class="files" id="filesAssets"></div>
+        <p class="err"></p>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="asset_links">Or send us a link<span class="opt">optional</span></label>
+        <p class="hint">If your files are too big for this form, drop a Dropbox, Drive, WeTransfer or brand-portal link here instead.</p>
+        <textarea id="asset_links" name="asset_links" rows="2" style="min-height:76px" placeholder="Paste a link to your brand folder"></textarea>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ 6. LAST BITS ═══ -->
+  <section class="sec gated">
+    <div class="sec-h">
+      <span class="sec-n">6</span>
+      <h2 class="sec-t">Last few things</h2>
+    </div>
+    <p class="sec-sub">Who else should be on the emails, and anything we should know before the day.</p>
+
+    <div class="card">
+      <div class="field">
+        <label class="lbl" for="cc_emails">CC on emails<span class="opt">optional</span></label>
+        <p class="hint">Anyone at the company who should receive the calendar invites and the replay. One per line, or comma separated.</p>
+        <textarea id="cc_emails" name="cc_emails" rows="3" style="min-height:92px" placeholder="One email address per line"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="tech_test">Technical test<span class="req">*</span></label>
+        <p class="hint">A short call with our producer to check camera, microphone and screen sharing before the day.</p>
+        <select id="tech_test" name="tech_test">
+          <option value="">Select&hellip;</option>
+          <option>Yes &mdash; first time presenting with you</option>
+          <option>Yes &mdash; just to be safe</option>
+          <option>No, we are comfortable</option>
+        </select>
+        <p class="err">Please let us know whether you would like a technical test.</p>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="notes">Anything else we should know?<span class="opt">optional</span></label>
+        <textarea id="notes" name="notes" rows="3" style="min-height:104px" placeholder="Quiet periods, news landing that week, a speaker joining from another time zone, anything at all."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <div class="submit-wrap gated">
+    <div class="local" id="localNote"><b>Local preview.</b> This page is being served from a plain
+      file server, so pressing send has nothing to submit to &mdash; you will get an error. Everything
+      else works. Submissions start working the moment the site is deployed to Netlify.</div>
+    <div class="formerr" id="formErr"></div>
+    <button type="submit" class="btn" id="submitBtn">
+      Send this to Red Cloud
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <div class="bar" id="upBar"><i id="upBarFill"></i></div>
+    <p class="submit-note">Nothing is sent to us until you press the button. Your answers are held only in this tab so a refresh will not lose them &mdash; close it and the form starts clean, which is how we keep one client&rsquo;s answers away from the next.</p>
+  </div>
+
+</form>
+</main>
+
+<!-- ═══ SUCCESS ═══ -->
+<div class="wrap sent" id="sentArea">
+  <div class="sent-card">
+    <div class="sent-tick">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Got it &mdash; thank you.</h2>
+    <p id="sentMsg">Your details and files are with the Red Cloud media team. We will build the registration page from this and come back to you if anything needs a second look.</p>
+    <div class="sent-actions">
+      <button type="button" class="btn" id="copyBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy a summary
+      </button>
+      <button type="button" class="btn ghost" id="emailBtn">Email a copy to yourself</button>
+    </div>
+    <div class="summary">
+      <div class="summary-h"><b>What you sent us</b></div>
+      <pre id="summaryOut"></pre>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-in">
+    <p>Red Cloud Financial Services &middot; Webinar content form</p>
+    <p>Questions? <a href="mailto:media@redcloudfs.com">media@redcloudfs.com</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var $  = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var MAX = 8 * 1024 * 1024;   /* Netlify's per-file ceiling */
+
+/* a plain file server (or file://) has no form handler and no functions —
+   say so rather than blaming the connection */
+var IS_LOCAL = /^(localhost|127\.0\.0\.1|\[?::1\]?|.*\.local)$/i.test(location.hostname) || location.protocol === 'file:';
+if(IS_LOCAL) $('#localNote').classList.add('on');
+
+/* ══════════════════════════════════════════════════
+   SPEAKERS
+   ══════════════════════════════════════════════════ */
+function spkCount(){ return Math.max(1, Math.min(3, +($('#spkCount').value || 1))); }
+/* Show speakers 1..n and clear anything beyond. Clearing matters: a hidden block
+   still submits, so a third speaker typed and then dropped to "2 presenters"
+   would otherwise reappear on the graphics. */
+function setSpkCount(n){
+  n = Math.max(1, Math.min(3, n | 0));
+  $('#spkCount').value = String(n);
+  [2,3].forEach(function(k){
+    var b = $('.spk[data-spk="'+k+'"]'); if(!b) return;
+    if(k <= n){ b.classList.remove('hide'); return; }
+    if(b.classList.contains('hide')) return;
+    $$('input', b).forEach(function(i){ i.value = ''; });
+    var hs = $('.hs', b); if(hs) hs.classList.remove('has');
+    b.classList.add('hide');
+  });
+}
+/* Used by the management picker and draft restore: opening slot n raises the
+   count to match, so the dropdown never disagrees with what is on screen. */
+function showSpk(n){ if(n > spkCount()) setSpkCount(n); }
+$('#spkCount').addEventListener('change', function(){ setSpkCount(spkCount()); save(); tally(); });
+
+/* ══════════════════════════════════════════════════
+   FILE PICKERS
+   ══════════════════════════════════════════════════ */
+function fmtSize(b){
+  if(b < 1024) return b + ' B';
+  if(b < 1024*1024) return Math.round(b/1024) + ' KB';
+  return (b/1024/1024).toFixed(1) + ' MB';
+}
+function extOf(name){
+  var m = /\.([a-z0-9]+)$/i.exec(name);
+  return m ? m[1].toUpperCase().slice(0,4) : 'FILE';
+}
+
+/* a DataTransfer lets us both add dropped files and remove individual ones,
+   which a raw <input type=file> list will not allow */
+function Picker(inputId, listId, dropId){
+  var input = $('#'+inputId), list = $('#'+listId), drop = $('#'+dropId);
+  var store = [];
+
+  function render(){
+    list.innerHTML = '';
+    store.forEach(function(f, i){
+      var row = document.createElement('div');
+      row.className = 'file' + (f.size > MAX ? ' over-limit' : '');
+
+      var ic = document.createElement('div');
+      ic.className = 'file-ic';
+      if(/^image\//.test(f.type) && f.size <= MAX){
+        var img = document.createElement('img');
+        img.alt = '';
+        img.src = URL.createObjectURL(f);
+        img.onload = function(){ URL.revokeObjectURL(img.src); };
+        ic.appendChild(img);
+      } else {
+        ic.textContent = extOf(f.name);
+      }
+
+      var nm = document.createElement('div');
+      nm.className = 'file-n';
+      var b = document.createElement('b'); b.textContent = f.name;
+      var sp = document.createElement('span');
+      sp.textContent = f.size > MAX ? fmtSize(f.size) + ' — too big, 8 MB is the limit' : fmtSize(f.size);
+      nm.appendChild(b); nm.appendChild(sp);
+
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'file-rm'; rm.title = 'Remove ' + f.name;
+      rm.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+      rm.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        store.splice(i,1); sync();
+      });
+
+      row.appendChild(ic); row.appendChild(nm); row.appendChild(rm);
+      list.appendChild(row);
+    });
+  }
+
+  function sync(){
+    var dt = new DataTransfer();
+    store.forEach(function(f){ dt.items.add(f); });
+    input.files = dt.files;
+    render();
+    input.closest('.field').classList.remove('bad');
+    input.parentElement.classList.remove('bad');
+    tally();
+  }
+
+  function add(files){
+    Array.prototype.forEach.call(files, function(f){
+      var dupe = store.some(function(x){ return x.name===f.name && x.size===f.size; });
+      if(!dupe) store.push(f);
+    });
+    sync();
+  }
+
+  input.addEventListener('change', function(){ add(input.files); });
+
+  ['dragenter','dragover'].forEach(function(e){
+    drop.addEventListener(e, function(ev){ ev.preventDefault(); drop.classList.add('over'); });
+  });
+  ['dragleave','drop'].forEach(function(e){
+    drop.addEventListener(e, function(ev){ ev.preventDefault(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop', function(ev){
+    if(ev.dataTransfer && ev.dataTransfer.files.length) add(ev.dataTransfer.files);
+  });
+
+  return {
+    count:    function(){ return store.length; },
+    oversize: function(){ return store.filter(function(f){ return f.size > MAX; }); },
+    names:    function(){ return store.map(function(f){ return f.name + ' (' + fmtSize(f.size) + ')'; }); },
+    bytes:    function(){ return store.reduce(function(a,f){ return a + f.size; }, 0); }
+  };
+}
+
+var LOGO   = Picker('logo',   'filesLogo',   'dropLogo');
+var ASSETS = Picker('assets', 'filesAssets', 'dropAssets');
+
+/* ══════════════════════════════════════════════════
+   TITLE SUGGESTIONS
+   ══════════════════════════════════════════════════ */
+var suggBtn = $('#suggBtn'), suggWrap = $('#suggWrap'), suggList = $('#suggList'),
+    suggErr = $('#suggErr'), suggNote = $('#suggNote');
+
+/* Offline fallback, used when the drafting assistant is unavailable. It mines the
+   company name, commodity and bio for named things — projects, places, stages,
+   figures — and builds titles around those. If it finds nothing concrete it says
+   so rather than emitting filler that would fit any company. */
+var STOP = /^(The|This|We|Our|It|In|On|At|A|An|And|With|For|Company|Corp|Inc|Ltd|Limited|Resources|Mining|Metals|Gold|Silver|Copper|Exploration)$/i;
+
+function mineBio(){
+  var bio = $('#company_bio').value.trim();
+  var out = { projects: [], places: [], stages: [], figures: [] };
+  if(!bio) return out;
+
+  /* named ground: "Bell Creek Project", "Kestrel Ridge Deposit" */
+  var pRe = /\b([A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){0,2})\s+(Project|Property|Deposit|Mine|Claims|District|Trend|Belt|Basin|Camp)\b/g;
+  var m;
+  while((m = pRe.exec(bio))){
+    var name = m[1].trim();
+    if(STOP.test(name.split(/\s+/)[0])) continue;
+    var full = name + ' ' + m[2];
+    if(out.projects.indexOf(full) === -1) out.projects.push(full);
+  }
+
+  /* jurisdiction: "in northern Nevada", "in the Abitibi" */
+  var jRe = /\bin\s+(?:the\s+)?((?:northern|southern|eastern|western|central)\s+)?([A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){0,2})\b/g;
+  while((m = jRe.exec(bio))){
+    var place = ((m[1] || '') + m[2]).trim();
+    if(STOP.test(m[2].split(/\s+/)[0])) continue;
+    if(out.places.indexOf(place) === -1) out.places.push(place);
+  }
+
+  /* where it is in its life */
+  [[/\bdrill(ing)?\b/i,'drilling'],[/\bmaiden resource|resource estimate\b/i,'a maiden resource'],
+   [/\bPEA|preliminary economic\b/i,'a PEA'],[/\bfeasibility\b/i,'feasibility'],
+   [/\bpermit(ting|s)?\b/i,'permitting'],[/\bproduction|producing\b/i,'production'],
+   [/\bdiscovery\b/i,'a discovery'],[/\bfinanc(ing|ed)\b/i,'a financing']
+  ].forEach(function(r){ if(r[0].test(bio)) out.stages.push(r[1]); });
+
+  /* the client's own numbers, quoted from their own words */
+  var fRe = /\b([\d][\d,\.]*)\s*(metre|meter|m\b|hectare|ha\b|ounce|oz\b|tonne|km)/gi;
+  while((m = fRe.exec(bio))){
+    var unit = m[2];
+    if(/^(hectare|ounce|tonne|metre|meter)$/i.test(unit) && !/^1(\.0+)?$/.test(m[1])) unit += 's';
+    var fig = (m[1] + ' ' + unit).replace(/\s+/g,' ').trim();
+    if(out.figures.indexOf(fig) === -1) out.figures.push(fig);
+  }
+  return out;
+}
+
+function shortName(full){
+  return full.replace(/\s+(Project|Property|Deposit|Mine|Claims|District|Trend|Belt|Basin|Camp)$/i, '');
+}
+
+function localIdeas(){
+  var co    = $('#company').value.trim();
+  var metal = ($('#metals').value.trim().split(/[,\/]/)[0] || '').trim().toLowerCase();
+  var g     = mineBio();
+
+  var P  = g.projects[0] ? shortName(g.projects[0]) : '';
+  var P2 = g.projects[1] ? shortName(g.projects[1]) : '';
+  var L  = g.places[0] || '';
+  var S  = g.stages[0] || '';
+
+  /* a drilled distance says something about the programme; an area says something
+     about the land position — they do not belong in the same sentence */
+  var drillFig = g.figures.filter(function(f){ return /metre|meter|\bm$|ounce|oz|tonne/i.test(f); })[0] || '';
+  var areaFig  = g.figures.filter(function(f){ return /hectare|\bha\b|km/i.test(f); })[0] || '';
+
+  var ideas = [];
+  if(P && L)        ideas.push({ title: 'Inside ' + P + ', ' + L,                                    angle: P });
+  if(P && S)        ideas.push({ title: S.charAt(0).toUpperCase() + S.slice(1) + ' at ' + P + ' and what follows', angle: 'Where it stands' });
+  if(P && P2)       ideas.push({ title: 'From ' + P + ' to ' + P2 + ': building the portfolio',      angle: 'The portfolio' });
+  if(drillFig && P) ideas.push({ title: drillFig + ' at ' + P + ': what the programme is testing',   angle: 'The programme' });
+  if(areaFig && L)  ideas.push({ title: 'A land position of ' + areaFig + ' in ' + L,                angle: 'The ground' });
+  if(areaFig && !L && P) ideas.push({ title: 'A land position of ' + areaFig + ' around ' + P,        angle: 'The ground' });
+  if(L && metal)    ideas.push({ title: 'Why ' + L + ' is the ' + metal + ' address to watch',       angle: L });
+  if(L && !metal)   ideas.push({ title: 'Why ' + L + ' is the ground worth watching',                angle: L });
+  if(P && !L)       ideas.push({ title: 'The case for ' + P,                                         angle: P });
+  if(co && P)       ideas.push({ title: co + ' and the road ahead at ' + P,                          angle: 'Catalysts' });
+
+  var seen = {};
+  return ideas.filter(function(t){
+    var k = t.title.toLowerCase();
+    if(seen[k] || t.title.length < 14 || t.title.length > 110) return false;
+    seen[k] = 1; return true;
+  }).slice(0, 5);
+}
+
+function renderIdeas(list, note, isWarn){
+  suggList.innerHTML = '';
+  list.forEach(function(t){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'sugg';
+    var strong = document.createElement('b'); strong.textContent = t.title;
+    var sp = document.createElement('span'); sp.textContent = t.angle || '';
+    b.appendChild(strong); if(t.angle) b.appendChild(sp);
+    b.addEventListener('click', function(){
+      var f = $('#webinar_title');
+      f.value = t.title;
+      f.dispatchEvent(new Event('input', {bubbles:true}));
+      $$('.sugg', suggList).forEach(function(x){ x.classList.remove('picked'); });
+      b.classList.add('picked');
+      f.focus();
+    });
+    suggList.appendChild(b);
+  });
+  suggNote.textContent = note || 'These are drafts — edit whichever is closest, or write your own.';
+  suggNote.className = 'sugg-note' + (isWarn ? ' warn' : '');
+  suggWrap.classList.add('on');
+}
+
+function suggBusy(on){
+  suggBtn.disabled = on;
+  suggBtn.classList.toggle('busy', on);
+  $('#suggLbl').textContent = on ? 'Reading your site…' : 'Suggest some titles';
+}
+
+function offline(why){
+  var ideas = localIdeas();
+  if(!ideas.length){
+    suggErr.textContent = 'We could not draft anything specific to your company from what is here yet. ' +
+      'Write a few lines of the bio below — name your projects and where they are — and press this again.';
+    suggErr.classList.add('on');
+    suggWrap.classList.remove('on');
+    suggList.innerHTML = '';
+    return;
+  }
+  renderIdeas(ideas, why, true);
+}
+
+function getIdeas(){
+  suggErr.classList.remove('on');
+  suggWrap.classList.remove('on');
+  suggList.innerHTML = '';
+  var website = $('#website').value.trim();
+  var bio     = $('#company_bio').value.trim();
+
+  if(!website && bio.length < 60){
+    suggErr.textContent = 'Add your website address above, or write a few lines of the bio first — then we have something to work from.';
+    suggErr.classList.add('on');
+    return;
+  }
+
+  suggBusy(true);
+  fetch('/api/suggest-titles', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      website: website,
+      bio: bio,
+      company: $('#company').value.trim(),
+      metals: $('#metals').value.trim(),
+      ticker: $('#tickers').value.trim()
+    })
+  }).then(function(r){
+    return r.json().then(function(d){ return { ok:r.ok, status:r.status, d:d }; });
+  }).then(function(res){
+    suggBusy(false);
+    if(res.ok && res.d.titles && res.d.titles.length){
+      var note = res.d.note
+        || (res.d.read_ok === false ? 'Your site did not give us much to go on, so these are broader than usual.' : null);
+      renderIdeas(res.d.titles, note, !!res.d.note || res.d.read_ok === false);
+      return;
+    }
+    /* not switched on, or the model is unavailable — fall back rather than dead-end */
+    if(res.status === 501 || res.status === 502){
+      offline('Our drafting assistant is unavailable, so these are built from what you have typed rather than from your website.');
+      return;
+    }
+    suggErr.textContent = (res.d && res.d.message) || 'Could not draft any titles just now. Please write your own — it does not have to be perfect, we can polish it.';
+    suggErr.classList.add('on');
+  }).catch(function(){
+    suggBusy(false);
+    if(IS_LOCAL){
+      offline('Local preview — the drafting assistant only runs on the deployed site. These are built from what you have typed.');
+      return;
+    }
+    suggErr.textContent = 'Could not reach our drafting assistant. Please write your own title — we can polish it with you.';
+    suggErr.classList.add('on');
+  });
+}
+
+suggBtn.addEventListener('click', getIdeas);
+$('#suggAgain').addEventListener('click', getIdeas);
+
+/* keep the button honest about what it will use */
+function suggHint(){
+  var hasSite = !!$('#website').value.trim();
+  var hasBio  = $('#company_bio').value.trim().length >= 60;
+  $('#suggHint').textContent = hasSite
+    ? 'We will read your website and draft a few options.'
+    : hasBio
+      ? 'We will work from the bio you have written.'
+      : 'Add your website at the top of section 1, or write your bio first.';
+}
+['#website','#company_bio'].forEach(function(sel){
+  $(sel).addEventListener('input', function(){ suggHint(); bioHint(); });
+});
+suggHint();
+bioHint();
+
+/* ══════════════════════════════════════════════════
+   BIO DRAFTS
+   ══════════════════════════════════════════════════ */
+var bioBtn = $('#bioBtn'), bioWrap = $('#bioWrap'), bioList = $('#bioList'),
+    bioErrEl = $('#bioErr'), bioNote = $('#bioNote');
+
+function bioBusy(on){
+  bioBtn.disabled = on;
+  bioBtn.classList.toggle('busy', on);
+  $('#bioLbl').textContent = on ? 'Reading your site…' : 'Draft one from my website';
+}
+
+function renderBios(list, note){
+  bioList.innerHTML = '';
+  list.forEach(function(b, i){
+    var wrap = document.createElement('div');
+    wrap.className = 'bio-opt';
+
+    var head = document.createElement('div');
+    head.className = 'bio-opt-h';
+    var lbl = document.createElement('b'); lbl.textContent = b.angle || ('Draft ' + (i + 1));
+    var wc  = document.createElement('em');
+    wc.textContent = words(b.bio) + ' words';
+    head.appendChild(lbl); head.appendChild(wc);
+
+    var para = document.createElement('p'); para.textContent = b.bio;
+
+    var use = document.createElement('button');
+    use.type = 'button'; use.className = 'bio-use'; use.textContent = 'Use this one';
+    use.addEventListener('click', function(){
+      var f = $('#company_bio');
+      f.value = b.bio;
+      f.dispatchEvent(new Event('input', {bubbles:true}));
+      $$('.bio-opt', bioList).forEach(function(x){ x.classList.remove('picked'); });
+      wrap.classList.add('picked');
+      use.textContent = 'Added above';
+      f.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+
+    wrap.appendChild(head); wrap.appendChild(para); wrap.appendChild(use);
+    bioList.appendChild(wrap);
+  });
+  bioNote.textContent = note || 'Drafts from your own website — read it over and change anything that is off.';
+  bioWrap.classList.add('on');
+}
+
+function getBios(){
+  bioErrEl.classList.remove('on');
+  bioWrap.classList.remove('on');
+  bioList.innerHTML = '';
+
+  var website = $('#website').value.trim();
+  if(!website){
+    bioErrEl.textContent = 'Add your company website in section 1 first — that is what we read to write the draft.';
+    bioErrEl.classList.add('on');
+    $('#website').focus();
+    return;
+  }
+
+  bioBusy(true);
+  fetch('/api/suggest-titles', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      mode: 'bio',
+      website: website,
+      company: $('#company').value.trim(),
+      metals: $('#metals').value.trim(),
+      ticker: $('#tickers').value.trim()
+    })
+  }).then(function(r){
+    return r.json().then(function(d){ return { ok:r.ok, status:r.status, d:d }; });
+  }).then(function(res){
+    bioBusy(false);
+    if(res.ok && res.d.bios && res.d.bios.length){
+      renderBios(res.d.bios, res.d.read_ok === false
+        ? 'Your site did not give us much to work with, so check this one closely.' : null);
+      return;
+    }
+    bioErrEl.textContent = (res.d && res.d.message)
+      || 'Could not draft a bio just now. Please write your own — a short paragraph is plenty.';
+    bioErrEl.classList.add('on');
+  }).catch(function(){
+    bioBusy(false);
+    bioErrEl.textContent = IS_LOCAL
+      ? 'Local preview — bio drafting only runs on the deployed site.'
+      : 'Could not reach our drafting assistant. Please write your own paragraph.';
+    bioErrEl.classList.add('on');
+  });
+}
+
+bioBtn.addEventListener('click', getBios);
+$('#bioAgain').addEventListener('click', getBios);
+
+function bioHint(){
+  var has = !!$('#website').value.trim();
+  $('#bioHint').textContent = has
+    ? 'We will read your website and write a first draft.'
+    : 'Add your website at the top of section 1 and we will write a first draft.';
+  /* the panel goes green once it has what it needs, so it stops shouting */
+  $('.site-panel').classList.toggle('filled', has);
+}
+
+/* ══════════════════════════════════════════════════
+   COUNTERS
+   ══════════════════════════════════════════════════ */
+function words(s){ return s.trim() ? s.trim().split(/\s+/).length : 0; }
+
+$('#webinar_title').addEventListener('input', function(){
+  var n = this.value.length, w = words(this.value), tip = $('#titleTip');
+  $('#titleCount').textContent = n + ' character' + (n===1?'':'s');
+  if(!n){ tip.textContent=''; tip.className=''; }
+  else if(w < 4){ tip.textContent='A little short — give investors the story'; tip.className='warn'; }
+  else if(n > 95){ tip.textContent='Getting long for the invite graphic'; tip.className='warn'; }
+  else { tip.textContent='Good length'; tip.className='ok'; }
+});
+
+$('#company_bio').addEventListener('input', function(){
+  var w = words(this.value), tip = $('#bioTip');
+  $('#bioCount').textContent = w + ' word' + (w===1?'':'s');
+  if(!w){ tip.textContent=''; tip.className=''; }
+  else if(w < 60){ tip.textContent='Aim for 80–150 words'; tip.className='warn'; }
+  else if(w > 200){ tip.textContent='A bit long — we may trim it'; tip.className='warn'; }
+  else { tip.textContent='Good length'; tip.className='ok'; }
+});
+
+/* ══════════════════════════════════════════════════
+   PROGRESS
+   ══════════════════════════════════════════════════ */
+function speakerOk(){
+  return !!($('#speaker1_name').value.trim() && $('#speaker1_email').value.trim());
+}
+function tally(){
+  var done = 0;
+  if($('#company').value.trim() && $('#tickers').value.trim() && $('#metals').value.trim() && $('#your_name').value.trim() && $('#your_email').value.trim()) done++;
+  if($('#webinar_title').value.trim()) done++;
+  if(words($('#company_bio').value) >= 20) done++;
+  if(speakerOk()) done++;
+  if(LOGO.count() || $('#logoUrl').value || $('#asset_links').value.trim()) done++;
+  if($('#cc_emails').value.trim() || $('#tech_test').value || $('#notes').value.trim()) done++;
+  $('#progN').textContent = done + ' of 6';
+  $('#progFill').style.width = (done/6*100) + '%';
+  $('#progFill').classList.toggle('full', done===6);
+}
+
+/* ══════════════════════════════════════════════════
+   DRAFT RECOVERY
+
+   One link is shared with every client, so a draft must never
+   outlive the visit that created it — the next person to open
+   the link cannot be shown the last company's answers.
+
+   Two deliberate choices:
+     · sessionStorage, not localStorage — the draft dies with the
+       tab, and is never visible to another tab or another day.
+     · restored ONLY on a reload or a back/forward step. Arriving
+       at the link fresh always starts blank, even in a tab that
+       still holds a previous draft.
+
+   So it survives an accidental refresh mid-typing, and nothing else.
+   Files are never stored either way.
+   ══════════════════════════════════════════════════ */
+var KEY = 'rc-webinar-content-form';
+var pipT;
+
+function wipeDraft(){ try{ sessionStorage.removeItem(KEY); }catch(e){} }
+
+function save(){
+  var d = {};
+  $$('#mainForm input, #mainForm textarea, #mainForm select').forEach(function(el){
+    if(el.type==='hidden' || el.type==='file' || el.name==='bot-field' || el.name==='form-name') return;
+    d[el.id || el.name] = el.value;
+  });
+  d.__open = [2,3].filter(function(n){ return !$('.spk[data-spk="'+n+'"]').classList.contains('hide'); });
+  try{ sessionStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
+  var pip = $('#savedPip');
+  pip.classList.add('on'); clearTimeout(pipT);
+  pipT = setTimeout(function(){ pip.classList.remove('on'); }, 1600);
+}
+
+function cameBackToSamePage(){
+  try{
+    var nav = performance.getEntriesByType('navigation')[0];
+    if(nav) return nav.type === 'reload' || nav.type === 'back_forward';
+    /* older browsers */
+    return performance.navigation && (performance.navigation.type === 1 || performance.navigation.type === 2);
+  }catch(e){ return false; }
+}
+
+function restore(){
+  if(!cameBackToSamePage()){ wipeDraft(); return; }   /* fresh arrival — always blank */
+  var raw; try{ raw = sessionStorage.getItem(KEY); }catch(e){ return; }
+  if(!raw) return;
+  var d; try{ d = JSON.parse(raw); }catch(e){ return; }
+  (d.__open||[]).forEach(showSpk);
+  Object.keys(d).forEach(function(k){
+    if(k==='__open') return;
+    var el = document.getElementById(k);
+    if(!el || el.type==='hidden' || el.type==='file') return;
+    if(d[k]) el.value = d[k];
+  });
+}
+restore();
+
+/* anything left behind by an older build, which did use localStorage */
+try{ localStorage.removeItem(KEY); localStorage.removeItem('rc-webinar-intake:default:'); }catch(e){}
+
+/* an explicit way out, for anyone who lands on a part-filled form */
+$('#clearBtn').addEventListener('click', function(){
+  if(!confirm('Clear everything on this form and start again?')) return;
+  wipeDraft();
+  location.replace(location.pathname);
+});
+
+var saveT;
+$$('#mainForm input, #mainForm textarea, #mainForm select').forEach(function(el){
+  if(el.type==='file') return;
+  var ev = (el.tagName==='SELECT') ? 'change' : 'input';
+  el.addEventListener(ev, function(){
+    tally();
+    var f = scopeOf(el); if(f) f.classList.remove('bad');
+    clearTimeout(saveT); saveT = setTimeout(save, 500);
+  });
+});
+['webinar_title','company_bio'].forEach(function(id){
+  $('#'+id).dispatchEvent(new Event('input'));
+});
+tally();
+
+
+/* ══════════════════════════════════════════════════
+   COMPANY LOOK-UP
+
+   The form opens with one field. Paste a website, press the
+   button, and we read the site and fill in what we can — name,
+   listings, commodity, who could present, drafted titles and
+   bios built on their latest announcements.
+
+   Everything arrives as an editable suggestion. Nothing is
+   locked, nothing is submitted, and "fill the form in myself"
+   is always there for anyone without a website or in a hurry.
+
+   The look-up runs as a background job because reading four
+   pages and drafting takes about half a minute, and a
+   synchronous function is killed at ten seconds.
+   ══════════════════════════════════════════════════ */
+var PROFILE = null;
+var FOUND_LOGO = '';
+
+function unlock(){
+  if(document.body.classList.contains('unlocked')) return;
+  document.body.classList.add('unlocked');
+  tally();
+}
+
+var LK_STAGES = [
+  'Fetching your home page',
+  'Looking for your team and management pages',
+  'Reading your latest press releases',
+  'Picking out listings and commodity',
+  'Still reading \u2014 larger sites take a little longer',
+];
+var lkTimer = null;
+
+function lookupBusy(on, msg){
+  var btn = $('#lookupBtn'), note = $('#lookupNote');
+  btn.disabled = on;
+  btn.classList.toggle('busy', !!on);
+  btn.setAttribute('aria-busy', on ? 'true' : 'false');
+  $('#lookupLbl').textContent = on ? (msg || 'Reading your website\u2026') : 'Look up my company';
+
+  if(lkTimer){ clearInterval(lkTimer); lkTimer = null; }
+  if(on){
+    var i = 0;
+    note.classList.add('working');
+    note.textContent = LK_STAGES[0];
+    /* the stages are indicative, not reported by the worker — they exist so a
+       20-second wait shows movement rather than one frozen line */
+    lkTimer = setInterval(function(){
+      i = Math.min(i + 1, LK_STAGES.length - 1);
+      note.textContent = LK_STAGES[i];
+    }, 4000);
+  } else {
+    note.classList.remove('working');
+    note.textContent = 'We read your site and fill in as much of this form as we can. Everything stays editable.';
+  }
+}
+
+function showFound(p){
+  var bits = [];
+  if(p.company) bits.push('Company and listings');
+  if(p.commodity) bits.push('Commodity: ' + p.commodity);
+  if(p.management && p.management.length) bits.push(p.management.length + ' people who could present');
+  if(p.titles && p.titles.length) bits.push(p.titles.length + ' title suggestions');
+  if(p.bios && p.bios.length) bits.push(p.bios.length + ' bio drafts');
+  if(p.recent_news && p.recent_news.length) bits.push('Your latest ' + p.recent_news.length + ' announcement' + (p.recent_news.length===1?'':'s'));
+
+  var el = document.createElement('div');
+  el.className = 'found';
+  el.innerHTML = '<b>Here is what we found</b><ul>' +
+    bits.map(function(b){ return '<li>' + b.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</li>'; }).join('') +
+    '</ul>';
+  var band = $('.site-act');
+  var old = $('.found', band); if(old) old.remove();
+  band.appendChild(el);
+}
+
+/* The logo we spotted on their own site. It is only a fallback — anything they
+   upload in section 5 wins — but it means a client who never gets that far
+   still ends up with their mark on the graphics. */
+function showLogo(url){
+  if(!url) return;
+  FOUND_LOGO = url;
+  $('#logoUrl').value = url;
+  var box = $('#foundLogo');
+  if(!box) return;
+  var img = $('img', box);
+  img.onerror = function(){ box.hidden = true; FOUND_LOGO = ''; $('#logoUrl').value = ''; };
+  img.src = url;
+  box.hidden = false;
+}
+
+/* fill a field only if the client has not already typed something there */
+function fillIfEmpty(id, value){
+  var el = document.getElementById(id);
+  if(el && value && !el.value.trim()) el.value = value;
+}
+
+function renderManagement(people){
+  var wrap = $('#mgmtPick'), list = $('#mgmtList');
+  if(!people || !people.length){ wrap.hidden = true; return; }
+  list.innerHTML = '';
+  people.forEach(function(person){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'mgmt-p';
+    b.innerHTML = '<b></b><span></span>';
+    $('b', b).textContent = person.name;
+    $('span', b).textContent = person.role;
+    b.addEventListener('click', function(){
+      if(b.classList.contains('used')) return;
+      var slot = [1,2,3].filter(function(n){ return !$('#speaker'+n+'_name').value.trim(); })[0];
+      if(!slot){ return; }
+      if(slot > 1) showSpk(slot);
+      $('#speaker'+slot+'_name').value = person.name;
+      $('#speaker'+slot+'_title').value = person.role;
+      b.classList.add('used');
+      $('#speaker'+slot+'_email').focus();
+      tally(); save();
+    });
+    list.appendChild(b);
+  });
+  wrap.hidden = false;
+}
+
+function applyProfile(p){
+  PROFILE = p;
+  fillIfEmpty('company', p.company);
+  fillIfEmpty('tickers', p.tickers);
+  fillIfEmpty('metals', p.commodity);
+  renderManagement(p.management);
+  showLogo(p.logo_url);
+
+  /* the title and bio pickers already exist — hand them what we drafted */
+  if(p.titles && p.titles.length) renderIdeas(p.titles, p.read_ok === false
+    ? 'Your site did not give us much to go on, so these are broader than usual.' : null, p.read_ok === false);
+  if(p.bios && p.bios.length && typeof renderBios === 'function') renderBios(p.bios, null);
+
+  showFound(p);
+  $('#siteDoneMsg').textContent = 'Filled in below \u2014 change anything that is not right.';
+  $('#siteDone').classList.add('on');
+  unlock();
+  tally(); save();
+  var first = $('.gated');
+  if(first) first.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function pollProfile(job, tries){
+  tries = tries || 0;
+  if(tries > 25){
+    lookupBusy(false);
+    lookupFailed('That took longer than expected. Fill the form in yourself and we will take it from there.');
+    return;
+  }
+  fetch('/api/company-profile?job=' + encodeURIComponent(job))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.status === 'working'){ setTimeout(function(){ pollProfile(job, tries+1); }, 2500); return; }
+      lookupBusy(false);
+      if(d.status === 'done'){ applyProfile(d); return; }
+      lookupFailed(d.message || 'We could not read that website.');
+    })
+    .catch(function(){ lookupBusy(false); lookupFailed('We could not reach the look-up just now.'); });
+}
+
+function lookupFailed(msg){
+  $('#lookupErr').textContent = msg + ' You can still fill everything in yourself \u2014 the form is below.';
+  $('#lookupErr').classList.add('on');
+  unlock();
+}
+
+$('#lookupBtn').addEventListener('click', function(){
+  var site = $('#website').value.trim();
+  $('#lookupErr').classList.remove('on');
+  if(!site){
+    $('#lookupErr').textContent = 'Put your website address in first, or choose to fill the form in yourself.';
+    $('#lookupErr').classList.add('on');
+    $('#website').focus();
+    return;
+  }
+  if(IS_LOCAL){
+    lookupFailed('Look-up only runs on the deployed site.');
+    return;
+  }
+  lookupBusy(true);
+  fetch('/api/company-profile', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ website: site })
+  })
+  .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+  .then(function(res){
+    if(res.ok && res.d.job){ pollProfile(res.d.job); return; }
+    lookupBusy(false);
+    lookupFailed((res.d && res.d.message) || 'We could not start the look-up.');
+  })
+  .catch(function(){ lookupBusy(false); lookupFailed('We could not reach the look-up just now.'); });
+});
+
+$('#skipBtn').addEventListener('click', function(){
+  unlock();
+  var first = $('.gated');
+  if(first) first.scrollIntoView({behavior:'smooth', block:'start'});
+  $('#company').focus();
+});
+
+/* Enter in the website box runs the look-up rather than submitting the form */
+$('#website').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); $('#lookupBtn').click(); }
+});
+
+/* a restored draft means they were already past this point */
+if($('#company').value.trim() || $('#webinar_title').value.trim()) unlock();
+
+
+/* ══════════════════════════════════════════════════
+   BROADCAST TIME
+
+   Red Cloud runs on Eastern, and every graphic prints both
+   coasts. Asking for one free-text field produced "2pm",
+   "2:00 EST" and "14:00" in roughly equal measure, none of which
+   can be put on a graphic as-is. So: pick an Eastern slot, and
+   the Pacific one is derived. Pacific is always ET minus three
+   hours — the two zones observe daylight saving on the same
+   dates, so the gap never changes.
+   ══════════════════════════════════════════════════ */
+(function(){
+  var sel = $('#webinar_time_et');
+  if(!sel) return;
+
+  function label(mins){
+    var h24 = Math.floor(mins/60), m = mins%60;
+    var ampm = h24 >= 12 ? 'PM' : 'AM';
+    var h12 = h24 % 12; if(h12 === 0) h12 = 12;
+    return h12 + ':' + (m<10?'0':'') + m + ' ' + ampm;
+  }
+
+  /* 8:00am to 6:00pm Eastern, on the half hour — the window Red Cloud books in */
+  for(var t = 8*60; t <= 18*60; t += 30){
+    var o = document.createElement('option');
+    o.value = String(t);
+    o.textContent = label(t) + ' ET  \u00b7  ' + label(t - 180) + ' PT';
+    sel.appendChild(o);
+  }
+
+  /* set once the slot arrives pre-booked in the URL, so the restore-a-draft
+     pass below cannot overwrite the wording with a "pick one" prompt */
+  var slotLocked = false;
+
+  function sync(){
+    var v = sel.value;
+    if(!v){
+      $('#webinar_time_pref').value = '';
+      $('#timePreview').textContent = 'Pick an Eastern time and we will work out the Pacific one.';
+      return;
+    }
+    var mins = parseInt(v, 10);
+    var text = label(mins) + ' ET | ' + label(mins - 180) + ' PT';
+    $('#webinar_time_pref').value = text;
+    $('#timePreview').textContent = (slotLocked ? 'Confirmed: ' : 'Your graphics will read: ') + text;
+  }
+  sel.addEventListener('change', function(){ sync(); tally(); save(); });
+  sync();
+
+  /* ── the slot is booked before the client ever sees this ──────
+     Red Cloud agrees a date and time first, so asking the client
+     for a "preferred" one invited a second negotiation. The link
+     that goes out carries the booking:
+
+       /?date=2026-09-24&time=11:00
+
+     Both are then shown as confirmed and locked, so the client
+     reads the slot rather than choosing it. With no parameters
+     the fields still work normally — an internal test, or a
+     booking that genuinely is not settled yet.
+     ─────────────────────────────────────────────────────────── */
+  function lock(el){
+    el.readOnly = true; el.tabIndex = -1;
+    el.style.background = '#f4f4f5'; el.style.cursor = 'default';
+    el.style.color = 'inherit';
+    if(el.tagName === 'SELECT'){ el.style.pointerEvents = 'none'; }
+    el.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    el.addEventListener('keydown', function(e){ e.preventDefault(); });
+  }
+
+  function prettyDate(iso){
+    return new Date(iso + 'T12:00:00Z').toLocaleDateString('en-CA',
+      { weekday:'long', month:'long', day:'numeric', year:'numeric', timeZone:'UTC' });
+  }
+
+  /* Fill the slot in and show the banner. Two callers: the URL parameters a
+     client arrives with, and the Red Cloud setup bar, which calls it on every
+     keystroke so the operator sees exactly what the client will get.
+     `doLock` is false for the setup bar, which must stay editable. */
+  function applySlot(qDate, qTime, doLock){
+    var locked = false;
+
+    if(/^\d{4}-\d{2}-\d{2}$/.test(qDate)){
+      var d = $('#webinar_date');
+      d.value = qDate;
+      if(doLock) lock(d);
+      locked = true;
+      $('#dateHint').textContent = 'Confirmed: ' + prettyDate(qDate) + '.';
+    }
+
+    var m = /^(\d{1,2}):(\d{2})$/.exec(qTime || '');
+    if(m){
+      var mins = parseInt(m[1],10)*60 + parseInt(m[2],10);
+      sel.selectedIndex = 0;
+      for(var j=0;j<sel.options.length;j++){
+        if(parseInt(sel.options[j].value,10) === mins){ sel.selectedIndex = j; break; }
+      }
+      slotLocked = true;
+      sync();
+      if(doLock) lock(sel);
+      locked = true;
+    }
+
+    var when = [];
+    if(qDate) when.push(prettyDate(qDate));
+    var timeText = $('#webinar_time_pref').value;
+    if(timeText) when.push(timeText.replace(' | ', '  \u00b7  '));
+
+    $('#slotWhen').textContent = when.join('  \u2014  ');
+    $('#slotSub').textContent = (qDate && timeText)
+      ? 'If this is wrong, reply to our email rather than changing it here.'
+      : 'The rest of the slot is still being confirmed \u2014 we will email you.';
+    $('#slotBanner').hidden = !locked;
+
+    var blk = $('#slotBlock');
+    if(blk) blk.style.display = (doLock && qDate && timeText) ? 'none' : '';
+    return locked;
+  }
+
+  /* the setup bar drives the same preview */
+  window.rcApplySlot = function(date, time){ return applySlot(date, time, false); };
+
+  var qs = new URLSearchParams(location.search);
+  var qDate = qs.get('date') || '';
+  var qTime = qs.get('time') || '';
+  /* in setup mode the operator is still choosing, so nothing is locked yet */
+  var locked = qs.has('setup') ? false : applySlot(qDate, qTime, true);
+
+  /* applySlot has already shown the banner and hidden the duplicate fields */
+
+  /* a restored draft holds the formatted string, so put the picker back on it */
+  var saved = $('#webinar_time_pref').value;
+  if(saved){
+    for(var i=0;i<sel.options.length;i++){
+      var mins = parseInt(sel.options[i].value, 10);
+      if(!isNaN(mins) && label(mins) + ' ET | ' + label(mins-180) + ' PT' === saved){ sel.selectedIndex = i; break; }
+    }
+    sync();
+  }
+})();
+
+/* ══════════════════════════════════════════════════
+   USING THE LOGO FROM THEIR SITE
+
+   Unticking it clears the stored URL, so the choice is real
+   rather than cosmetic — the graphics only ever see what is in
+   the hidden field.
+   ══════════════════════════════════════════════════ */
+(function(){
+  var box = $('#useFoundLogo');
+  if(!box) return;
+  box.addEventListener('change', function(){
+    $('#logoUrl').value = box.checked ? (FOUND_LOGO || '') : '';
+    tally(); save();
+  });
+})();
+
+/* ══════════════════════════════════════════════════
+   SUMMARY TEXT
+   ══════════════════════════════════════════════════ */
+function pad(k){ return (k + '                   ').slice(0, 19); }
+function longDate(iso){
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  if(!m) return iso || '';
+  var d = new Date(+m[1], +m[2]-1, +m[3]);
+  return isNaN(d) ? iso : d.toLocaleDateString('en-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+function buildSummary(){
+  var L = [];
+  L.push('RED CLOUD — WEBINAR CONTENT SHEET');
+  L.push('='.repeat(46));
+  [['COMPANY',$('#company').value],['TICKER(S)',$('#tickers').value],['METAL(S)',$('#metals').value],
+   ['WEBSITE',$('#website').value],
+   ['SUBMITTED BY',$('#your_name').value],['EMAIL',$('#your_email').value]
+  ].forEach(function(r){ if(r[1].trim()) L.push(pad(r[0]) + r[1].trim()); });
+
+  L.push('');
+  L.push('TITLE FOR WEBINAR');
+  L.push($('#webinar_title').value.trim() || '—');
+  L.push('');
+  L.push('COMPANY BIO');
+  L.push($('#company_bio').value.trim() || '—');
+
+  L.push('');
+  L.push('SPEAKERS');
+  var any = false;
+  [1,2,3].forEach(function(i){
+    var n = $('#speaker'+i+'_name').value.trim();
+    if(!n) return;
+    any = true;
+    var t = $('#speaker'+i+'_title').value.trim();
+    var e = $('#speaker'+i+'_email').value.trim();
+    L.push('  ' + n + (t ? ', ' + t : '') + (e ? '  <' + e + '>' : ''));
+  });
+  if(!any) L.push('  —');
+
+  var cc = $('#cc_emails').value.trim();
+  if(cc){
+    L.push(''); L.push('CC ON EMAILS');
+    cc.split(/[\n,;]+/).forEach(function(x){ x=x.trim(); if(x) L.push('  ' + x); });
+  }
+
+  var files = LOGO.names().map(function(n){ return '  Logo — ' + n; })
+    .concat(ASSETS.names().map(function(n){ return '  Asset — ' + n; }));
+  if(files.length){ L.push(''); L.push('FILES ATTACHED'); files.forEach(function(f){ L.push(f); }); }
+
+  [['ASSET LINKS',$('#asset_links').value],
+   ['TECHNICAL TEST',$('#tech_test').value],
+   ['NOTES',$('#notes').value]
+  ].filter(function(r){ return r[1].trim(); }).forEach(function(r){
+    L.push(''); L.push(r[0]); L.push('  ' + r[1].trim());
+  });
+
+  L.push('');
+  L.push('Submitted ' + new Date().toLocaleString('en-CA',{dateStyle:'long',timeStyle:'short'}));
+  return L.join('\n');
+}
+
+/* a chosen headshot turns its box green, so it is obvious which speakers
+   still need one */
+[1,2,3].forEach(function(n){
+  var inp = document.getElementById('speaker' + n + '_headshot');
+  var box = document.getElementById('hsBox' + n);
+  if(!inp || !box) return;
+  inp.addEventListener('change', function(){
+    box.classList.toggle('has', !!(inp.files && inp.files.length));
+  });
+});
+
+/* ══════════════════════════════════════════════════
+   RED CLOUD SETUP BAR  (?setup)
+
+   The slot is agreed internally before the form goes out. Rather than set it
+   in /ops and hope the link is right, it is set HERE, on the page the client
+   will see: the banner below updates as you type, so what you are looking at
+   is what they get. The link you send never carries ?setup, so the bar cannot
+   appear for them.
+   ══════════════════════════════════════════════════ */
+(function(){
+  var qs = new URLSearchParams(location.search);
+  if(!qs.has('setup')) return;
+
+  var bar = document.getElementById('setupBar');
+  if(!bar) return;
+  bar.hidden = false;
+
+  var dEl = document.getElementById('suDate');
+  var tEl = document.getElementById('suTime');
+
+  function lab(mins){
+    var h24 = Math.floor(mins/60), m = mins%60;
+    var ap = h24 >= 12 ? 'PM' : 'AM';
+    var h12 = h24 % 12; if(h12 === 0) h12 = 12;
+    return h12 + ':' + (m<10?'0':'') + m + ' ' + ap;
+  }
+  function hhmm(mins){
+    var h = Math.floor(mins/60), m = mins%60;
+    return (h<10?'0':'') + h + ':' + (m<10?'0':'') + m;
+  }
+
+  tEl.innerHTML = '<option value="">Not set yet</option>';
+  for(var t = 8*60; t <= 18*60; t += 30){
+    var o = document.createElement('option');
+    o.value = String(t);
+    o.textContent = lab(t) + ' ET  \u00b7  ' + lab(t-180) + ' PT';
+    tEl.appendChild(o);
+  }
+
+  /* carry over anything already in the URL, so a half-built link can be edited */
+  if(/^\d{4}-\d{2}-\d{2}$/.test(qs.get('date') || '')) dEl.value = qs.get('date');
+  var qm = /^(\d{1,2}):(\d{2})$/.exec(qs.get('time') || '');
+  if(qm) tEl.value = String(parseInt(qm[1],10)*60 + parseInt(qm[2],10));
+
+  function mins(){ var v = parseInt(tEl.value, 10); return isNaN(v) ? null : v; }
+
+  function link(){
+    var bits = [];
+    if(dEl.value) bits.push('date=' + dEl.value);
+    if(mins() !== null) bits.push('time=' + hhmm(mins()));
+    return location.origin + '/' + (bits.length ? '?' + bits.join('&') : '');
+  }
+
+  function whenText(){
+    var out = [];
+    if(dEl.value){
+      out.push(new Date(dEl.value + 'T12:00:00Z').toLocaleDateString('en-CA',
+        { weekday:'long', month:'long', day:'numeric', year:'numeric', timeZone:'UTC' }));
+    }
+    if(mins() !== null) out.push(lab(mins()) + ' ET / ' + lab(mins()-180) + ' PT');
+    return out.join(', ');
+  }
+
+  function message(){
+    var name = document.getElementById('suName').value.trim();
+    var when = whenText();
+    return (name ? 'Hi ' + name + ',' : 'Hi,') + '\n\n' +
+      (when ? 'Your webinar is booked for ' + when + '.\n\n' : 'Your webinar is booked.\n\n') +
+      'Before we can build the registration page, the graphics and the promotion, we need a few ' +
+      'things from you \u2014 a title, a company bio, your speakers and your logo. This form ' +
+      'collects all of it and takes about ten minutes:\n\n' +
+      link() + '\n\n' +
+      'Paste your website in at the top and it will draft most of it for you \u2014 you just ' +
+      'correct whatever it gets wrong.\n\n' +
+      'The sooner we have it, the more runway we have to fill the room.\n\n' +
+      'Thanks,\nRed Cloud';
+  }
+
+  function said(m){
+    var el = document.getElementById('suSaid');
+    el.textContent = m;
+    setTimeout(function(){ if(el.textContent === m) el.textContent = ''; }, 2600);
+  }
+  function copy(text, what){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text)
+        .then(function(){ said(what + ' copied'); },
+              function(){ said('Could not copy \u2014 select it by hand'); });
+    } else said('Could not copy \u2014 select it by hand');
+  }
+
+  function refresh(){
+    document.getElementById('suLink').textContent =
+      (!dEl.value && mins() === null) ? 'Pick a date and time.' : link();
+    /* the banner below is the client's view — keep it in step as you type */
+    if(window.rcApplySlot) window.rcApplySlot(dEl.value, mins() === null ? '' : hhmm(mins()));
+  }
+
+  dEl.addEventListener('change', refresh);
+  tEl.addEventListener('change', refresh);
+  refresh();
+
+  document.getElementById('suCopyLink').addEventListener('click', function(){ copy(link(), 'Link'); });
+  document.getElementById('suCopyMsg').addEventListener('click', function(){ copy(message(), 'Message'); });
+  document.getElementById('suPreview').addEventListener('click', function(){ location.href = link(); });
+
+  document.getElementById('suMail').addEventListener('click', function(){
+    var to = document.getElementById('suEmail').value.trim();
+    var when = whenText();
+    var subject = 'Your Red Cloud webinar' + (when ? ' \u2014 ' + when : '') + ': what we need from you';
+    var href = 'mailto:' + encodeURIComponent(to) +
+      '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message());
+    /* some mail clients truncate very long mailto links, so hand it over
+       through the clipboard instead of sending a half-written email */
+    if(href.length > 1900){ copy(message(), 'Message'); said('Too long for a mail link \u2014 message copied'); return; }
+    window.location.href = href;
+    said(to ? 'Draft opened' : 'Draft opened \u2014 add the address');
+  });
+})();
+
+/* ══════════════════════════════════════════════════
+   VALIDATION + SUBMIT
+   ══════════════════════════════════════════════════ */
+/* paired inputs share one .field, so scope errors to the input's own wrapper —
+   for a lone input that wrapper IS the .field, for a file input it is the .field above the drop zone */
+function scopeOf(el){ return el.type === 'file' ? el.closest('.field') : el.parentElement; }
+function fail(id, msg){
+  var f = scopeOf(document.getElementById(id));
+  f.classList.add('bad');
+  if(msg){ var e = $('.err', f); if(e) e.textContent = msg; }
+  return f;
+}
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+var sizeMsg = '';
+function validate(){
+  var bad = [];
+  sizeMsg = '';
+  $$('.bad').forEach(function(f){ f.classList.remove('bad'); });
+
+  if(!$('#company').value.trim())   bad.push(fail('company'));
+  if(!$('#tickers').value.trim())   bad.push(fail('tickers'));
+  if(!$('#your_name').value.trim()) bad.push(fail('your_name'));
+  var ye = $('#your_email').value.trim();
+  if(!ye || !EMAIL_RE.test(ye)){
+    bad.push(fail('your_email', ye ? 'That email address does not look right.' : 'We need an email address we can reply to.'));
+  }
+  if(!$('#metals').value.trim()) bad.push(fail('metals'));
+  if(!$('#webinar_title').value.trim()) bad.push(fail('webinar_title'));
+  if(!$('#tech_test').value) bad.push(fail('tech_test'));
+  if(words($('#company_bio').value) < 15){
+    bad.push(fail('company_bio', words($('#company_bio').value)
+      ? 'That is a little short — we need a full paragraph.'
+      : 'Please give us a one-paragraph company bio.'));
+  }
+
+  if(!speakerOk()){
+    fail('speaker1_name');
+    if(!$('#speaker1_email').value.trim()) fail('speaker1_email');
+    $('#spkErr').textContent = 'Please give us at least one speaker with a name and an email address.';
+    $('#spkErr').style.display = 'block';
+    bad.push($('#spkErr'));
+  } else if(!EMAIL_RE.test($('#speaker1_email').value.trim())){
+    fail('speaker1_email');
+    $('#spkErr').textContent = 'That speaker email address does not look right.';
+    $('#spkErr').style.display = 'block';
+    bad.push($('#spkErr'));
+  }
+
+  if(!LOGO.count() && !$('#logoUrl').value && !$('#asset_links').value.trim()){
+    bad.push(fail('logo', 'Please add a logo, tick the one from your website, or paste a link to your brand folder below.'));
+  }
+
+  var over = LOGO.oversize().concat(ASSETS.oversize());
+  if(over.length){
+    var msg = over.length + (over.length===1 ? ' file is' : ' files are') + ' over the 8 MB limit. Remove ' +
+      (over.length===1 ? 'it' : 'them') + ' and paste a download link instead.';
+    if(LOGO.oversize().length)   bad.push(fail('logo', msg));
+    if(ASSETS.oversize().length) bad.push(fail('assets', msg));
+    sizeMsg = msg;
+  }
+  return bad;
+}
+
+var form = $('#mainForm');
+form.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var errEl = $('#formErr');
+  errEl.classList.remove('on'); errEl.textContent = '';
+  $('#spkErr').style.display = 'none';
+
+  var bad = validate();
+  if(bad.length){
+    errEl.textContent = sizeMsg || 'A few things still need filling in — they are marked in red below.';
+    errEl.classList.add('on');
+    bad[0].scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  var summary = buildSummary();
+  $('#summaryField').value = summary;
+  $('#submittedAt').value  = new Date().toISOString();
+
+  var btn = $('#submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = (LOGO.bytes() + ASSETS.bytes()) > 0 ? 'Uploading&hellip;' : 'Sending&hellip;';
+
+  /* multipart, so the files ride along — XHR gives us upload progress, fetch does not */
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/');
+  var bar = $('#upBar'), fill = $('#upBarFill');
+  if(LOGO.bytes() + ASSETS.bytes() > 0){
+    bar.classList.add('on');
+    xhr.upload.addEventListener('progress', function(e){
+      if(e.lengthComputable) fill.style.width = Math.round(e.loaded/e.total*100) + '%';
+    });
+  }
+  xhr.addEventListener('load', function(){
+    bar.classList.remove('on');
+    if(xhr.status >= 200 && xhr.status < 400) finish(summary);
+    else oops(summary, xhr.status);
+  });
+  xhr.addEventListener('error', function(){ bar.classList.remove('on'); oops(summary, 0); });
+  var fd = new FormData(form);
+  /* an untouched file input still posts an empty part — drop it so the record stays clean */
+  if(!LOGO.count())   fd.delete('logo');
+  if(!ASSETS.count()) fd.delete('assets');
+  xhr.send(fd);
+});
+
+function oops(summary, status){
+  var btn = $('#submitBtn'), errEl = $('#formErr');
+  btn.disabled = false;
+  btn.innerHTML = 'Try sending again';
+
+  var msg;
+  if(IS_LOCAL){
+    msg = '<b>Nothing is wrong with the form.</b> This is a local preview with no form handler behind ' +
+          'it, so there is nowhere for the submission to go. It will work once the site is deployed.';
+  } else if(status === 404 || status === 405){
+    msg = 'The form did not reach us &mdash; it looks like it is not registered on the server yet. ' +
+          'Please let us know at <a href="mailto:media@redcloudfs.com">media@redcloudfs.com</a> and ' +
+          'send your answers using <b>Copy a summary</b> below.';
+  } else if(status === 413){
+    msg = 'Your files were too large to upload. Remove the biggest ones, paste a download link in the ' +
+          '<b>Or send us a link</b> box instead, and try again.';
+  } else {
+    msg = 'That did not go through &mdash; it may be the connection. Please try again, or press ' +
+          '<b>Copy a summary</b> below and email it to ' +
+          '<a href="mailto:media@redcloudfs.com">media@redcloudfs.com</a> with your files attached.';
+  }
+  errEl.innerHTML = msg;
+  errEl.classList.add('on');
+  $('#summaryOut').textContent = summary;
+  $('#sentArea').classList.add('on');
+  $('.sent-card h2').textContent = IS_LOCAL ? 'Here is what would have been sent' : 'Here is your summary, just in case';
+  $('#sentMsg').textContent = IS_LOCAL
+    ? 'This is exactly what lands in the Netlify submission, and what the notification email contains.'
+    : 'Copy this and email it to media@redcloudfs.com so nothing is lost.';
+  $('.sent-tick').style.display = 'none';
+}
+
+function finish(summary){
+  $('#summaryOut').textContent = summary;
+  wipeDraft();
+  $('#formArea').style.display = 'none';
+  $('.prog').style.display = 'none';
+  $('.notice').style.display = 'none';
+  var who = $('#your_name').value.trim().split(/\s+/)[0];
+  if(who) $('#sentMsg').textContent =
+    'Thanks ' + who + ' — your details and files are with the Red Cloud media team. We will build the registration page from this and come back to you if anything needs a second look.';
+  $('#sentArea').classList.add('on');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ── copy + email ── */
+$('#copyBtn').addEventListener('click', function(){
+  var txt = $('#summaryOut').textContent, btn = this;
+  var done = function(){ btn.innerHTML = 'Copied'; setTimeout(function(){ btn.innerHTML = 'Copy a summary'; }, 1800); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, fallback);
+  } else fallback();
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+});
+
+$('#emailBtn').addEventListener('click', function(){
+  var co = $('#company').value.trim();
+  location.href = 'mailto:?subject=' + encodeURIComponent('Webinar content sheet' + (co ? ' — ' + co : '')) +
+    '&body=' + encodeURIComponent($('#summaryOut').textContent);
+});
+
+})();
+</script>
+</body>
+</html>

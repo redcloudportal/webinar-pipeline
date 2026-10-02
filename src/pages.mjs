@@ -18,7 +18,10 @@ const layout = (title, body, { signedIn = false } = {}) => `<!doctype html>
   header .in{max-width:880px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;gap:12px}
   header b{letter-spacing:2px;font-size:13px}
   header span{color:#a7a7ab;font-size:13px;letter-spacing:1px}
-  header form{margin-left:auto}
+  header nav{margin-left:auto;display:flex;gap:16px}
+  header nav a{color:#c9c9cc;text-decoration:none;font-size:13px;letter-spacing:.5px}
+  header nav a:hover{color:#fff}
+  header form{margin-left:12px}
   main{max-width:880px;margin:28px auto;padding:0 20px}
   .card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:26px}
   .narrow{max-width:420px;margin:60px auto}
@@ -38,9 +41,17 @@ const layout = (title, body, { signedIn = false } = {}) => `<!doctype html>
   .pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--frame);color:var(--muted)}
   .pill.on{background:#eaf6ee;color:#1f6b3a}
   .note{color:var(--muted);font-size:13px;margin-top:18px}
+  .keys td{padding:14px 8px}
+  .keys form{display:flex;gap:8px;margin:0}
+  .keys input{padding:8px 10px;font-size:14px}
+  .keys button{margin:0;padding:8px 14px;font-size:13px;white-space:nowrap}
+  .keys .clear{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .grp{font-size:11px;letter-spacing:2px;color:var(--red);font-weight:700;padding-top:22px!important}
+  .mono{font-family:ui-monospace,Menlo,monospace;color:var(--ink)}
 </style></head><body>
 <header><div class="in"><b>RED CLOUD</b><span>WEBINAR PIPELINE</span>
-${signedIn ? `<form method="post" action="/logout"><button>Sign out</button></form>` : ""}</div></header>
+${signedIn ? `<nav><a href="/ops">Webinars</a><a href="/clips">Clips</a><a href="/pipeline">Pipeline</a><a href="/settings/keys">Keys</a></nav>
+<form method="post" action="/logout"><button>Sign out</button></form>` : ""}</div></header>
 <main>${body}</main></body></html>`;
 
 export const loginPage = (error) => layout("Sign in", `
@@ -91,4 +102,22 @@ export const homePage = (pieces) => layout("Home", `
       <td><span class="pill${p.on ? " on" : ""}">${esc(p.status)}</span></td><td>${esc(p.what)}</td></tr>`).join("")}
   </table>
   <p class="note">Nothing here runs on its own. Each piece is switched on deliberately, one at a time.</p>
+</div>`, { signedIn: true });
+
+export const keysPage = (rows, { notice, error } = {}) => layout("Keys", `
+<div class="card">
+  <p class="eyebrow">SETTINGS</p><h1>Keys</h1><div class="bar"></div>
+  <p>Paste a key here instead of anywhere else. It is stored on the server only and goes live at once. After saving, only the last four characters are ever shown.</p>
+  ${notice ? `<p class="ok">${esc(notice)}</p>` : ""}${error ? `<p class="err">${esc(error)}</p>` : ""}
+  <table class="keys">
+    ${["Live", "Coming"].map((g) => `<tr><td colspan="3" class="grp">${g === "Live" ? "IN USE" : "FOR LATER"}</td></tr>` +
+      rows.filter((r) => r.group === g).map((r) => `<tr>
+        <td style="width:34%"><b style="color:#1d1d1f">${esc(r.label)}</b><br><span style="color:#7d7d82;font-size:13px">${esc(r.for)}</span></td>
+        <td style="width:20%">${r.set ? `<span class="pill on">set</span> <span class="mono">${r.name === "MAIL_FROM" ? esc(r.tail) : "&middot;&middot;&middot;&middot;" + esc(r.tail)}</span><br><span style="color:#7d7d82;font-size:12px">from ${esc(r.source)}</span>` : `<span class="pill">not set</span>`}</td>
+        <td><form method="post" action="/settings/keys"><input type="hidden" name="name" value="${esc(r.name)}">
+          <input name="value" type="${r.name === "MAIL_FROM" ? "text" : "password"}" autocomplete="off" placeholder="${r.set ? "Paste a new value to replace it" : "Paste the value"}">
+          <button name="do" value="save">Save</button>
+          ${r.source === "Keys page" ? `<button name="do" value="clear" class="clear" formnovalidate>Clear</button>` : ""}
+        </form></td></tr>`).join("")).join("")}
+  </table>
 </div>`, { signedIn: true });

@@ -3,6 +3,8 @@ import { timingSafeEqual } from "node:crypto";
 import * as riverside from "./riverside.mjs";
 import * as auth from "./auth.mjs";
 import * as pages from "./pages.mjs";
+import * as host from "./host.mjs";
+import * as keys from "./keys.mjs";
 
 /* ── Red Cloud webinar pipeline ────────────────────────────────
    The automation layer for webinars, separate from the portal and from the
@@ -68,7 +70,7 @@ const routes = {
 
   "GET /login": (req, res) => {
     if (!auth.hasPassword()) return html(res, 200, pages.noPasswordPage());
-    if (signedIn(req)) return redirect(res, "/");
+    if (signedIn(req)) return redirect(res, "/ops");
     html(res, 200, pages.loginPage());
   },
   "POST /login": async (req, res) => {
@@ -80,7 +82,7 @@ const routes = {
       return html(res, 401, pages.loginPage("That password isn't right."));
     }
     auth.clearFailures(ip);
-    redirect(res, "/", { "set-cookie": `${COOKIE}=${auth.newSession()}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${auth.SESSION_DAYS * 86400}${SECURE}` });
+    redirect(res, "/ops", { "set-cookie": `${COOKIE}=${auth.newSession()}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${auth.SESSION_DAYS * 86400}${SECURE}` });
   },
   "POST /logout": (req, res) =>
     redirect(res, "/login", { "set-cookie": `${COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${SECURE}` }),
@@ -101,7 +103,26 @@ const routes = {
     html(res, 200, pages.setupPage("", { done: true }));
   },
 
-  "GET /": (req, res) => {
+  /* Keys: paste a key on the server, never in chat */
+  "GET /settings/keys": (req, res, url) => {
+    if (!signedIn(req)) return redirect(res, "/login");
+    const n = url.searchParams.get("saved"), c = url.searchParams.get("cleared");
+    html(res, 200, pages.keysPage(keys.status(), { notice: n ? `${n} saved — live now.` : c ? `${c} cleared.` : null }));
+  },
+  "POST /settings/keys": async (req, res) => {
+    if (!signedIn(req)) return redirect(res, "/login");
+    /* a form posted from another site must not be able to change keys */
+    const origin = req.headers.origin || "";
+    if (origin && new URL(origin).host !== (req.headers["x-forwarded-host"] || req.headers.host)) return json(res, 403, { error: "bad origin" });
+    const { name = "", value = "", do: what = "save" } = await form(req);
+    const r = what === "clear" ? keys.clearKey(name) : keys.setKey(name, value);
+    if (!r.ok) return html(res, 400, pages.keysPage(keys.status(), { error: r.error }));
+    const label = keys.KNOWN.find((k) => k.name === name)?.label || name;
+    redirect(res, `/settings/keys?${what === "clear" ? "cleared" : "saved"}=${encodeURIComponent(label)}`);
+  },
+
+  /* the pipeline's own status page ("/" is the public client form) */
+  "GET /pipeline": (req, res) => {
     if (!signedIn(req)) return redirect(res, "/login");
     html(res, 200, pages.homePage(pieces()));
   },
@@ -126,19 +147,56 @@ const routes = {
   },
 };
 
+/* ── what is public, and what needs signing in ─────────────────
+   The site is internal, but a few things have to be reachable by people and
+   systems that cannot sign in:
+
+     public      the client form ("/" and POST "/"), its title and company
+                 helpers, email images (/art), the files a client uploaded
+                 (/uploads, unguessable addresses), the logos, /health
+     own token   the Mac Mini clips worker's calls (WORKER_TOKEN, checked by
+                 the functions themselves)
+     signed in   everything else — /ops, the clips view, the API behind /ops,
+                 the health and Box checks, Canva
+
+   /api/webinars also still accepts the ops token, for scripts. */
+const PUBLIC_FUNCTIONS = new Set(["/api/suggest-titles", "/api/company-profile", "/api/clips", "/api/clip-jobs", "/api/clip-preview"]);
+const PUBLIC_STATIC = (p) => p === "/" || p === "/index.html" || p.startsWith("/logos/");
+const needsSession = (p) => !(PUBLIC_FUNCTIONS.has(p) || p.startsWith("/art/") || p === "/api/webinars");
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   const path = url.pathname.replace(/\/+$/, "") || "/";
-  const route = routes[`${req.method} ${path}`];
-  /* an unknown address gives nothing away to someone who is not signed in */
-  if (!route) return signedIn(req) ? json(res, 404, { error: "not found" }) : redirect(res, "/login");
+  const me = signedIn(req);
   try {
-    await route(req, res, url);
+    const route = routes[`${req.method} ${path}`];
+    if (route) return await route(req, res, url);
+
+    if (req.method === "POST" && path === "/") return await host.handleFormPost(req, res);
+    if (req.method === "GET" && path.startsWith("/uploads/")) return await host.handleUpload(req, res);
+
+    if (path.startsWith("/api/") || path.startsWith("/art/") || path.startsWith("/.netlify/")) {
+      if (needsSession(path) && !path.startsWith("/.netlify/") && !me) return json(res, 401, { error: "Sign in at /login" });
+      if (await host.handleFunction(req, res, { signedIn: me })) return;
+      return me ? json(res, 404, { error: "not found" }) : redirect(res, "/login");
+    }
+
+    if (req.method === "GET") {
+      if (!PUBLIC_STATIC(path) && !me) return redirect(res, "/login");
+      if (await host.handleStatic(req, res, path)) return;
+    }
+    /* an unknown address gives nothing away to someone who is not signed in */
+    return me ? json(res, 404, { error: "not found" }) : redirect(res, "/login");
   } catch (err) {
     console.error(`${req.method} ${path} failed:`, err.message);
     if (!res.headersSent) json(res, 502, { error: "Something went wrong — see the server log." });
   }
 });
 
-server.listen(PORT, () => console.log(`webinar-pipeline listening on ${PORT}; password set: ${auth.hasPassword()}`));
+process.env.WEBINAR_HOST = "droplet";            // tells the shared code it is not on Netlify
+const fromKeysPage = keys.applySaved();          // keys pasted on /settings/keys win over .env
+const loaded = await host.loadFunctions();
+host.startScheduler();
+server.listen(PORT, () => console.log(`webinar-pipeline listening on ${PORT}; password set: ${auth.hasPassword()}; ` +
+  `${host.paused() ? "PAUSED (side-by-side test)" : "LIVE"}; functions: ${loaded.join(", ")}; keys from Keys page: ${fromKeysPage.join(", ") || "none"}`));
 for (const sig of ["SIGTERM", "SIGINT"]) process.on(sig, () => server.close(() => process.exit(0)));
