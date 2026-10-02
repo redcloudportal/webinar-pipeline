@@ -84,7 +84,7 @@ export const setupPage = (token, { error, done } = {}) => layout("Choose a passw
     ${error ? `<p class="err">${esc(error)}</p>` : ""}
     <button>SAVE PASSWORD</button>
   </form>
-  <p class="note">This link works once and expires 24 hours after it was made.</p>`}
+  <p class="note">This link works once, and stops working when it expires.</p>`}
 </div>`);
 
 export const linkDeadPage = () => layout("Link expired", `

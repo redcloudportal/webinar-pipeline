@@ -15,7 +15,7 @@ ssh "$HOST" "set -e; cd $DIR
   chmod 600 .env
   docker compose up -d --build
   sleep 3
-  docker compose exec -T pipeline wget -qO- http://127.0.0.1:8300/health"
+  docker compose exec -T pipeline node -e \"fetch('http://127.0.0.1:8300/health').then(r=>r.text()).then(console.log)\""
 
 # keep the GitHub copy in step, once the repo exists
 if git remote get-url origin >/dev/null 2>&1; then git push -q origin HEAD:main && echo "pushed to $(git remote get-url origin)"; fi

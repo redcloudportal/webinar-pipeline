@@ -48,10 +48,10 @@ function verify(pw, stored) {
 }
 
 /* ── the one-time link ── */
-export function issueSetupToken() {
+export function issueSetupToken(hours = 24) {
   const token = randomBytes(24).toString("base64url");
   const state = load();
-  state.setup = { tokenHash: sha(token), expires: Date.now() + DAY };
+  state.setup = { tokenHash: sha(token), expires: Date.now() + Math.min(120, hours) * 36e5 };
   save(state);
   return token;
 }
