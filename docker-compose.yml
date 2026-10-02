@@ -1,0 +1,21 @@
+# Its OWN compose project (webinar-pipeline), its own folder on the server
+# (/root/webinar-pipeline), its own repo. A portal deploy cannot touch it.
+#
+# It joins the portal's network ONLY so the shared HTTPS front door (Caddy, which
+# lives in the portal's setup) can route to it. The Caddy labels are deliberately
+# NOT here yet: Caddy builds one config from every container's labels, so a label
+# that fails — including a domain whose DNS does not exist yet — can disturb HTTPS
+# for every site on the box. They go in once webinars.redcloudfs.com resolves to
+# the server, and Caddy is checked straight after. See PROJECT.md.
+name: webinar-pipeline
+services:
+  pipeline:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    expose: ["8300"]
+    mem_limit: 256m
+    networks: [portal_default]
+networks:
+  portal_default:
+    external: true

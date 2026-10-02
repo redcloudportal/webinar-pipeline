@@ -1,0 +1,8 @@
+{
+  "name": "webinar-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Red Cloud's webinar automation pipeline. Separate from the portal; every piece starts manual.",
+  "engines": { "node": ">=22" },
+  "scripts": { "start": "node src/server.mjs" }
+}
